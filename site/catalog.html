@@ -198,6 +198,8 @@
   .arw i{font-style:normal;color:var(--ink-3);font-size:14px;line-height:1}
   .arw em{font-style:normal;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--ink-3);text-align:center}
+  .arw.loop i{display:flex;align-items:center;justify-content:center;width:26px;height:26px;
+    border:1.5px dashed var(--teal);border-radius:50%;color:var(--teal);font-size:14px}
 
   .grp{border:1px dashed var(--rule);border-radius:4px;padding:14px 13px;margin:0;flex:1 1 280px}
   .grp-t{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.12em;
@@ -678,13 +680,14 @@
         it.</p></div>
       </div>
     </div>
+    <div class="arw loop"><i>↺</i><em>feeds back into the fixes above</em></div>
     <figcaption>Red = the three problems · Teal = the fixes · Gold = the goal</figcaption>
   </figure>
 
   <div class="note"><span class="tag">Read the loop</span>
-  Notice the dotted arrow at the bottom. Trust isn't a finish line — testing tells you what
-  to fix, you fix it, you test again. <strong>A chatbot is a thing you keep, not a thing you
-  ship.</strong></div>
+  Notice the dashed circular arrow at the bottom, looping back up. Trust isn't a finish
+  line — testing tells you what to fix, you fix it, you test again. <strong>A chatbot is a
+  thing you keep, not a thing you ship.</strong></div>
 
   <h3>Where each drawer sits on the map</h3>
   <div class="tw"><table>
@@ -4290,8 +4293,30 @@ THE 5 TRAPS
     var open = nd.classList.toggle("open");
     h.setAttribute("aria-expanded", open ? "true" : "false");
     var lane = nd.closest(".lane");
-    if(lane) lane.classList.toggle("lane-has-open", !!lane.querySelector(".nd.open"));
+    if(lane){
+      lane.classList.toggle("lane-has-open", !!lane.querySelector(".nd.open"));
+      syncOpenHeights(lane);
+    }
   });
+
+  /* Several boxes can be opened at once in the same row. Match heights across
+     whichever ones are open right now, in the same visual row -- a closed
+     neighbour keeps its own short height instead of inheriting the tallest. */
+  function syncOpenHeights(lane){
+    var kids = Array.from(lane.children).filter(function(c){ return c.classList.contains("nd"); });
+    kids.forEach(function(n){ n.style.minHeight = ""; });
+    var open = kids.filter(function(n){ return n.classList.contains("open"); });
+    var rows = {};
+    open.forEach(function(n){
+      var top = Math.round(n.getBoundingClientRect().top);
+      (rows[top] = rows[top] || []).push(n);
+    });
+    Object.values(rows).forEach(function(group){
+      if(group.length < 2) return;
+      var max = Math.max.apply(null, group.map(function(n){ return n.getBoundingClientRect().height; }));
+      group.forEach(function(n){ n.style.minHeight = max + "px"; });
+    });
+  }
 
   /* ---- flashcards ---- */
   var CARDS = [
