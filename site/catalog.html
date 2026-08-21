@@ -131,7 +131,10 @@
   .lane.col{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
 
   .nd{flex:1 1 195px;min-width:165px;max-width:330px;display:flex;flex-direction:column}
-  .lane.col .nd{max-width:none;flex:0 0 auto}
+  /* Direct-child only: a .lane (row) nested inside a .lane.col for a mid-diagram split
+     must keep its own .nd items side-by-side and width-capped, not inherit the
+     full-width stack styling meant for the outer column's own top-level items. */
+  .lane.col > .nd{max-width:none;flex:0 0 auto}
   .nd-h{width:100%;text-align:left;font:inherit;cursor:pointer;position:relative;
     background:var(--card);border:1px solid var(--rule);border-radius:4px;
     padding:11px 30px 11px 13px;color:var(--ink);display:block;
