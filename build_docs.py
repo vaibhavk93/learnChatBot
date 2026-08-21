@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Build docs/index.html (the GitHub Pages site) from site/catalog.html.
+"""Build index.html (the GitHub Pages site) from site/catalog.html.
 
     python3 build_docs.py
 
 site/catalog.html is the same file published as a Claude Artifact. The artifact
 host wraps it in <!doctype>/<head>/<body> at publish time; GitHub Pages serves
 files raw, so this script adds that wrapper itself.
+
+Output goes to the repo root (not docs/) because GitHub Pages here is
+configured to deploy from the root of main -- with no root index.html,
+Pages silently falls back to rendering README.md via Jekyll instead, which
+is invisible until you actually load the site.
 
 Run it after every edit to site/catalog.html. Skipping it means the website
 silently serves an older page than the artifact -- which has already happened
@@ -18,7 +23,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "site" / "catalog.html"
-OUT = ROOT / "docs" / "index.html"
+OUT = ROOT / "index.html"
 
 DESCRIPTION = (
     "Learn to build chatbots from level 0 to expert: one story, ten words, "
