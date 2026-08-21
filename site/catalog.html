@@ -89,7 +89,8 @@
 
   /* ---------- content ---------- */
   main{padding:0}
-  .page{display:none;padding:52px 44px 100px;max-width:calc(var(--measure) + 260px)}
+  .page{display:none;padding:52px 44px 100px;max-width:calc(var(--measure) + 260px);
+    margin:0 auto}
   .page.on{display:block;animation:in .28s ease both}
   @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.page.on{animation:none}}
@@ -3713,6 +3714,21 @@ THE 5 TRAPS
       }).join("");
     }
   })();
+
+  /* ---- keyboard: arrow-left/right move between drawers ---- */
+  document.addEventListener("keydown", function(e){
+    if(e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    if(e.metaKey || e.ctrlKey || e.altKey) return;
+    var tag = document.activeElement && document.activeElement.tagName;
+    if(["INPUT","TEXTAREA","SELECT"].indexOf(tag) > -1) return;
+    if(document.activeElement && document.activeElement.isContentEditable) return;
+    var current = document.querySelector('.tab[aria-current="true"]');
+    if(!current) return;
+    var idx = PAGES.findIndex(function(p){ return p[0] === current.dataset.go; });
+    if(idx === -1) return;
+    if(e.key === "ArrowRight" && idx < PAGES.length - 1){ show(PAGES[idx+1][0]); e.preventDefault(); }
+    if(e.key === "ArrowLeft" && idx > 0){ show(PAGES[idx-1][0]); e.preventDefault(); }
+  });
 
   /* ---- go ---- */
   show(PAGES[0][0]);
