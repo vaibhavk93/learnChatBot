@@ -290,6 +290,38 @@
   /* ---------- chip selected state, for the stack configurator ---------- */
   .chip.sel{background:var(--teal);color:#fff;border-color:var(--teal)}
 
+  /* ---------- pipeline stepper: docks to the top once you pick a step ---------- */
+  .pipe{margin:22px 0}
+  .pipe-steps{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:6px 2px 10px;
+    scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+  .pipe.docked .pipe-steps{position:sticky;top:0;z-index:15;background:var(--paper);
+    padding:14px 4px;margin:0 -4px 10px;border-bottom:1px solid var(--rule);
+    box-shadow:var(--shadow)}
+  .pipe-step{flex:0 0 auto;display:flex;align-items:center;gap:7px;
+    background:var(--card);border:1px solid var(--rule);border-radius:999px;
+    padding:8px 14px 8px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink-2);
+    white-space:nowrap;transition:border-color .12s,background .12s,color .12s}
+  .pipe-step:hover{border-color:var(--teal)}
+  .pipe-step[aria-pressed="true"]{background:var(--teal-wash);border-color:var(--teal);
+    color:var(--teal);font-weight:600}
+  .pipe-step.pipe-red[aria-pressed="true"]{background:var(--stamp-wash);border-color:var(--stamp);color:var(--stamp)}
+  .pipe-step.pipe-gold[aria-pressed="true"]{background:var(--ochre-wash);border-color:var(--ochre);color:var(--ochre)}
+  .pipe-num{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3)}
+  .pipe-step[aria-pressed="true"] .pipe-num{color:inherit}
+  .pipe-arw{flex:0 0 auto;color:var(--ink-3);font-size:13px}
+  .pipe-caption{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-3);margin:0 0 4px}
+  .pipe-hint{color:var(--ink-3);font-size:14.5px;padding:22px 4px;text-align:center;
+    border:1px dashed var(--rule);border-radius:4px;margin-top:4px}
+  .pipe.docked .pipe-hint{display:none}
+  .pipe-panels{margin-top:4px}
+  .pipe-panel{display:none;background:var(--card);border:1px solid var(--rule);
+    border-radius:4px;padding:20px 22px;box-shadow:var(--shadow)}
+  .pipe-panel.active{display:block;animation:in .22s ease both}
+  .pipe-panel-t{font-family:var(--f-display);font-size:17px;font-weight:600;margin:0 0 12px}
+  .pipe-panel p{margin:0 0 8px;max-width:none}
+  .pipe-panel p:last-child{margin:0}
+
   @media (max-width:860px){
     .shell{grid-template-columns:1fr}
     .drawer{position:sticky;top:0;z-index:20;height:auto;border-right:0;
@@ -331,6 +363,8 @@
     .rung.here{margin:0 -10px;padding:18px 10px}
 
     .note,.warn,.trap,.keynote,.tldr{padding:13px 14px}
+    .pipe-panel{padding:15px 14px}
+    .pipe.docked .pipe-steps{margin:0 -4px 10px}
     .dg{grid-template-columns:1fr}
     .card{padding:17px 15px}
     .lab-box{padding:15px 14px}
@@ -2157,222 +2191,190 @@
   the other way: one question, walking through all nine steps in the order they actually
   fire, before you go and build one in Drawer 14.</p>
 
-  <figure class="plate">
-    <p class="hint-row">Click a step for what it's doing, why it exists, and what to watch for</p>
-    <div class="lane col">
-
-      <div class="nd">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">1 · Understand</span>
-          <span class="nd-s">Parse the message, check it's safe to proceed</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> The system reads the raw message — what
-          language, whether it's a new question or a follow-on to the last one, and whether
-          it contains anything that looks like an attempt to break the rules (a "jailbreak")
-          or data it shouldn't be handling.</p>
-          <p><strong>What it shapes:</strong> Whether the request even reaches the model, and
-          what conversation memory the rest of the pipeline gets to use.</p>
-          <p><strong>Why it's needed:</strong> Skip this and every later step inherits a bad
-          question — an injection buried in the message, or a request that should have been
-          refused outright.</p>
-          <p><strong>Trade-off:</strong> ✓ catches problems before they cost you a model call
-          · ✗ every check here adds latency, so most teams keep it to cheap pattern checks,
-          not a second full model call.</p>
-          <p><strong>Watch for:</strong> a follow-up like "what about the second one?" only
-          makes sense with history attached — losing that context here breaks everything
-          downstream.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">2 · Route</span>
-          <span class="nd-s">Does this need documents, a tool, both, or neither?</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> A router — sometimes a small classifier,
-          sometimes the main model itself — decides what kind of question this is: small
-          talk, a knowledge question, an action request, or out of scope entirely.</p>
-          <p><strong>What it shapes:</strong> Which of steps 3 and 4 actually run. A greeting
-          doesn't need retrieval; "cancel my order" doesn't need documents, it needs a tool.</p>
-          <p><strong>Why it's needed:</strong> Without it, every message pays the cost of
-          retrieval and tool-checking, even "hi" — and the model can be tempted to guess at
-          knowledge instead of admitting it needs to look something up.</p>
-          <p><strong>Trade-off:</strong> ✓ saves cost and latency on simple turns · ✗ a wrong
-          routing call (missing that a question needed retrieval) is invisible until someone
-          notices a wrong answer.</p>
-          <p><strong>Watch for:</strong> log the routing decision itself, not just the final
-          answer — otherwise "why didn't it look that up?" is undebuggable later.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd t-teal">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">3 · Retrieve</span>
-          <span class="nd-s">Pull the right index cards — Drawers 07–08</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> Keyword and meaning search run against the
-          store built in Drawer 07, the results are fused and reranked, and the top few
-          passages come back.</p>
-          <p><strong>What it shapes:</strong> The single biggest lever on factual accuracy.
-          Whatever comes back here is the only "knowledge" the model is allowed to use.</p>
-          <p><strong>Why it's needed:</strong> Skip retrieval and the model answers from its
-          general training instead of your documents — confident-sounding, but not
-          necessarily true for your specific case.</p>
-          <p><strong>Trade-off:</strong> ✓ grounds answers in your real, current documents ·
-          ✗ retrieval can confidently return the wrong passage, and nothing downstream can
-          tell the difference.</p>
-          <p><strong>Watch for:</strong> if the final answer is wrong, check here first.
-          Drawer 07's rule holds — if the wrong cards come back, nothing downstream can save
-          you.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd t-red">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">4 · Act</span>
-          <span class="nd-s">⚠ Tools & agents — where every permission check lives (Drawer 09)</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> If the plan needs live data or a real-world
-          action (checking today's balance, issuing a refund), the model asks for a specific
-          tool to run — it does not run it itself.</p>
-          <p><strong>What it shapes:</strong> This is what turns a chatbot into an agent — the
-          difference between describing what should happen and making it happen.</p>
-          <p><strong>Why it's needed:</strong> Without it, the bot can only talk about your
-          systems, never touch them. Done carelessly, it can also break them.</p>
-          <p><strong>Trade-off:</strong> ✓ makes the bot genuinely useful for real tasks · ✗
-          every action tool is a new way for something to go wrong if the checks around it
-          are weak.</p>
-          <p><strong>Watch for:</strong> the model never touches your systems directly — it
-          <em>requests</em> a call, your code decides. Permission checks, limits and
-          confirmation gates belong in that code, never in the prompt.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">5 · Assemble</span>
-          <span class="nd-s">Rules + cards + tool results + history + question — Drawer 10</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> Everything gathered so far is arranged into
-          one prompt, in an order that matters: stable instructions first, so they can be
-          cached and reused cheaply, then the specific material that changes every time.</p>
-          <p><strong>What it shapes:</strong> What the model can actually see when it answers,
-          and how much each request costs.</p>
-          <p><strong>Why it's needed:</strong> An unlabelled dump of text — no marker for
-          what's an instruction versus untrusted data pulled from a document — is exactly how
-          a document ends up "telling" the model what to do.</p>
-          <p><strong>Trade-off:</strong> ✓ good ordering cuts cost noticeably at scale · ✗
-          getting the labelling wrong is exactly how prompt injection succeeds.</p>
-          <p><strong>Watch for:</strong> mark retrieved passages and tool results clearly as
-          data, never as instructions — see the prompt-injection entry in Drawer 12.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd t-gold">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">6 · Generate</span>
-          <span class="nd-s">The model writes the answer, streamed</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> The model produces the reply token by token,
-          ideally citing which passage or tool result backed each claim, and streams it to
-          the screen as it goes rather than waiting to send it all at once.</p>
-          <p><strong>What it shapes:</strong> The part users actually experience as "the
-          chatbot" — its tone, its honesty about uncertainty, and how fast it feels.</p>
-          <p><strong>Why it's needed:</strong> It's the step that turns retrieved passages and
-          tool data into something a person can read and act on.</p>
-          <p><strong>Trade-off:</strong> ✓ streaming makes a slow answer feel fast · ✗ a model
-          told to "always help" will fill gaps with a plausible-sounding guess unless
-          explicitly told it's allowed to say "I don't know."</p>
-          <p><strong>Watch for:</strong> demand a citation per claim — an answer with no
-          source attached is a guess wearing a confident voice.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd t-red">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">7 · Check</span>
-          <span class="nd-s">⚠ The gate before anything reaches the user — Drawer 12</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> Before delivery, the generated answer is
-          checked against policy — did it leak something it shouldn't, does every claim trace
-          back to a real citation, did an action actually get confirmed.</p>
-          <p><strong>What it shapes:</strong> The last chance to stop a bad answer, a policy
-          violation, or a made-up citation before it reaches the person on the other end.</p>
-          <p><strong>Why it's needed:</strong> Step 1 only stops bad <em>questions</em> — it
-          can't catch a bad <em>answer</em> the model generates from a perfectly reasonable
-          one.</p>
-          <p><strong>Trade-off:</strong> ✓ catches failures that only appear at the output,
-          not the input · ✗ it's an extra check on every single response, and an overly
-          strict one blocks good answers too.</p>
-          <p><strong>Watch for:</strong> this is code, not the model policing itself — the
-          same "your code decides, not a prompt" rule from step 4 applies here too.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓</i></div>
-
-      <div class="nd">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">8 · Deliver & log</span>
-          <span class="nd-s">Send the answer, keep the record</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> The checked answer reaches the user, and —
-          separately — the whole turn (question, what was retrieved, which tools ran, what
-          was answered, how long it took) gets written to a log.</p>
-          <p><strong>What it shapes:</strong> The log is invisible to the user but it's the
-          only raw material the next step has to work with.</p>
-          <p><strong>Why it's needed:</strong> Without a record of what actually happened, you
-          can't tell later whether a bad outcome was a retrieval problem, a prompt problem,
-          or a one-off model mistake.</p>
-          <p><strong>Trade-off:</strong> ✓ makes every later debugging session possible · ✗
-          logging real user questions and documents is a privacy and storage cost — decide
-          up front what's kept and for how long.</p>
-          <p><strong>Watch for:</strong> log enough to reconstruct the turn, not just the final
-          text — the passages retrieved and tools called matter as much as the answer.</p>
-        </div>
-      </div>
-      <div class="arw"><i>↓ loops back to 1 &amp; 3</i></div>
-
-      <div class="nd t-teal">
-        <button type="button" class="nd-h" aria-expanded="false">
-          <span class="nd-t">9 · Evaluate</span>
-          <span class="nd-s">↺ Scores, gaps, and what to fix next — Drawer 11</span>
-        </button>
-        <div class="nd-d">
-          <p><strong>What's happening:</strong> Logged turns get scored — automatically, by a
-          human, or both — against test questions written before you started. Bad answers
-          get traced back to a cause: missing document, bad chunk, weak retrieval, wrong
-          prompt.</p>
-          <p><strong>What it shapes:</strong> Not the answer the user already got — every
-          future answer, by feeding fixes back into step 3 (documents), step 5 (prompt) and
-          step 2 (routing).</p>
-          <p><strong>Why it's needed:</strong> Without it, a chatbot that's 70% right on day
-          one is still 70% right a year later, because nobody is systematically told what the
-          30% is.</p>
-          <p><strong>Trade-off:</strong> ✓ the difference between a demo and a system that
-          actually improves · ✗ it's the step almost everyone skips, because it doesn't show
-          up as a visible feature.</p>
-          <p><strong>Watch for:</strong> this is the level 2 → 3 jump from Drawer 11 — write
-          your test questions first, or you'll be tuning by feel.</p>
-        </div>
-      </div>
-
+  <div class="pipe" id="pipe13">
+    <p class="hint-row">Click a step — it'll dock up here so you can keep reading below</p>
+    <div class="pipe-steps" id="pipeSteps13">
+      <button type="button" class="pipe-step" data-step="1" aria-pressed="false"><span class="pipe-num">1</span><span class="pipe-t">Understand</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="2" aria-pressed="false"><span class="pipe-num">2</span><span class="pipe-t">Route</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-teal" data-step="3" aria-pressed="false"><span class="pipe-num">3</span><span class="pipe-t">Retrieve</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-red" data-step="4" aria-pressed="false"><span class="pipe-num">4</span><span class="pipe-t">Act</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="5" aria-pressed="false"><span class="pipe-num">5</span><span class="pipe-t">Assemble</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-gold" data-step="6" aria-pressed="false"><span class="pipe-num">6</span><span class="pipe-t">Generate</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-red" data-step="7" aria-pressed="false"><span class="pipe-num">7</span><span class="pipe-t">Check</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="8" aria-pressed="false"><span class="pipe-num">8</span><span class="pipe-t">Deliver</span></button>
+      <span class="pipe-arw">↺</span>
+      <button type="button" class="pipe-step pipe-teal" data-step="9" aria-pressed="false"><span class="pipe-num">9</span><span class="pipe-t">Evaluate</span></button>
     </div>
-    <figcaption>Teal = knowledge in · Gold = the answer · Red = a gate your code enforces</figcaption>
-  </figure>
+    <p class="pipe-caption">Teal = knowledge in · Gold = the answer · Red = a gate your code enforces</p>
+
+    <p class="pipe-hint" id="pipeHint13">Click any step above for what's happening, why it's
+    needed, the trade-offs, and what to watch for.</p>
+
+    <div class="pipe-panels" id="pipePanels13">
+      <div class="pipe-panel" data-step="1">
+        <p class="pipe-panel-t">1 · Understand — Parse the message, check it's safe to proceed</p>
+        <p><strong>What's happening:</strong> The system reads the raw message — what
+        language, whether it's a new question or a follow-on to the last one, and whether
+        it contains anything that looks like an attempt to break the rules (a "jailbreak")
+        or data it shouldn't be handling.</p>
+        <p><strong>What it shapes:</strong> Whether the request even reaches the model, and
+        what conversation memory the rest of the pipeline gets to use.</p>
+        <p><strong>Why it's needed:</strong> Skip this and every later step inherits a bad
+        question — an injection buried in the message, or a request that should have been
+        refused outright.</p>
+        <p><strong>Trade-off:</strong> ✓ catches problems before they cost you a model call
+        · ✗ every check here adds latency, so most teams keep it to cheap pattern checks,
+        not a second full model call.</p>
+        <p><strong>Watch for:</strong> a follow-up like "what about the second one?" only
+        makes sense with history attached — losing that context here breaks everything
+        downstream.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="2">
+        <p class="pipe-panel-t">2 · Route — Does this need documents, a tool, both, or neither?</p>
+        <p><strong>What's happening:</strong> A router — sometimes a small classifier,
+        sometimes the main model itself — decides what kind of question this is: small
+        talk, a knowledge question, an action request, or out of scope entirely.</p>
+        <p><strong>What it shapes:</strong> Which of steps 3 and 4 actually run. A greeting
+        doesn't need retrieval; "cancel my order" doesn't need documents, it needs a tool.</p>
+        <p><strong>Why it's needed:</strong> Without it, every message pays the cost of
+        retrieval and tool-checking, even "hi" — and the model can be tempted to guess at
+        knowledge instead of admitting it needs to look something up.</p>
+        <p><strong>Trade-off:</strong> ✓ saves cost and latency on simple turns · ✗ a wrong
+        routing call (missing that a question needed retrieval) is invisible until someone
+        notices a wrong answer.</p>
+        <p><strong>Watch for:</strong> log the routing decision itself, not just the final
+        answer — otherwise "why didn't it look that up?" is undebuggable later.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="3">
+        <p class="pipe-panel-t">3 · Retrieve — Pull the right index cards — Drawers 07–08</p>
+        <p><strong>What's happening:</strong> Keyword and meaning search run against the
+        store built in Drawer 07, the results are fused and reranked, and the top few
+        passages come back.</p>
+        <p><strong>What it shapes:</strong> The single biggest lever on factual accuracy.
+        Whatever comes back here is the only "knowledge" the model is allowed to use.</p>
+        <p><strong>Why it's needed:</strong> Skip retrieval and the model answers from its
+        general training instead of your documents — confident-sounding, but not
+        necessarily true for your specific case.</p>
+        <p><strong>Trade-off:</strong> ✓ grounds answers in your real, current documents ·
+        ✗ retrieval can confidently return the wrong passage, and nothing downstream can
+        tell the difference.</p>
+        <p><strong>Watch for:</strong> if the final answer is wrong, check here first.
+        Drawer 07's rule holds — if the wrong cards come back, nothing downstream can save
+        you.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="4">
+        <p class="pipe-panel-t">⚠ 4 · Act — Tools &amp; agents, where every permission check lives (Drawer 09)</p>
+        <p><strong>What's happening:</strong> If the plan needs live data or a real-world
+        action (checking today's balance, issuing a refund), the model asks for a specific
+        tool to run — it does not run it itself.</p>
+        <p><strong>What it shapes:</strong> This is what turns a chatbot into an agent — the
+        difference between describing what should happen and making it happen.</p>
+        <p><strong>Why it's needed:</strong> Without it, the bot can only talk about your
+        systems, never touch them. Done carelessly, it can also break them.</p>
+        <p><strong>Trade-off:</strong> ✓ makes the bot genuinely useful for real tasks · ✗
+        every action tool is a new way for something to go wrong if the checks around it
+        are weak.</p>
+        <p><strong>Watch for:</strong> the model never touches your systems directly — it
+        <em>requests</em> a call, your code decides. Permission checks, limits and
+        confirmation gates belong in that code, never in the prompt.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="5">
+        <p class="pipe-panel-t">5 · Assemble — Rules + cards + tool results + history + question — Drawer 10</p>
+        <p><strong>What's happening:</strong> Everything gathered so far is arranged into
+        one prompt, in an order that matters: stable instructions first, so they can be
+        cached and reused cheaply, then the specific material that changes every time.</p>
+        <p><strong>What it shapes:</strong> What the model can actually see when it answers,
+        and how much each request costs.</p>
+        <p><strong>Why it's needed:</strong> An unlabelled dump of text — no marker for
+        what's an instruction versus untrusted data pulled from a document — is exactly how
+        a document ends up "telling" the model what to do.</p>
+        <p><strong>Trade-off:</strong> ✓ good ordering cuts cost noticeably at scale · ✗
+        getting the labelling wrong is exactly how prompt injection succeeds.</p>
+        <p><strong>Watch for:</strong> mark retrieved passages and tool results clearly as
+        data, never as instructions — see the prompt-injection entry in Drawer 12.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="6">
+        <p class="pipe-panel-t">6 · Generate — The model writes the answer, streamed</p>
+        <p><strong>What's happening:</strong> The model produces the reply token by token,
+        ideally citing which passage or tool result backed each claim, and streams it to
+        the screen as it goes rather than waiting to send it all at once.</p>
+        <p><strong>What it shapes:</strong> The part users actually experience as "the
+        chatbot" — its tone, its honesty about uncertainty, and how fast it feels.</p>
+        <p><strong>Why it's needed:</strong> It's the step that turns retrieved passages and
+        tool data into something a person can read and act on.</p>
+        <p><strong>Trade-off:</strong> ✓ streaming makes a slow answer feel fast · ✗ a model
+        told to "always help" will fill gaps with a plausible-sounding guess unless
+        explicitly told it's allowed to say "I don't know."</p>
+        <p><strong>Watch for:</strong> demand a citation per claim — an answer with no
+        source attached is a guess wearing a confident voice.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="7">
+        <p class="pipe-panel-t">⚠ 7 · Check — The gate before anything reaches the user — Drawer 12</p>
+        <p><strong>What's happening:</strong> Before delivery, the generated answer is
+        checked against policy — did it leak something it shouldn't, does every claim trace
+        back to a real citation, did an action actually get confirmed.</p>
+        <p><strong>What it shapes:</strong> The last chance to stop a bad answer, a policy
+        violation, or a made-up citation before it reaches the person on the other end.</p>
+        <p><strong>Why it's needed:</strong> Step 1 only stops bad <em>questions</em> — it
+        can't catch a bad <em>answer</em> the model generates from a perfectly reasonable
+        one.</p>
+        <p><strong>Trade-off:</strong> ✓ catches failures that only appear at the output,
+        not the input · ✗ it's an extra check on every single response, and an overly
+        strict one blocks good answers too.</p>
+        <p><strong>Watch for:</strong> this is code, not the model policing itself — the
+        same "your code decides, not a prompt" rule from step 4 applies here too.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="8">
+        <p class="pipe-panel-t">8 · Deliver &amp; log — Send the answer, keep the record</p>
+        <p><strong>What's happening:</strong> The checked answer reaches the user, and —
+        separately — the whole turn (question, what was retrieved, which tools ran, what
+        was answered, how long it took) gets written to a log.</p>
+        <p><strong>What it shapes:</strong> The log is invisible to the user but it's the
+        only raw material the next step has to work with.</p>
+        <p><strong>Why it's needed:</strong> Without a record of what actually happened, you
+        can't tell later whether a bad outcome was a retrieval problem, a prompt problem,
+        or a one-off model mistake.</p>
+        <p><strong>Trade-off:</strong> ✓ makes every later debugging session possible · ✗
+        logging real user questions and documents is a privacy and storage cost — decide
+        up front what's kept and for how long.</p>
+        <p><strong>Watch for:</strong> log enough to reconstruct the turn, not just the final
+        text — the passages retrieved and tools called matter as much as the answer.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="9">
+        <p class="pipe-panel-t">↺ 9 · Evaluate — Scores, gaps, and what to fix next — Drawer 11 — loops back to 1 &amp; 3</p>
+        <p><strong>What's happening:</strong> Logged turns get scored — automatically, by a
+        human, or both — against test questions written before you started. Bad answers
+        get traced back to a cause: missing document, bad chunk, weak retrieval, wrong
+        prompt.</p>
+        <p><strong>What it shapes:</strong> Not the answer the user already got — every
+        future answer, by feeding fixes back into step 3 (documents), step 5 (prompt) and
+        step 2 (routing).</p>
+        <p><strong>Why it's needed:</strong> Without it, a chatbot that's 70% right on day
+        one is still 70% right a year later, because nobody is systematically told what the
+        30% is.</p>
+        <p><strong>Trade-off:</strong> ✓ the difference between a demo and a system that
+        actually improves · ✗ it's the step almost everyone skips, because it doesn't show
+        up as a visible feature.</p>
+        <p><strong>Watch for:</strong> this is the level 2 → 3 jump from Drawer 11 — write
+        your test questions first, or you'll be tuning by feel.</p>
+      </div>
+    </div>
+  </div>
 
   <h3>Which drawer to reread, by step</h3>
   <div class="tw"><table>
@@ -3732,6 +3734,23 @@ THE 5 TRAPS
     if(e.key === "ArrowRight" && idx < PAGES.length - 1){ show(PAGES[idx+1][0]); e.preventDefault(); }
     if(e.key === "ArrowLeft" && idx > 0){ show(PAGES[idx-1][0]); e.preventDefault(); }
   });
+
+  /* ---- pipeline stepper (Drawer 13): click a step, it docks up top ---- */
+  (function(){
+    var pipe = document.getElementById("pipe13");
+    if(!pipe) return;
+    var steps = pipe.querySelectorAll(".pipe-step");
+    var panels = pipe.querySelectorAll(".pipe-panel");
+    pipe.addEventListener("click", function(e){
+      var btn = e.target.closest(".pipe-step");
+      if(!btn) return;
+      var already = btn.getAttribute("aria-pressed") === "true";
+      var n = already ? null : btn.dataset.step;
+      steps.forEach(function(s){ s.setAttribute("aria-pressed", s===btn && !already ? "true" : "false"); });
+      panels.forEach(function(p){ p.classList.toggle("active", p.dataset.step===n); });
+      pipe.classList.toggle("docked", !!n);
+    });
+  })();
 
   /* ---- go ---- */
   show(PAGES[0][0]);
