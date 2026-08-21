@@ -68,18 +68,31 @@
   nav{flex:1 1 auto;overflow-y:auto;min-height:0}
   nav ol{list-style:none;margin:0;padding:0 12px}
   nav li{margin:0}
-  .tab{display:grid;grid-template-columns:26px 1fr;align-items:baseline;gap:8px;
+  .tab{display:grid;grid-template-columns:26px 1fr;align-items:start;gap:8px;
     width:100%;text-align:left;background:none;border:0;cursor:pointer;position:relative;
     padding:9px 22px 9px 10px;border-radius:3px;color:var(--ink-2);font:inherit;font-size:14.5px;
     border-left:2px solid transparent;transition:background .12s,color .12s}
-  .tab .dot{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  .tab .dot{position:absolute;right:8px;top:16px;
     width:6px;height:6px;border-radius:50%;background:var(--rule)}
   .tab .dot.seen{background:var(--teal)}
-  .tab .num{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.04em}
+  .tab .num{font-family:var(--f-mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;
+    padding-top:1px}
+  .tab-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .tab-row{display:flex;align-items:baseline;gap:5px;min-width:0}
+  .tab-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tab-star{color:var(--ochre);font-size:10.5px;flex:0 0 auto}
+  .tab-level{font-family:var(--f-mono);font-size:9px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink-3)}
+  .tab-level.lv-intermediate{color:var(--teal)}
+  .tab-level.lv-advanced{color:var(--ochre)}
+  .tab-level.lv-expert{color:var(--stamp)}
   .tab:hover{background:var(--rule-2);color:var(--ink)}
   .tab[aria-current="true"]{background:var(--teal-wash);color:var(--teal);
     border-left-color:var(--teal);font-weight:600}
   .tab[aria-current="true"] .num{color:var(--teal)}
+
+  .page-oneliner{color:var(--ink-3);font-size:14.5px;font-style:italic;margin:2px 0 18px}
+  .page-oneliner .tab-star{font-size:12px;font-style:normal}
   .tab:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
 
   .drawer-foot{padding:18px 22px 26px;margin-top:0;border-top:1px solid var(--rule);
@@ -464,10 +477,10 @@
     <tbody>
       <tr><td class="num">15 min</td><td>Drawers 04–06</td><td>Explain what a chatbot is and why it lies</td></tr>
       <tr><td class="num">1 hour</td><td>Drawers 02–07</td><td>Hold your own in a technical conversation</td></tr>
-      <tr><td class="num">1 day</td><td>Drawer 14</td><td>Have a working investor-relations bot</td></tr>
-      <tr><td class="num">1 week</td><td>Drawers 08–12</td><td>Go past "it works" to "I can prove how well"</td></tr>
-      <tr><td class="num">1 month</td><td>Drawers 15–17</td><td>Take a prototype to something real users can hit</td></tr>
-      <tr><td class="num">Ongoing</td><td>Drawers 18–19</td><td>Interview for a chatbot role</td></tr>
+      <tr><td class="num">1 day</td><td>Drawer 18</td><td>Have a working investor-relations bot</td></tr>
+      <tr><td class="num">1 week</td><td>Drawers 08–15</td><td>Go past "it works" to "I can prove how well"</td></tr>
+      <tr><td class="num">1 month</td><td>Drawers 19–21</td><td>Take a prototype to something real users can hit</td></tr>
+      <tr><td class="num">Ongoing</td><td>Drawers 23–24</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
 
@@ -764,7 +777,7 @@
         <h4>Literate</h4>
         <p>You can explain hallucination, RAG, chunks and tools to a non-technical friend
         without notes.</p>
-        <p class="sig">Next: build one. Drawer 14. One day.</p>
+        <p class="sig">Next: build one. Drawer 18. One day.</p>
       </div>
     </div>
     <div class="rung here">
@@ -960,6 +973,25 @@
   <p class="lede">This is your interview weapon. When someone says "design a chatbot for X",
   you walk these six out loud, in order, and you will not miss anything important.</p>
 
+  <h3>First, which of these three are you actually being asked for?</h3>
+  <p>"Chatbot," "assistant" and "agent" get used interchangeably outside interviews and
+  precisely, on purpose, inside them. Naming which one you mean before you design it is
+  worth doing out loud.</p>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Chatbot</th><th>Assistant</th><th>Agent</th></tr></thead>
+    <tbody>
+      <tr><td>Conversation</td><td>Fixed / scripted</td><td>Flexible, reasons about intent</td><td>Goal-driven</td></tr>
+      <tr><td>Knowledge</td><td>None or FAQ-only</td><td>Can explain, often with RAG</td><td>Retrieves and acts on it</td></tr>
+      <tr><td>Tools</td><td>None</td><td>A few, used when asked</td><td>Multiple, chosen and sequenced itself</td></tr>
+      <tr><td>Posture</td><td>Reactive</td><td>Semi-intelligent</td><td>Plans and decomposes (Drawer 10)</td></tr>
+      <tr><td>Memory</td><td>Stateless</td><td>Session-level, sometimes</td><td>Long-term across sessions (Drawer 11)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">Where this catalog's phases land</span>
+  In Drawer 22's roadmap terms: V1 is a chatbot, V2–V3 are an assistant, V4–V6 are an agent.
+  "Build me an agent" for a V1 problem is over-engineering; "build me a chatbot" for a V4
+  problem will visibly fail the first multi-step request.</div>
+
   <div class="card" style="text-align:center;padding:30px 24px">
     <p class="chant"><span>KNOW</span> · <span>THINK</span> · <span>DO</span> ·
       <span>DON'T</span> · <span>GROW</span> · <span>SHOW</span></p>
@@ -1047,7 +1079,7 @@
         <div class="nd-d"><p>The layer everyone skips and everyone regrets skipping. It
         runs on the way in <em>and</em> on the way out.</p>
         <p><strong>Nothing reaches the user without passing through here.</strong>
-        Drawer 12.</p></div>
+        Drawer 15.</p></div>
       </div>
       <div class="arw"><i>↓</i></div>
       <div class="nd">
@@ -1068,7 +1100,7 @@
         <div class="nd-d"><p>Thumbs up/down, evals, metrics, mining unresolved
         conversations for content gaps.</p>
         <p><strong>The arrow back up is not decoration.</strong> It's what turns a
-        60%-accurate bot into a 90%-accurate one over six months. Drawer 11.</p></div>
+        60%-accurate bot into a 90%-accurate one over six months. Drawer 14.</p></div>
       </div>
     </div>
     <figcaption>The six questions mapped onto the actual architecture</figcaption>
@@ -1210,7 +1242,7 @@
             </button>
             <div class="nd-d"><p>The step everyone skips. It loops back to step 1: bad
             answers tell you which documents to add, fix or re-chunk.</p>
-            <p><strong>This is the level 2 → 3 jump.</strong> Drawer 11.</p></div>
+            <p><strong>This is the level 2 → 3 jump.</strong> Drawer 14.</p></div>
           </div>
         </div>
       </div>
@@ -1226,7 +1258,7 @@
       <tr><td>3 · Chunk</td><td>Too small loses context; too big blurs meaning and matches nothing</td><td>512–1024 tokens, 50–100 overlap, split on real headings</td></tr>
       <tr><td>6 · Retrieve</td><td>Pure meaning-search misses exact codes; pure keyword misses paraphrases</td><td>Run both, fuse, rerank</td></tr>
       <tr><td>8 · Generate</td><td>Answers from general knowledge instead of the cards</td><td>"Only from context" + citations + an "I don't know" path</td></tr>
-      <tr><td>9 · Evaluate</td><td>Skipped entirely</td><td>Drawer 11. This is the level 2→3 jump.</td></tr>
+      <tr><td>9 · Evaluate</td><td>Skipped entirely</td><td>Drawer 14. This is the level 2→3 jump.</td></tr>
     </tbody>
   </table></div>
 
@@ -1283,7 +1315,7 @@
         <span class="nd-s">Keyword search only</span>
       </button>
       <div class="nd-d">
-        <p><strong>✓ Merit:</strong> zero new infrastructure — this is exactly Drawer 14's
+        <p><strong>✓ Merit:</strong> zero new infrastructure — this is exactly Drawer 18's
         Build day choice, and it's a legitimate architecture, not just a shortcut.</p>
         <p><strong>✗ Demerit:</strong> misses paraphrases entirely — "payment bounced" won't
         find "transaction declined," per the table above.</p>
@@ -1301,7 +1333,7 @@
   document changes) decide <em>when</em> to re-index. <strong>Versioning</strong> the index
   — never overwrite it in place — means a bad re-index is a rollback, not an outage.
   <strong>Staged re-index</strong> (build the new version alongside the old, swap once it
-  passes the eval set from Drawer 11) means nobody ever queries a half-rebuilt index.</div>
+  passes the eval set from Drawer 14) means nobody ever queries a half-rebuilt index.</div>
 
   <div class="keynote"><p>Hybrid search — keyword plus meaning, fused, then reranked — is
   the one recipe in this drawer worth memorizing above everything else.</p></div>
@@ -1486,6 +1518,49 @@
   new product" — is the single most common misuse. That's a RAG problem: add the document.
   Fine-tuning on it would be slower, more expensive, and wouldn't even reliably fix it, since
   training teaches patterns, not facts you can look up on demand.</div>
+
+  <h3>Not all RAG is the same RAG</h3>
+  <p>Everything earlier in this drawer describes the 2026 production baseline — hybrid
+  search plus reranking. That's the honest default, not the only shape RAG takes.
+  "When would you use Graph RAG over standard vector search?" is a real interview
+  question, and the honest answer names a specific limitation, not a trend.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Variant</th><th>What's actually different</th><th>Reach for it when</th></tr></thead>
+    <tbody>
+      <tr><td>Basic RAG</td><td>Single embedding search, no reranking, top-k straight into
+      the prompt</td><td>A prototype, or a corpus small enough that recall isn't the
+      bottleneck yet</td></tr>
+      <tr><td>Hybrid + rerank</td><td>This drawer's baseline — keyword and meaning search
+      fused, then reranked</td><td>The default for a production system, full stop</td></tr>
+      <tr><td>Parent-child (hierarchical)</td><td>Search matches on small, precise child
+      chunks, but the larger parent section gets sent to the model — precise matching,
+      full context</td><td>Chunks are too small to answer from alone, but embedding whole
+      documents made search too fuzzy</td></tr>
+      <tr><td>Graph RAG</td><td>Builds a knowledge graph of entities and relationships from
+      your documents; retrieves by traversing it, not by embedding similarity</td><td>
+      Questions about how things <em>relate</em> — "which vendors does this policy affect
+      that also touch this system" — which plain vector search answers badly because
+      relationships aren't what embeddings capture</td></tr>
+      <tr><td>Multi-hop RAG</td><td>The answer needs a chain of retrievals, each depending
+      on the last — find A, then use A to look up B</td><td>"What's the revenue of the
+      company that acquired our vendor?" — one retrieval can't answer it, two sequential
+      ones can</td></tr>
+      <tr><td>Agentic RAG</td><td>Retrieval becomes a decision the agent makes and
+      re-makes — it can decide to re-query with different terms, or that a tool call
+      (Drawer 09) is actually what's needed instead of a document</td><td>Drawer 10's
+      "select tools" and "retrieve" steps need to interleave rather than run once, fixed,
+      per turn</td></tr>
+      <tr><td>Adaptive RAG</td><td>Decides <em>whether</em> to retrieve at all, and how many
+      hops, based on the query's complexity</td><td>Your traffic mixes trivially simple
+      questions with genuinely complex ones, and paying multi-hop cost on every turn is
+      wasteful</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">The honest framing</span>
+  Every variant past "hybrid + rerank" solves one specific limitation, and costs
+  complexity to get there. Naming the limitation you're solving is the actual signal in an
+  interview — "we use Graph RAG" with no reason why sounds like buzzword collection, not
+  engineering judgment.</div>
 
   <div class="next" id="next-rag2"></div>
 </section>
@@ -1677,9 +1752,395 @@
   <div class="next" id="next-agents"></div>
 </section>
 
-<!-- ============ 10 CONTEXT ENGINEERING ============ -->
+<!-- ============ 10 AGENT LIFECYCLE ============ -->
+<section class="page" id="p-lifecycle" aria-labelledby="h-lifecycle">
+  <p class="eyebrow">Drawer 10 · Inside one agentic turn</p>
+  <h2 id="h-lifecycle">What happens between your question and its action</h2>
+  <p class="tldr"><b>TL;DR</b> Drawer 09 showed one tool call. A real agent turn is ten
+  steps: understand → plan → decompose → select tools → retrieve → reason → act →
+  validate → update memory → respond. This is what "how does an agent think?" is actually
+  asking about.</p>
+  <p class="lede">Two examples run through this drawer: a simple one-tool request
+  ("block my debit card") and a genuinely multi-step goal ("apply for a home loan") from
+  <b>Riverbank</b> — a second worked example alongside the Paytm IR bot, chosen because a
+  consumer-banking assistant needs planning and specialist hand-offs in a way a single
+  investor-relations bot doesn't.</p>
+
+  <div class="pipe" id="pipe10">
+    <p class="hint-row">Click a step — it'll dock up here so you can keep reading below</p>
+    <div class="pipe-steps" id="pipeSteps10">
+      <button type="button" class="pipe-step" data-step="1" aria-pressed="false"><span class="pipe-num">1</span><span class="pipe-t">Understand</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="2" aria-pressed="false"><span class="pipe-num">2</span><span class="pipe-t">Plan</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="3" aria-pressed="false"><span class="pipe-num">3</span><span class="pipe-t">Decompose</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-red" data-step="4" aria-pressed="false"><span class="pipe-num">4</span><span class="pipe-t">Select tools</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-teal" data-step="5" aria-pressed="false"><span class="pipe-num">5</span><span class="pipe-t">Retrieve</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="6" aria-pressed="false"><span class="pipe-num">6</span><span class="pipe-t">Reason</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-red" data-step="7" aria-pressed="false"><span class="pipe-num">7</span><span class="pipe-t">Act</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-red" data-step="8" aria-pressed="false"><span class="pipe-num">8</span><span class="pipe-t">Validate</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step" data-step="9" aria-pressed="false"><span class="pipe-num">9</span><span class="pipe-t">Update memory</span></button>
+      <span class="pipe-arw">→</span>
+      <button type="button" class="pipe-step pipe-gold" data-step="10" aria-pressed="false"><span class="pipe-num">10</span><span class="pipe-t">Respond</span></button>
+    </div>
+    <p class="pipe-caption">Teal = knowledge in · Gold = the answer · Red = where a wrong call actually costs you</p>
+
+    <p class="pipe-hint" id="pipeHint10">Click any step for what happens, the decision a PM
+    should be making there, and a worked example.</p>
+
+    <div class="pipe-panels" id="pipePanels10">
+      <div class="pipe-panel" data-step="1">
+        <p class="pipe-panel-t">1 · Understand — turn words into a structured request</p>
+        <p><strong>What happens:</strong> the system extracts intent ("dispute a
+        transaction," "block a card," "apply for a loan") and entities (amounts, dates,
+        account references) from the raw message. This is Drawer 10's "intent & context
+        engine" from the six-questions map, one level more detailed.</p>
+        <p><strong>The decision here:</strong> how much ambiguity do you tolerate before
+        asking a clarifying question? Too eager to ask, and every turn feels like an
+        interrogation. Too eager to guess, and you plan the wrong thing confidently.</p>
+        <p><strong>Example:</strong> "my card stopped working" is ambiguous — expired,
+        blocked for fraud, or physically damaged all read the same on the surface. A good
+        system asks one clarifying question here rather than guessing.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="2">
+        <p class="pipe-panel-t">2 · Plan — decide if this is one step or many</p>
+        <p><strong>What happens:</strong> the planner looks at the understood request and
+        decides whether it resolves in a single action or needs a sequence. "Block my
+        card" is one step. "Apply for a home loan" is not.</p>
+        <p><strong>The decision here:</strong> this is the step most teams skip, jumping
+        straight from understanding to acting — which works for simple requests and
+        quietly breaks for compound ones, because nothing decided what order things
+        happen in.</p>
+        <p><strong>Example:</strong> Riverbank's assistant recognises "apply for a home
+        loan" as a multi-step goal before it does anything else, rather than trying to
+        answer it in one shot.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="3">
+        <p class="pipe-panel-t">3 · Decompose — break the goal into ordered sub-tasks</p>
+        <p><strong>What happens:</strong> a multi-step goal gets split into an explicit,
+        ordered list. For the loan application: check eligibility → fetch income details
+        → verify KYC → collect documents → submit application → track status.</p>
+        <p><strong>The decision here:</strong> which sub-tasks can run in parallel versus
+        which must be sequential (you can't submit before KYC clears). Getting this wrong
+        either slows the agent down needlessly or submits incomplete applications.</p>
+        <p><strong>Example:</strong> checking eligibility and fetching income details can
+        happen at the same time; verifying KYC has to finish before submission.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="4">
+        <p class="pipe-panel-t">⚠ 4 · Select tools — match each sub-task to a capability</p>
+        <p><strong>What happens:</strong> for each sub-task, the system picks which tool,
+        API, or specialist agent handles it. This is where Drawer 12's multi-agent pattern
+        connects — a large sub-task list is exactly what makes a single agent start to
+        strain and a supervisor-plus-specialists design start to pay off.</p>
+        <p><strong>The decision here:</strong> a wrong tool match here is expensive
+        precisely because everything after it — retrieval, action, the user-facing answer
+        — inherits the mistake. See Drawer 09's rule: the description is the only thing
+        the model uses to decide, so vague tool descriptions cause wrong selections here.</p>
+        <p><strong>Example:</strong> "block my card" maps directly to a
+        <code>block_card</code> tool. "Check eligibility" maps to a rules-engine call, not
+        an LLM guess.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="5">
+        <p class="pipe-panel-t">5 · Retrieve — pull the knowledge or data each step needs</p>
+        <p><strong>What happens:</strong> whatever the selected tools need — policy
+        documents (RAG, Drawers 07–08), live account data, or eligibility rules — gets
+        fetched now, before reasoning starts.</p>
+        <p><strong>The decision here:</strong> retrieval failures here are silent — a
+        missing eligibility rule doesn't throw an error, it just means the next step
+        reasons from an incomplete picture.</p>
+        <p><strong>Example:</strong> fetching the current home-loan eligibility criteria
+        (income multiplier, credit score threshold) before deciding whether the customer
+        qualifies.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="6">
+        <p class="pipe-panel-t">6 · Reason — work through the sub-task with what was retrieved</p>
+        <p><strong>What happens:</strong> the model (or a rules engine, for anything that
+        must be deterministic) works out the actual answer for this sub-task: does this
+        income qualify, is this the right account, what's the next action.</p>
+        <p><strong>The decision here:</strong> not everything here should be an LLM call.
+        Eligibility math is a rules engine's job, not a language model's — reserve
+        reasoning for genuinely ambiguous judgment calls, and it becomes cheaper, faster,
+        and more auditable.</p>
+        <p><strong>Example:</strong> "is ₹85,000/month income enough for a ₹40L loan at
+        this bank's multiplier" is arithmetic, not reasoning — compute it, don't ask a
+        model to guess it.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="7">
+        <p class="pipe-panel-t">⚠ 7 · Act — actually call the tool</p>
+        <p><strong>What happens:</strong> the selected tool runs for real. This is
+        Drawer 09's entire "the model asks, your code decides" loop, now happening once
+        per sub-task instead of once per turn.</p>
+        <p><strong>The decision here:</strong> exactly Drawer 09's rule, repeated because
+        it matters more here — every state-changing action needs a permission check,
+        limit, or confirmation gate in code, not in a prompt. In a multi-step plan, that
+        means <em>every</em> sub-task with side effects, not just the final one.</p>
+        <p><strong>Example:</strong> blocking a card is irreversible without a manual
+        reissue — it gets a confirmation gate. Checking eligibility is read-only — it
+        doesn't.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="8">
+        <p class="pipe-panel-t">⚠ 8 · Validate — check the result before moving on</p>
+        <p><strong>What happens:</strong> did the action actually succeed? Common failure
+        modes: the tool timed out, no matching documents were found, retrieved documents
+        contradict each other, confidence is too low to act on, or a hallucinated result
+        slipped through reasoning.</p>
+        <p><strong>The decision here:</strong> for each failure mode, decide the response
+        in advance — <b>retry</b> (timeout), <b>ask a clarifying question</b> (ambiguous
+        intent), <b>escalate to a human</b> (low confidence on a high-stakes action), or
+        <b>fail safe and say so</b> (nothing found) — rather than pushing forward with a
+        guess. This is the difference between a system that degrades gracefully and one
+        that fails by lying confidently.</p>
+        <p><strong>Example:</strong> if the income-verification API times out mid loan
+        application, retry once, then tell the customer their application is paused and
+        why — never silently guess an income figure to keep going.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="9">
+        <p class="pipe-panel-t">9 · Update memory — record what just happened</p>
+        <p><strong>What happens:</strong> the outcome of this step gets written to
+        whichever memory it belongs in — conversation memory (what we just did), a
+        user-profile store (a stated preference), or a log (for evaluation later). Drawer
+        11 covers this in full.</p>
+        <p><strong>The decision here:</strong> deciding <em>what kind</em> of memory each
+        fact belongs in up front avoids the two failure modes of memory: forgetting things
+        that should persist, and dragging stale one-off details into every future
+        conversation.</p>
+        <p><strong>Example:</strong> "wants email over SMS" belongs in the user's
+        long-term profile; "asked about branch X's loan rate" belongs in this
+        conversation's memory only.</p>
+      </div>
+
+      <div class="pipe-panel" data-step="10">
+        <p class="pipe-panel-t">10 · Respond — hand back a plain-language answer</p>
+        <p><strong>What happens:</strong> the sub-task results get turned into one coherent
+        answer for the person, not a dump of tool outputs. For a multi-step goal, this
+        usually also includes what happens next.</p>
+        <p><strong>The decision here:</strong> for anything that isn't fully resolved yet
+        (a loan application awaiting document upload), the response has to say what state
+        it's in and what the customer still needs to do — an agent that goes quiet between
+        steps feels broken even when it's working correctly.</p>
+        <p><strong>Example:</strong> "Your card is blocked. A replacement ships in 5–7
+        days," not just "Done."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="keynote"><p>Notice steps 4, 7 and 8 are marked as the expensive ones to get
+  wrong. That's not a coincidence — they're exactly the three steps where the agent
+  touches the outside world (choosing a tool, calling it, checking what it did). Everything
+  else is internal reasoning you can afford to get slightly wrong and correct later; these
+  three you generally can't.</p></div>
+
+  <div class="next" id="next-lifecycle"></div>
+</section>
+
+<!-- ============ 11 MEMORY SYSTEMS ============ -->
+<section class="page" id="p-memory" aria-labelledby="h-memory">
+  <p class="eyebrow">Drawer 11 · What it remembers, and for how long</p>
+  <h2 id="h-memory">Four kinds of memory, and what breaks when you conflate them</h2>
+  <p class="tldr"><b>TL;DR</b> Short-term, long-term, episodic and semantic memory answer
+  different questions and live in different places. Treat them as one blob and you either
+  forget things that should persist, or drag stale one-off details into every future
+  conversation.</p>
+  <p class="lede">"How would your chatbot remember previous conversations?" is a favourite
+  interview question precisely because most candidates answer with one mechanism when the
+  honest answer needs four.</p>
+
+  <div class="six" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+    <div><b>SHORT-TERM</b><em>This conversation</em><small>Everything said in the current
+      session. Lives in the context window (Drawer 13). Gone when the session ends unless
+      something in it gets promoted to another memory type.</small></div>
+    <div><b>LONG-TERM</b><em>About this user</em><small>Stated preferences, account
+      details, communication style. Lives in a user-profile store, looked up at the start
+      of every new session — not re-derived from scratch each time.</small></div>
+    <div><b>EPISODIC</b><em>What happened before</em><small>A record of past interactions
+      — "last time, we discussed X." Lives in a conversation log, retrieved (RAG-style)
+      when a new question seems to reference an earlier one.</small></div>
+    <div><b>SEMANTIC</b><em>Facts learned over time</em><small>General knowledge the
+      system has accumulated and confirmed as reliable, distinct from a single user's
+      preferences. Lives in a knowledge base, updated deliberately, not on every turn.</small></div>
+  </div>
+
+  <h3>Where each one actually lives</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Type</th><th>Answers</th><th>Implemented as</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Short-term</td><td>"What did we just say?"</td><td>Context window / conversation
+      history passed in the prompt</td><td>"the second one" resolves because turn 1 is
+      still in context</td></tr>
+      <tr><td>Long-term</td><td>"Who is this person?"</td><td>A user-profile row in a
+      database, fetched at session start</td><td>"prefers email over SMS," "has a joint
+      account"</td></tr>
+      <tr><td>Episodic</td><td>"What happened last time?"</td><td>A searchable log of past
+      conversations, retrieved when relevant</td><td>"following up on the loan question
+      from last week"</td></tr>
+      <tr><td>Semantic</td><td>"What do we know, generally?"</td><td>The knowledge base
+      itself (Drawers 07–08) — not user-specific</td><td>current interest rates, policy
+      terms, product details</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="warn"><span class="tag">The failure mode of conflating these</span>
+  Treat everything as short-term and the assistant forgets a stated preference the moment
+  the session ends. Treat everything as long-term and a one-off detail from a single
+  conversation ("I'm asking on behalf of my father today") permanently pollutes every
+  future turn with that user. <strong>Decide which bucket a fact belongs in when it's
+  learned, not after something has already gone wrong.</strong></div>
+
+  <div class="keynote"><p>Memory update is step 9 of Drawer 10's lifecycle for a reason —
+  it's not automatic. Something has to decide, on every turn, which of these four buckets
+  (if any) a given fact belongs in.</p></div>
+
+  <div class="next" id="next-memory"></div>
+</section>
+
+<!-- ============ 12 MULTI-AGENT ARCHITECTURE ============ -->
+<section class="page" id="p-multiagent" aria-labelledby="h-multiagent">
+  <p class="eyebrow">Drawer 12 · When one agent stops being enough</p>
+  <h2 id="h-multiagent">Supervisor and specialists, not one agent doing everything</h2>
+  <p class="tldr"><b>TL;DR</b> One agent with fifteen tools becomes hard to prompt, test
+  and reason about. Splitting into a supervisor plus focused specialist agents trades that
+  complexity for coordination overhead — worth it past a real threshold, a premature
+  complication before it.</p>
+  <p class="lede">Riverbank's assistant (Drawer 10) started as one agent. Add card
+  services, loans, payments, KYC and fraud checks to that same agent's tool list, and it
+  starts picking the wrong tool more often, and every prompt change risks every
+  capability at once. This is the point where a second architecture becomes worth the
+  cost.</p>
+
+  <figure class="plate">
+    <p class="hint-row">Click a specialist to see what it owns</p>
+    <div class="lane col">
+      <div class="nd">
+        <button type="button" class="nd-h" aria-expanded="false">
+          <span class="nd-t">Supervisor agent</span>
+          <span class="nd-s">Understands the request, routes to a specialist, merges the answer</span>
+        </button>
+        <div class="nd-d"><p>Runs Drawer 10's understand → plan → decompose steps, then
+        hands each sub-task to whichever specialist owns it — it doesn't do the
+        specialist work itself.</p></div>
+      </div>
+      <div class="arw"><i>↓</i><em>routes each sub-task to one specialist</em></div>
+      <div class="lane">
+        <div class="nd t-teal">
+          <button type="button" class="nd-h" aria-expanded="false">
+            <span class="nd-t">Loan agent</span>
+            <span class="nd-s">Eligibility, applications, tracking</span>
+          </button>
+          <div class="nd-d"><p>Owns the entire home-loan sub-task chain from Drawer 10:
+          eligibility, income verification, document collection, status tracking.</p></div>
+        </div>
+        <div class="nd t-red">
+          <button type="button" class="nd-h" aria-expanded="false">
+            <span class="nd-t">Card agent</span>
+            <span class="nd-s">Block, reissue, dispute</span>
+          </button>
+          <div class="nd-d"><p>Owns every card-changing action — and every one of them
+          needs Drawer 10 step 7's confirmation gate before it runs.</p></div>
+        </div>
+        <div class="nd">
+          <button type="button" class="nd-h" aria-expanded="false">
+            <span class="nd-t">Payments agent</span>
+            <span class="nd-s">Transfers, standing instructions</span>
+          </button>
+          <div class="nd-d"><p>Owns money movement — the highest-stakes category, and
+          usually the one with the strictest confirmation and limit rules.</p></div>
+        </div>
+        <div class="nd">
+          <button type="button" class="nd-h" aria-expanded="false">
+            <span class="nd-t">KYC agent</span>
+            <span class="nd-s">Identity verification</span>
+          </button>
+          <div class="nd-d"><p>Owns document checks and identity confirmation — a
+          prerequisite gate other specialists (Loan, Payments) call into rather than
+          re-implement themselves.</p></div>
+        </div>
+        <div class="nd t-red">
+          <button type="button" class="nd-h" aria-expanded="false">
+            <span class="nd-t">Fraud agent</span>
+            <span class="nd-s">Risk scoring, holds</span>
+          </button>
+          <div class="nd-d"><p>Can override any other specialist's action — a fraud hold
+          on a payment beats the payments agent's own approval. This ordering has to be
+          explicit, not assumed.</p></div>
+        </div>
+      </div>
+      <div class="arw"><i>↓</i></div>
+      <div class="nd t-gold">
+        <button type="button" class="nd-h" aria-expanded="false">
+          <span class="nd-t">Unified response</span>
+          <span class="nd-s">One coherent answer, not five tool outputs stitched together</span>
+        </button>
+        <div class="nd-d"><p>The supervisor merges whatever the specialists returned into
+        Drawer 10 step 10's single plain-language answer. The customer never sees that
+        five agents were involved.</p></div>
+      </div>
+    </div>
+    <figcaption>Teal = knowledge-heavy specialist · Red = needs its own confirmation gates · Gold = the merge point</figcaption>
+  </figure>
+
+  <h3>Single agent vs. multi-agent — this is a real trade-off, not an upgrade</h3>
+  <div class="dg">
+    <div class="nd dg-def">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">One agent, many tools</span>
+        <span class="nd-s">Drawer 09's pattern — the honest default</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> one prompt, one place to debug, no coordination
+        overhead or inter-agent latency. Simpler to reason about, test and ship.</p>
+        <p><strong>✗ Demerit:</strong> tool selection accuracy degrades as the tool list
+        grows — the model has to correctly distinguish a lot of similar-sounding
+        capabilities at once.</p>
+        <p><strong>Pick this when:</strong> you have a handful of tools and one team
+        owns all of them. Most chatbots never outgrow this. Start here, always.</p>
+      </div>
+    </div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">Supervisor + specialists</span>
+        <span class="nd-s">This drawer's pattern</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> each specialist has a small, focused prompt that's
+        easier to get right and easier to test in isolation; different teams can own
+        different specialists without stepping on each other.</p>
+        <p><strong>✗ Demerit:</strong> every hand-off between agents adds latency and a
+        new failure mode (the supervisor routes to the wrong specialist, or two
+        specialists disagree — see the Fraud-agent override above). More moving parts to
+        monitor.</p>
+        <p><strong>Pick this when:</strong> you have enough tools that one prompt can't
+        hold them well, or genuinely separate teams need to own separate capabilities
+        independently.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="keynote"><p>Multi-agent is a scaling response to a measured problem
+  (tool-selection accuracy dropping, or an org that needs independent ownership), not a
+  more impressive-sounding default. Building it before Drawer 09's single-agent pattern
+  has actually strained is Drawer 15's Trap 5 — building for scale before you're
+  accurate.</p></div>
+
+  <div class="next" id="next-multiagent"></div>
+</section>
+
+<!-- ============ 13 CONTEXT ENGINEERING ============ -->
 <section class="page" id="p-ctx" aria-labelledby="h-ctx">
-  <p class="eyebrow">Drawer 10 · Attention</p>
+  <p class="eyebrow">Drawer 13 · Attention</p>
   <h2 id="h-ctx">Context engineering</h2>
   <p class="tldr"><b>TL;DR</b> More context isn't free — "context rot" means recall gets
   worse as the window fills, so the job is curating what's in there, not maximizing it.</p>
@@ -1705,7 +2166,7 @@
       tags or a clear delimiter (<code>&lt;context&gt;...&lt;/context&gt;</code>) around
       retrieved passages, so the model — and the next engineer reading the prompt — can tell
       at a glance what's a rule and what's untrusted content. This is the same "data, never
-      instructions" boundary from Drawer 13's Assemble step, one level more concrete.</li>
+      instructions" boundary from Drawer 16's Assemble step, one level more concrete.</li>
       <li><strong>Asks for reasoning before the answer, on genuinely hard questions.</strong>
       "Think step by step before you answer" (chain-of-thought) measurably helps on
       multi-step reasoning — but costs extra tokens and latency, so it's a tool for the
@@ -1848,9 +2309,9 @@
   <div class="next" id="next-ctx"></div>
 </section>
 
-<!-- ============ 11 EVALUATION ============ -->
+<!-- ============ 14 EVALUATION ============ -->
 <section class="page" id="p-eval" aria-labelledby="h-eval">
-  <p class="eyebrow">Drawer 11 · Proof</p>
+  <p class="eyebrow">Drawer 14 · Proof</p>
   <h2 id="h-eval">Evaluation — the level 2 to 3 jump</h2>
   <p class="tldr"><b>TL;DR</b> "Before optimising anything, build a golden set of about a
   hundred questions and measure retrieval and generation separately" — say this unprompted,
@@ -1958,11 +2419,20 @@
       <tr><td rowspan="3">Generation</td><td><strong>Groundedness / faithfulness</strong></td><td>Is every claim supported by a fetched card?</td></tr>
       <tr><td>Answer relevance</td><td>Did it actually answer the question asked?</td></tr>
       <tr><td>Refusal accuracy</td><td>Did it say "I don't know" exactly when it should?</td></tr>
-      <tr><td rowspan="3">Business</td><td><strong>Containment</strong></td><td>Share resolved without a human. Usually what leadership cares about.</td></tr>
+      <tr><td rowspan="4">Product</td><td><strong>Containment</strong></td><td>Share resolved without a human. Usually what leadership cares about first.</td></tr>
       <tr><td>CSAT</td><td>Did the user feel helped?</td></tr>
-      <tr><td>Cost / conversation</td><td>Is it worth running?</td></tr>
+      <tr><td>Resolution rate</td><td>Of the people who asked, how many got a real answer — not "was it grounded," but "did it actually solve their problem"?</td></tr>
+      <tr><td>Task completion</td><td>For a multi-step goal (Drawer 10), did the whole sequence finish, not just one step of it?</td></tr>
+      <tr><td rowspan="3">Business</td><td>Cost / conversation</td><td>Is it worth running, at your actual volume?</td></tr>
+      <tr><td>Cost reduction vs. status quo</td><td>What did the human process this replaces or augments actually cost — the number that justifies the project to begin with.</td></tr>
+      <tr><td>Revenue impact / NPS</td><td>Did it change whether people buy more, churn less, or recommend you — the metric that gets a roadmap phase (Drawer 22) funded past a pilot.</td></tr>
     </tbody>
   </table></div>
+  <div class="note"><span class="tag">Why the split matters</span>
+  Retrieval and generation metrics tell you the system works. Product metrics tell you
+  people actually used it successfully. Business metrics tell you it was worth building.
+  A demo can pass all the retrieval metrics and still fail on all three — measure all
+  four layers, not just the one that's easiest to compute.</div>
 
   <h3>LLM-as-judge — useful, and easy to get wrong</h3>
   <p>Grading 100 answers by hand every time is impossible, so you use a model to grade
@@ -2009,7 +2479,7 @@
       it's supposed to block.</li>
       <li><strong>Red-teaming as a standing practice, not a one-time audit</strong> — a
       recurring exercise (weekly or monthly, not "before launch and never again") where
-      someone actively tries the prompt-injection and jailbreak patterns from Drawer 12
+      someone actively tries the prompt-injection and jailbreak patterns from Drawer 15
       against the current, live prompt. Prompts drift as they get edited; an attack that
       failed in March can start working again after an unrelated June change.</li>
     </ul>
@@ -2025,9 +2495,9 @@
 
   <div class="next" id="next-eval"></div>
 </section>
-<!-- ============ 12 SAFETY ============ -->
+<!-- ============ 15 SAFETY ============ -->
 <section class="page" id="p-safe" aria-labelledby="h-safe">
-  <p class="eyebrow">Drawer 12 · What goes wrong</p>
+  <p class="eyebrow">Drawer 15 · What goes wrong</p>
   <h2 id="h-safe">The five traps and the ten risks</h2>
   <p class="tldr"><b>TL;DR</b> Enforcement lives in your code, never in a prompt — a prompt
   is a request the model can be talked out of; code is not.</p>
@@ -2183,6 +2653,32 @@
   default? Both are one-line questions to their sales team and a multi-month problem to fix
   after the fact if the answer turns out to be no.</div>
 
+  <h3>Beyond GDPR: audit trails and industry-specific rules</h3>
+  <p>GDPR/DPDP cover personal data generally. A finance or health chatbot — like Drawer 10's
+  Riverbank example, or Drawer 18's Paytm IR bot — answers to a second, stricter layer on
+  top of that.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Requirement</th><th>What it actually means for the bot</th></tr></thead>
+    <tbody>
+      <tr><td>Audit trail</td><td>Every action a bot takes (Drawer 10 step 7) needs a
+      permanent, tamper-evident record of what was done, when, and under whose
+      authorization — not just an application log you could edit. This is what Drawer 21's
+      logging has to satisfy, not just debugging convenience.</td></tr>
+      <tr><td>SOC 2</td><td>An independent audit of your security controls (access,
+      encryption, monitoring) that enterprise customers increasingly require before
+      they'll let your bot touch their data at all — a sales gate as much as a technical
+      one.</td></tr>
+      <tr><td>Sector-specific rules (e.g. RBI for Indian financial data)</td><td>Regulators
+      like the RBI impose rules on top of general privacy law — data localization
+      requirements stricter than GDPR's, specific consent language, mandatory incident
+      reporting timelines. These are jurisdiction- and sector-specific; check with legal
+      before assuming GDPR compliance is sufficient.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warn"><span class="tag">The trap this catches</span>
+  "We're GDPR compliant" is not the same claim as "we meet this industry's regulator's
+  rules." Treat them as two separate checklists, because a regulator will.</div>
+
   <h3>Content moderation: a filter, not a prompt instruction</h3>
   <p>Drawer 09's rule — checks live in code, not in a request the model can be talked out
   of — applies to what goes <em>in</em> as much as what tools get called. A dedicated
@@ -2200,7 +2696,7 @@
   <div class="warn"><span class="tag">Moderate both directions</span>
   The incoming message <em>and</em> the generated answer — a clean question can still
   produce a bad answer if retrieval hands back a bad passage. This is the input-side half
-  of Drawer 13 step 7's output check; run both, they catch different things.</div>
+  of Drawer 16 step 7's output check; run both, they catch different things.</div>
 
   <div class="keynote"><p>Every trap on this page shares one fix: move the rule out of the
   prompt and into code that runs whether or not the model "agrees" with it.</p></div>
@@ -2208,15 +2704,15 @@
   <div class="next" id="next-safe"></div>
 </section>
 
-<!-- ============ 13 THE COMPLETE PIPELINE ============ -->
+<!-- ============ 16 THE COMPLETE PIPELINE ============ -->
 <section class="page" id="p-flow" aria-labelledby="h-flow">
-  <p class="eyebrow">Drawer 13 · Putting it together</p>
+  <p class="eyebrow">Drawer 16 · Putting it together</p>
   <h2 id="h-flow">One question, start to finish</h2>
   <p class="tldr"><b>TL;DR</b> Nine steps, one question: understand → route → retrieve →
   act → assemble → generate → check → deliver → evaluate, then loop back.</p>
-  <p class="lede">Drawers 07–12 taught each piece on its own. This is the same system read
+  <p class="lede">Drawers 07–15 taught each piece on its own. This is the same system read
   the other way: one question, walking through all nine steps in the order they actually
-  fire, before you go and build one in Drawer 14.</p>
+  fire, before you go and build one in Drawer 18.</p>
 
   <div class="pipe" id="pipe13">
     <p class="hint-row">Click a step — it'll dock up here so you can keep reading below</p>
@@ -2317,7 +2813,7 @@
       </div>
 
       <div class="pipe-panel" data-step="5">
-        <p class="pipe-panel-t">5 · Assemble — Rules + cards + tool results + history + question — Drawer 10</p>
+        <p class="pipe-panel-t">5 · Assemble — Rules + cards + tool results + history + question — Drawer 13</p>
         <p><strong>What's happening:</strong> Everything gathered so far is arranged into
         one prompt, in an order that matters: stable instructions first, so they can be
         cached and reused cheaply, then the specific material that changes every time.</p>
@@ -2329,7 +2825,7 @@
         <p><strong>Trade-off:</strong> ✓ good ordering cuts cost noticeably at scale · ✗
         getting the labelling wrong is exactly how prompt injection succeeds.</p>
         <p><strong>Watch for:</strong> mark retrieved passages and tool results clearly as
-        data, never as instructions — see the prompt-injection entry in Drawer 12.</p>
+        data, never as instructions — see the prompt-injection entry in Drawer 15.</p>
       </div>
 
       <div class="pipe-panel" data-step="6">
@@ -2349,7 +2845,7 @@
       </div>
 
       <div class="pipe-panel" data-step="7">
-        <p class="pipe-panel-t">⚠ 7 · Check — The gate before anything reaches the user — Drawer 12</p>
+        <p class="pipe-panel-t">⚠ 7 · Check — The gate before anything reaches the user — Drawer 15</p>
         <p><strong>What's happening:</strong> Before delivery, the generated answer is
         checked against policy — did it leak something it shouldn't, does every claim trace
         back to a real citation, did an action actually get confirmed.</p>
@@ -2383,7 +2879,7 @@
       </div>
 
       <div class="pipe-panel" data-step="9">
-        <p class="pipe-panel-t">↺ 9 · Evaluate — Scores, gaps, and what to fix next — Drawer 11 — loops back to 1 &amp; 3</p>
+        <p class="pipe-panel-t">↺ 9 · Evaluate — Scores, gaps, and what to fix next — Drawer 14 — loops back to 1 &amp; 3</p>
         <p><strong>What's happening:</strong> Logged turns get scored — automatically, by a
         human, or both — against test questions written before you started. Bad answers
         get traced back to a cause: missing document, bad chunk, weak retrieval, wrong
@@ -2397,7 +2893,7 @@
         <p><strong>Trade-off:</strong> ✓ the difference between a demo and a system that
         actually improves · ✗ it's the step almost everyone skips, because it doesn't show
         up as a visible feature.</p>
-        <p><strong>Watch for:</strong> this is the level 2 → 3 jump from Drawer 11 — write
+        <p><strong>Watch for:</strong> this is the level 2 → 3 jump from Drawer 14 — write
         your test questions first, or you'll be tuning by feel.</p>
       </div>
     </div>
@@ -2407,12 +2903,12 @@
   <div class="tw"><table>
     <thead><tr><th>Step</th><th>Go deeper in</th></tr></thead>
     <tbody>
-      <tr><td>1 · Understand</td><td>Drawer 12 — the safety checks it's running</td></tr>
+      <tr><td>1 · Understand</td><td>Drawer 15 — the safety checks it's running</td></tr>
       <tr><td>3 · Retrieve</td><td>Drawers 07–08 — how the index is built and searched</td></tr>
       <tr><td>4 · Act</td><td>Drawer 09 — tools, agents and MCP</td></tr>
-      <tr><td>5 · Assemble</td><td>Drawer 10 — context engineering</td></tr>
-      <tr><td>7 · Check</td><td>Drawer 12 — traps and security, output side</td></tr>
-      <tr><td>9 · Evaluate</td><td>Drawer 11 — proof, and the level 2→3 jump</td></tr>
+      <tr><td>5 · Assemble</td><td>Drawer 13 — context engineering</td></tr>
+      <tr><td>7 · Check</td><td>Drawer 15 — traps and security, output side</td></tr>
+      <tr><td>9 · Evaluate</td><td>Drawer 14 — proof, and the level 2→3 jump</td></tr>
     </tbody>
   </table></div>
 
@@ -2423,12 +2919,116 @@
   <div class="next" id="next-flow"></div>
 </section>
 
-<!-- ============ 14 BUILD DAY ============ -->
+<!-- ============ 17 CHOOSING YOUR STACK ============ -->
+<section class="page" id="p-stack" aria-labelledby="h-stack">
+  <p class="eyebrow">Drawer 17 · Build vs. buy, model vs. model</p>
+  <h2 id="h-stack">Choosing your stack</h2>
+  <p class="tldr"><b>TL;DR</b> A framework buys you speed at the cost of a layer you don't
+  control; the raw SDK buys you control at the cost of writing more yourself. Model choice
+  is a similar trade along cost, latency, context window and reasoning depth — there is no
+  universally-correct pick, only the one that fits your constraints.</p>
+  <p class="lede">Build day (Drawer 18) uses the raw Claude SDK with no framework. That was
+  a deliberate choice, not the only option — here's the actual landscape it was chosen
+  from, because "why not LangChain?" is a real interview question.</p>
+
+  <h3>The framework landscape</h3>
+  <div class="dg">
+    <div class="nd dg-def">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">Raw SDK</span>
+        <span class="nd-s">Direct calls to the model provider's API — this catalog's choice</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> nothing between you and the model's actual behaviour.
+        Every retry, every prompt, every tool-call loop is code you wrote and can read.
+        No framework version to track, no abstraction leaking unexpected behaviour.</p>
+        <p><strong>✗ Demerit:</strong> you write the tool-call loop, streaming handling,
+        and retrieval plumbing yourself — every framework listed below gives you some of
+        this for free.</p>
+        <p><strong>Pick this when:</strong> you're learning how the pieces actually work
+        (this catalog's reason), or your use case doesn't match a framework's assumptions
+        closely enough to be worth fighting it.</p>
+      </div>
+    </div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">Orchestration frameworks</span>
+        <span class="nd-s">LangChain, LlamaIndex</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> pre-built chunking, retrieval, and chaining patterns
+        — genuinely faster to a working prototype, and LlamaIndex in particular has strong
+        defaults for RAG specifically.</p>
+        <p><strong>✗ Demerit:</strong> abstraction layers that hide what's actually being
+        sent to the model, which makes debugging a bad answer harder, not easier; version
+        churn has been a real, repeated complaint from teams that adopted early.</p>
+        <p><strong>Pick this when:</strong> you need a working prototype fast and are
+        willing to trade some debuggability for speed, especially for standard RAG.</p>
+      </div>
+    </div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">Agent frameworks</span>
+        <span class="nd-s">CrewAI, Semantic Kernel, AutoGen-style multi-agent tooling</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> built-in patterns for exactly Drawer 12's
+        supervisor-plus-specialists architecture — role definitions, hand-off protocols,
+        shared memory — without writing the coordination layer from scratch.</p>
+        <p><strong>✗ Demerit:</strong> you inherit that framework's opinion of what a
+        multi-agent system should look like, which may not match yours; newer and less
+        battle-tested than the orchestration frameworks above.</p>
+        <p><strong>Pick this when:</strong> you're building a genuinely multi-agent system
+        (Drawer 12) and want the coordination scaffolding rather than writing it yourself.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Choosing a model provider</h3>
+  <p>Prices and benchmark scores change every few months — treat any number you memorise
+  today as stale within a quarter. What doesn't change as fast is the <em>shape</em> of the
+  trade-off:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Dimension</th><th>What to actually check, not assume</th></tr></thead>
+    <tbody>
+      <tr><td>Cost</td><td>Per-token price varies by model tier within a provider more
+      than it varies across providers — check whether a cheaper, smaller model in the
+      <em>same</em> family solves your task before comparing across providers.</td></tr>
+      <tr><td>Latency</td><td>Smaller/faster model tiers exist specifically for
+      latency-sensitive steps (Drawer 10's "reason" step on a simple sub-task) — reserve
+      your largest model for the steps that actually need deep reasoning.</td></tr>
+      <tr><td>Context window</td><td>A bigger window doesn't remove the need for retrieval
+      — see Drawer 13's context rot. Check the window size you need, not the largest one
+      advertised.</td></tr>
+      <tr><td>Open-weight vs. proprietary</td><td>Open-weight models (Llama, Mistral and
+      similar) can be self-hosted — relevant if data residency (Drawer 15) forbids sending
+      data to a third-party API at all, which is a real constraint for regulated
+      finance/health data, not a hypothetical one.</td></tr>
+      <tr><td>Tool-use reliability</td><td>Not every model is equally reliable at Drawer
+      09's "ask, don't act" tool-call pattern — this is worth an actual eval (Drawer 14),
+      not a leaderboard score, before you commit.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="note"><span class="tag">The build-vs-buy question, answered honestly</span>
+  There's no universally right pick on either axis. The right question isn't "which
+  framework/model is best" — it's "which constraint (speed to prototype, debuggability,
+  data residency, cost at your actual volume) matters most for what I'm building,
+  right now."</div>
+
+  <div class="keynote"><p>Every framework and every model provider will tell you their
+  default is the right one. The honest position in an interview is naming the specific
+  trade-off you're making and why — not defending a single tool as universally correct.</p></div>
+
+  <div class="next" id="next-stack"></div>
+</section>
+
+<!-- ============ 18 BUILD DAY ============ -->
 <section class="page" id="p-build" aria-labelledby="h-build">
-  <p class="eyebrow">Drawer 14 · Doing it</p>
+  <p class="eyebrow">Drawer 18 · Doing it</p>
   <h2 id="h-build">One day, one working bot</h2>
   <p class="tldr"><b>TL;DR</b> Keyword search, no vector database, one file of Python — a
-  legitimate architecture for day one, not just a shortcut. Drawers 15–17 pick up from
+  legitimate architecture for day one, not just a shortcut. Drawers 19–21 pick up from
   here.</p>
   <p class="lede">A Paytm investor-relations agent, hour by hour. You direct; Claude Code
   writes. Your job is to read the output and judge whether it looks right — which is
@@ -2513,21 +3113,21 @@
 
   <div class="keynote"><p>A working prototype in one day is a real, legitimate milestone —
   and, by design, the least defended version of this bot you will ever ship. Drawers
-  15–17 are what closes that gap.</p></div>
+  19–21 are what closes that gap.</p></div>
 
   <div class="next" id="next-build"></div>
 </section>
 
-<!-- ============ 15 FRONTEND ============ -->
+<!-- ============ 19 FRONTEND ============ -->
 <section class="page" id="p-front" aria-labelledby="h-front">
-  <p class="eyebrow">Drawer 15 · What the user actually touches</p>
+  <p class="eyebrow">Drawer 19 · What the user actually touches</p>
   <h2 id="h-front">The frontend</h2>
   <p class="tldr"><b>TL;DR</b> A backend that's 100% correct still feels broken if the
   screen sits blank for four seconds, hides an error, or traps a keyboard user. The
   frontend is not decoration — it's where trust is actually won or lost.</p>
   <p class="lede">Build day gets you a bot that answers correctly. It does not yet get you
   a bot that <em>feels</em> trustworthy. Picture Riva, Riverstone Bank's support bot from
-  Drawer 06 — the backend from Drawers 07–13 is solid, the answers are grounded and cited.
+  Drawer 06 — the backend from Drawers 07–16 is solid, the answers are grounded and cited.
   Month two is entirely about the screen between Riva and the person asking.</p>
 
   <h3>Rendering the answer as it arrives <span class="bf">🖥 Frontend</span></h3>
@@ -2558,7 +3158,7 @@
       </button>
       <div class="nd-d">
         <p><strong>Mechanism:</strong> the server pushes each token as it's generated
-        (over SSE — see Drawer 16); the client appends it to the message as it arrives.</p>
+        (over SSE — see Drawer 20); the client appends it to the message as it arrives.</p>
         <p><strong>✓ Merit:</strong> the perceived wait drops to almost nothing, even though
         the total generation time is identical.</p>
         <p><strong>✗ Demerit:</strong> you don't have the full answer until the very end, so
@@ -2678,9 +3278,9 @@
   <div class="next" id="next-front"></div>
 </section>
 
-<!-- ============ 16 SHIPPING IT ============ -->
+<!-- ============ 20 SHIPPING IT ============ -->
 <section class="page" id="p-ship" aria-labelledby="h-ship">
-  <p class="eyebrow">Drawer 16 · Infra, deployment &amp; who's allowed to ask</p>
+  <p class="eyebrow">Drawer 20 · Infra, deployment &amp; who's allowed to ask</p>
   <h2 id="h-ship">Shipping it</h2>
   <p class="tldr"><b>TL;DR</b> Three decisions age badly if made by accident instead of on
   purpose: how the frontend talks to the backend, how a prompt change reaches real users,
@@ -2691,7 +3291,7 @@
   web product answers, asked here for a chatbot specifically.</p>
 
   <h3>How the frontend actually talks to the backend <span class="bf">⚙ Backend</span></h3>
-  <p>Drawer 15's streaming render has to arrive over <em>something</em>. This is the
+  <p>Drawer 19's streaming render has to arrive over <em>something</em>. This is the
   decision that determines whether streaming is even possible.</p>
   <div class="dg">
     <div class="nd">
@@ -2705,7 +3305,7 @@
         <p><strong>✓ Merit:</strong> the simplest possible infrastructure — works with every
         load balancer, proxy and caching layer without special handling.</p>
         <p><strong>✗ Demerit:</strong> no partial output. It structurally can't support
-        Drawer 15's token-by-token render.</p>
+        Drawer 19's token-by-token render.</p>
         <p><strong>Pick this when:</strong> you genuinely don't need streaming — an
         internal tool, a report generator.</p>
       </div>
@@ -2734,7 +3334,7 @@
       <div class="nd-d">
         <p><strong>Mechanism:</strong> one request, but the server keeps the response open
         and writes to it incrementally — plain HTTP the whole way, no protocol upgrade.</p>
-        <p><strong>✓ Merit:</strong> exactly enough to power Drawer 15's streaming render,
+        <p><strong>✓ Merit:</strong> exactly enough to power Drawer 19's streaming render,
         while still working with ordinary HTTP infrastructure.</p>
         <p><strong>✗ Demerit:</strong> one-way only. Fine for streaming an answer back;
         wrong tool if the server needs to push unrelated events.</p>
@@ -2765,7 +3365,7 @@
           <span class="nd-s">5–10% of real traffic</span>
         </button>
         <div class="nd-d"><p>Real users, small blast radius. Watch the eval metrics from
-        Drawer 11 on this slice specifically before touching the rest.</p></div>
+        Drawer 14 on this slice specifically before touching the rest.</p></div>
       </div>
       <div class="arw"><i>↓</i></div>
       <div class="nd">
@@ -2802,7 +3402,7 @@
 
   <h3>Build your stack</h3>
   <p>Four questions. No wrong answers — just trade-offs sized to what you're actually
-  building. This mirrors Drawer 20's retrieval lab: nothing here calls a real server, it's
+  building. This mirrors Drawer 25's retrieval lab: nothing here calls a real server, it's
   the reasoning made clickable.</p>
   <div class="lab" id="stackCfg">
     <div class="lab-box">
@@ -2851,15 +3451,15 @@
   <div class="next" id="next-ship"></div>
 </section>
 
-<!-- ============ 17 RUNNING IT ============ -->
+<!-- ============ 21 RUNNING IT ============ -->
 <section class="page" id="p-ops" aria-labelledby="h-ops">
-  <p class="eyebrow">Drawer 17 · Cost, observability &amp; abuse prevention</p>
+  <p class="eyebrow">Drawer 21 · Cost, observability &amp; abuse prevention</p>
   <h2 id="h-ops">Running it</h2>
   <p class="tldr"><b>TL;DR</b> A model API bill that quietly triples is invisible until the
   invoice arrives. A dashboard, a trace ID, and a hard spending cap are the cheapest
   insurance a chatbot ever buys, and all three are easy to add on day one and painful to
   bolt on after an incident.</p>
-  <p class="lede">Riva is live, shipped per Drawer 16, and being used. Now someone has to
+  <p class="lede">Riva is live, shipped per Drawer 20, and being used. Now someone has to
   answer three questions every week: what is this costing us, why was that one answer slow,
   and is anyone abusing it right now.</p>
 
@@ -2889,7 +3489,7 @@
       <div class="nd-d">
         <p><strong>Mechanism:</strong> the unchanging prefix — system instructions, tool
         definitions, often the retrieved documents — gets cached by the model provider;
-        only the new question is billed at full price (this is why Drawer 13's "Assemble"
+        only the new question is billed at full price (this is why Drawer 16's "Assemble"
         step puts stable content first).</p>
         <p><strong>✓ Merit:</strong> a large, real cost cut on the repeated portion, with
         zero quality trade-off — you're not changing what the model sees, just what you pay
@@ -2923,7 +3523,7 @@
   <h3>Watching a request travel through your system <span class="bf">⚙ Backend</span></h3>
   <p>When someone reports "the bot was slow" or "the bot said something wrong," you need to
   answer <em>where</em> — not just that it happened. That means one trace ID that follows a
-  single request through every step of Drawer 13's pipeline.</p>
+  single request through every step of Drawer 16's pipeline.</p>
   <div class="card">
     <p class="card-label">A trace worth having</p>
     <pre><code>trace_id: 8f2a1c
@@ -2984,7 +3584,7 @@ total: 2687ms</code></pre>
         launch — can trip it too. It needs a human-reviewable override, not a hard kill that
         pages no one.</p>
         <p><strong>Pick this when:</strong> always, as the last line of defense — this is
-        Drawer 13's "your code decides" rule applied to your budget, not just your tools.</p>
+        Drawer 16's "your code decides" rule applied to your budget, not just your tools.</p>
       </div>
     </div>
   </div>
@@ -2992,6 +3592,79 @@ total: 2687ms</code></pre>
   These three catch different attackers. Per-user limits stop a chatty individual. Per-IP
   limits stop a dumb script. The circuit breaker stops everything else, including a bug in
   your own retry logic quietly calling the model in a loop.</div>
+
+  <h3>Routing by complexity, not just caching <span class="bf">⚙ Backend</span></h3>
+  <p>Caching cuts the cost of repeated content. It does nothing for the cost of using your
+  biggest model on a question a much smaller one could answer just as well.</p>
+  <ul>
+    <li><strong>Classify before you generate:</strong> a cheap, fast model (or even a
+    simple classifier) sorts incoming questions by complexity before the real work
+    starts — this is Drawer 10 step 1's "understand" doing double duty.</li>
+    <li><strong>Route simple questions to a smaller model.</strong> "What are your hours"
+    doesn't need the same model as a multi-step loan-eligibility decision.</li>
+    <li><strong>Escalate to a larger model only when the smaller one is uncertain</strong>
+    — measured by its own confidence, or by failing your eval (Drawer 14) on that
+    question type — not as the default for everything.</li>
+  </ul>
+  <div class="note"><span class="tag">Why this is a product decision, not just an engineering one</span>
+  Model routing directly trades a small quality risk on the boundary cases for a real
+  cost reduction across all the simple ones — which is exactly the number Drawer 14's
+  "cost reduction vs. status quo" metric is asking for. Someone has to decide where that
+  boundary sits, and that's a product call, not purely a technical one.</div>
+
+  <h3>When it breaks: incident response <span class="bf">⚙ Backend</span></h3>
+  <p>Drawer 10 step 8 covers what the <em>system</em> does when one request fails.
+  This is what <em>your team</em> does when something's been failing for twenty minutes
+  and customers have noticed.</p>
+  <div class="card">
+    <p class="card-label">The minimum viable on-call setup</p>
+    <ul>
+      <li><strong>An alert that pages a person</strong> — the drift-detecting dashboard
+      alert above is worthless if nobody's watching it at 2am. Wire it to whoever's on
+      call, not just a dashboard someone might check.</li>
+      <li><strong>A runbook</strong> — a short, specific "if the error rate spikes, check
+      these three things in this order" document. Written calmly in advance, not
+      improvised while the bot is down.</li>
+      <li><strong>A rollback path</strong> — Drawer 20's canary/rollback plan exists for
+      exactly this moment. Knowing it exists during an incident is very different from
+      remembering it exists.</li>
+      <li><strong>A postmortem</strong> — after, not during: what broke, why the alerts
+      caught it (or didn't), what changes so it doesn't recur. Skipping this is how the
+      same incident happens twice.</li>
+    </ul>
+  </div>
+  <div class="warn"><span class="tag">The gap most teams have</span>
+  Observability (the trace and dashboards above) tells you something's wrong. Incident
+  response is the separate, often-missing plan for what a human being actually does about
+  it, on a timeline that keeps customers informed rather than guessing.</div>
+
+  <h3>Listening beyond thumbs up/down <span class="bf">⚙ Backend</span></h3>
+  <p>An explicit rating is the least common feedback you'll get, and one of the noisiest —
+  most users never click it either way. The stronger signals are things people do without
+  being asked:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Signal</th><th>What it tells you</th></tr></thead>
+    <tbody>
+      <tr><td>User edits or rephrases the same question</td><td>The first answer didn't
+      land — a near-miss, not a clean success, even with no explicit complaint.</td></tr>
+      <tr><td>User asks for the answer again, differently</td><td>Same as above, with more
+      confidence — this is a resolution-rate failure (Drawer 14) that a thumbs-up/down
+      system would never see.</td></tr>
+      <tr><td>Human agent takeover</td><td>The clearest possible failure signal, and one
+      most teams already log for support-routing reasons — reuse it for eval too.</td></tr>
+      <tr><td>Conversation abandonment</td><td>Mid-task drop-off, especially partway
+      through a multi-step flow (Drawer 10), points at exactly which step lost the
+      person.</td></tr>
+      <tr><td>Task completion</td><td>Did the multi-step goal actually finish — the same
+      metric from Drawer 14's product-metrics table, sourced from real usage rather than
+      an eval set.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">What these actually feed</span>
+  These signals aren't just a dashboard — route them back into Drawer 14's eval set (a
+  rephrase is a new test case), Drawer 07's retrieval (a takeover often traces to a
+  missing document), and the prompt itself (Drawer 20's versioned rollback plan applies to
+  fixes prompted by this feedback too, not just new features).</div>
 
   <div class="keynote"><p>Cost blindness is the one failure mode here that's invisible
   until it's expensive. A trace ID, a per-step latency breakdown, and a hard spending cap
@@ -3001,9 +3674,117 @@ total: 2687ms</code></pre>
   <div class="next" id="next-ops"></div>
 </section>
 
-<!-- ============ 18 INTERVIEW ============ -->
+<!-- ============ 22 PRODUCT ROADMAP ============ -->
+<section class="page" id="p-roadmap" aria-labelledby="h-roadmap">
+  <p class="eyebrow">Drawer 22 · Zooming out to the product, not just the system</p>
+  <h2 id="h-roadmap">How this evolves from FAQ bot to platform</h2>
+  <p class="tldr"><b>TL;DR</b> "Design a chatbot for X" is really "design a chatbot's next
+  eighteen months for X." Six capability phases, each one a real product decision with a
+  cost — not a technology checklist to rush through.</p>
+  <p class="lede">Everything so far has been the pieces. This drawer is the question a
+  senior interview actually tests: given all these pieces, in what order would you build
+  them, and how would you justify stopping at any given phase?</p>
+
+  <h3>The product lifecycle these phases sit inside</h3>
+  <div class="lane col">
+    <div class="nd"><button type="button" class="nd-h" aria-expanded="false">
+      <span class="nd-t">Research &amp; problem definition</span>
+      <span class="nd-s">What's the actual cost of not having this?</span></button>
+      <div class="nd-d"><p>Before any of the six phases: what does the person do today
+      without this bot, and what does that cost — in support hours, in abandoned tasks, in
+      escalations? Skip this and V1 solves a problem nobody has.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd"><button type="button" class="nd-h" aria-expanded="false">
+      <span class="nd-t">Data collection &amp; knowledge base</span>
+      <span class="nd-s">What do you actually have to work with?</span></button>
+      <div class="nd-d"><p>An audit of what documents, APIs and data genuinely exist and
+      are accurate — the unglamorous work that determines whether Drawers 07–08 have
+      anything good to retrieve from.</p></div>
+    </div>
+    <div class="arw"><i>↓</i><em>then the six phases below</em></div>
+  </div>
+
+  <div class="card">
+    <p class="card-label">The roadmap</p>
+    <div class="rung">
+      <div class="lv">V1</div>
+      <div>
+        <h4>FAQ chatbot</h4>
+        <p>Canned or lightly-templated answers to a fixed set of known questions. No
+        retrieval, no tools — Drawers 04–06's fundamentals only.</p>
+        <p class="sig">Ships in days. Ceiling: brittle the moment a question falls outside
+        the fixed set.</p>
+      </div>
+    </div>
+    <div class="rung">
+      <div class="lv">V2</div>
+      <div>
+        <h4>RAG assistant</h4>
+        <p>Answers grounded in your actual documents, with citations — Drawers 07–08. This
+        is where "it works on questions you thought to try" starts, per Drawer 03's L2.</p>
+        <p class="sig">The jump that matters: from "sounds right" to "traceable to a
+        source."</p>
+      </div>
+    </div>
+    <div class="rung">
+      <div class="lv">V3</div>
+      <div>
+        <h4>Tool calling</h4>
+        <p>The bot can act, not just answer — Drawer 09's single-agent tool loop. Check a
+        balance, not just explain what a balance is.</p>
+        <p class="sig">The jump that matters: from describing your systems to touching
+        them, with all of Drawer 09's permission-gate discipline that implies.</p>
+      </div>
+    </div>
+    <div class="rung">
+      <div class="lv">V4</div>
+      <div>
+        <h4>Multi-step workflows</h4>
+        <p>Genuinely compound goals — Drawer 10's plan → decompose → act sequence. "Apply
+        for a loan," not just "check my balance."</p>
+        <p class="sig">The jump that matters: from single actions to a planner deciding
+        the order of several.</p>
+      </div>
+    </div>
+    <div class="rung">
+      <div class="lv">V5</div>
+      <div>
+        <h4>Autonomous agent</h4>
+        <p>The full Drawer 10 lifecycle with persistent memory (Drawer 11) — it remembers
+        you across sessions and handles ambiguity with less hand-holding per turn.</p>
+        <p class="sig">The jump that matters: from stateless-per-session to genuinely
+        knowing who it's talking to.</p>
+      </div>
+    </div>
+    <div class="rung">
+      <div class="lv">V6</div>
+      <div>
+        <h4>Multi-agent platform</h4>
+        <p>Drawer 12's supervisor-plus-specialists — separate teams can own separate
+        capabilities that used to be one overloaded agent.</p>
+        <p class="sig">The jump that matters: from one system to a platform other teams
+        build on.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note"><span class="tag">Testing, deployment, monitoring, iteration</span>
+  These aren't a phase after V6 — they run underneath <em>every</em> phase (Drawers 14, 18,
+  20–21). A V1 FAQ bot shipped without evaluation is exactly as exposed as a V6 platform
+  shipped without it — the roadmap is about capability, the operational discipline is
+  constant throughout.</div>
+
+  <div class="keynote"><p>The honest interview answer is rarely "build V6." It's naming
+  which phase the actual problem justifies, and what specific, measurable signal (Drawer
+  14) would tell you it's time to move to the next one — not a fixed timeline.</p></div>
+
+  <div class="next" id="next-roadmap"></div>
+</section>
+
+<!-- ============ 23 INTERVIEW ============ -->
 <section class="page" id="p-int" aria-labelledby="h-int">
-  <p class="eyebrow">Drawer 18 · Saying it well</p>
+  <p class="eyebrow">Drawer 23 · Saying it well</p>
   <h2 id="h-int">Interview</h2>
   <p class="tldr"><b>TL;DR</b> Lead with the point, then the detail — interviewers cut you
   off, and the six-question framework (Drawer 06) structures almost any answer on demand.</p>
@@ -3054,6 +3835,80 @@ total: 2687ms</code></pre>
     <strong>The senior move is offering a path to yes with controls.</strong></p>
   </div>
 
+  <div class="card">
+    <p class="card-label">Q · How would you A/B test a change to an agent?</p>
+    <p><strong>Same discipline as any product A/B test, with one added wrinkle:</strong> a
+    conversation isn't one event, it's a sequence, so pick a metric that reflects the whole
+    task (Drawer 14's task completion or containment), not just the first response. Split
+    by user, not by turn, or one person can land in both variants mid-conversation. And
+    watch the eval set (Drawer 14) in parallel — a variant that wins on the live metric but
+    regresses on your golden set is a warning, not a win.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-label">Q · Which phase would you build first, and why?</p>
+    <p>Name Drawer 22's roadmap explicitly, then justify the <em>starting</em> phase against
+    the actual problem, not against what's most impressive. <strong>"I'd start at V2 — a RAG
+    assistant — because the stated problem is people can't find answers in our docs, and V3
+    tool-calling solves a different problem we haven't confirmed exists yet."</strong> Naming
+    a later phase you're deliberately not building yet is a stronger answer than describing
+    the most advanced one.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-label">Q · You shipped a change and it made things worse. Now what?</p>
+    <p><strong>Roll back first, diagnose second.</strong> Drawer 20's canary/rollback plan
+    exists for exactly this — if you staged the rollout, you already caught it on 5% of
+    traffic, not 100%. Then the postmortem (Drawer 21): what did the canary metric miss,
+    and what would have caught it sooner. Debugging in production while it's actively
+    failing is how one bad deploy becomes a much longer incident.</p>
+  </div>
+
+  <div class="card">
+    <p class="card-label">Q · When would you split into multiple agents instead of one?</p>
+    <p>Name a measured trigger, not a vibe: <strong>tool-selection accuracy dropping as the
+    tool list grows</strong>, or <strong>separate teams needing to own separate
+    capabilities independently</strong> (Drawer 12). Building multi-agent before either is
+    true is Drawer 15's Trap 5 — scaling the architecture before the single-agent version
+    has actually been proven accurate.</p>
+  </div>
+
+  <h3>Real case studies worth knowing, by name</h3>
+  <p>Naming a real, sourced example is a stronger signal than describing your own
+  system's happy path. Three worth knowing — the lesson matters more than the number.</p>
+
+  <div class="card">
+    <p class="card-label">Klarna's AI assistant — the cost-vs-quality lesson</p>
+    <p>Launched Feb 2024, handled two-thirds of support chats within a month (2.3M
+    conversations), cut resolution time from 11 minutes to under 2, did the work of ~700
+    agents, added an estimated $40M to 2024 profit. By May 2025, Klarna's own CEO
+    publicly admitted it had over-optimized for cost and produced lower quality — and
+    began rehiring humans for complex cases. <strong>The metric that justified phase one
+    wasn't the metric that mattered at scale.</strong> Cite the full story, not just the
+    month-one numbers.</p>
+  </div>
+  <div class="card">
+    <p class="card-label">Air Canada's chatbot — the liability lesson</p>
+    <p>In 2022, Air Canada's website chatbot wrongly told a customer he could apply for
+    a bereavement fare after booking. Air Canada argued in tribunal that the chatbot was
+    "a separate legal entity." In Feb 2024, the BC Civil Resolution Tribunal rejected
+    that outright and held Air Canada liable. <strong>A bot's output is your company's
+    output, full stop</strong> — the plainest real-world proof of Drawer 15's whole
+    premise.</p>
+  </div>
+  <div class="card">
+    <p class="card-label">Kotak Mahindra Bank's "Keya" — the scale-and-channel lesson</p>
+    <p>India's first bank AI voicebot in an IVR (phone banking) channel — 3.5M queries
+    from 1M+ users at 93% accuracy. During the 2020 lockdown, ~650 employees worked to
+    double Keya's knowledge base in weeks to keep up with demand. <strong>Scaling a
+    knowledge base is a staffing and process cost, not a config change</strong> — and
+    voice channels drop citations and formatting entirely (Drawer 06).</p>
+  </div>
+  <div class="note"><span class="tag">Sources, and a caution</span>
+  All three are real, publicly reported, and time-stamped 2024–2025 — check for a more
+  recent update before repeating a specific number; Klarna's own story changed
+  materially within about a year of the first headline.</div>
+
   <h3>Red flags — things that get you rejected</h3>
   <div class="tw"><table>
     <thead><tr><th>Don't say</th><th>Say instead</th></tr></thead>
@@ -3086,9 +3941,9 @@ total: 2687ms</code></pre>
   <div class="next" id="next-int"></div>
 </section>
 
-<!-- ============ 19 RECALL ============ -->
+<!-- ============ 24 RECALL ============ -->
 <section class="page" id="p-recall" aria-labelledby="h-recall">
-  <p class="eyebrow">Drawer 19 · Making it stick</p>
+  <p class="eyebrow">Drawer 24 · Making it stick</p>
   <h2 id="h-recall">Recall</h2>
   <p class="tldr"><b>TL;DR</b> Recalling strengthens memory; re-reading mostly builds a
   comfortable illusion that you already know it. Use the flashcards, don't just skim.</p>
@@ -3198,13 +4053,13 @@ THE 5 TRAPS
     margin-right:8px;vertical-align:2px}
 </style>
 
-<!-- ============ 20 TRY IT ============ -->
+<!-- ============ 25 TRY IT ============ -->
 <section class="page" id="p-lab" aria-labelledby="h-lab">
-  <p class="eyebrow">Drawer 20 · Activity</p>
+  <p class="eyebrow">Drawer 25 · Activity</p>
   <h2 id="h-lab">Try it — be the librarian</h2>
   <p class="tldr"><b>TL;DR</b> A real, working retrieval demo, entirely in your browser —
   watch an off-topic question return nothing instead of a guess, and you've felt Drawer
-  11's debugging tree instead of just reading it.</p>
+  14's debugging tree instead of just reading it.</p>
   <p class="lede">Add a document, ask it a question, and watch retrieval happen. This runs
   entirely in your browser — nothing is uploaded anywhere, and it works offline.</p>
 
@@ -3289,27 +4144,35 @@ THE 5 TRAPS
 </div>
 <script>
 (function(){
+  /* Each entry: [id, label, level, essential-for-interviews, one-line "what this page
+     teaches"]. level and essential drive the badges in the nav and on the page itself --
+     add both here, once, rather than hand-editing 25 pages. */
   var PAGES = [
-    ["start","Start here"],
-    ["map","The mental map"],
-    ["ladder","Level 0 → expert"],
-    ["story","The one story"],
-    ["words","The ten words"],
-    ["six","Six questions"],
-    ["rag","How RAG works"],
-    ["rag2","RAG, advanced"],
-    ["agents","Tools, agents & MCP"],
-    ["ctx","Context engineering"],
-    ["eval","Evaluation"],
-    ["safe","Traps & security"],
-    ["flow","The complete pipeline"],
-    ["build","Build day"],
-    ["front","The frontend"],
-    ["ship","Shipping it"],
-    ["ops","Running it"],
-    ["int","Interview"],
-    ["recall","Recall"],
-    ["lab","Try it yourself"]
+    ["start","Start here","Basic",false,"The whole field in four numbers: one story, ten words, six questions, five traps."],
+    ["map","The mental map","Basic",false,"One picture — five branches and three failure modes — everything else zooms into."],
+    ["ladder","Level 0 → expert","Basic",false,"An honest self-assessment: which level you're at, and exactly what's next."],
+    ["story","The one story","Basic",false,"Why a chatbot behaves the way it does, in one hiring metaphor."],
+    ["words","The ten words","Basic",false,"The vocabulary — say these ten words correctly and you sound fluent."],
+    ["six","Six questions","Basic",true,"The structure for answering any \"design a chatbot for X\" question, plus what kind of system you're even building."],
+    ["rag","How RAG works","Intermediate",true,"The nine-step retrieval pipeline — how a bot actually finds the right document."],
+    ["rag2","RAG, advanced","Advanced",true,"Making retrieval genuinely good: contextual embeddings, reranking, RAG variants."],
+    ["agents","Tools, agents & MCP","Intermediate",true,"How a bot moves from talking about your systems to acting on them, safely."],
+    ["lifecycle","The agent lifecycle","Advanced",true,"The ten internal steps between a question and an action — how an agent actually \"thinks.\""],
+    ["memory","Memory systems","Advanced",true,"Four kinds of memory, and what breaks when you treat them as one."],
+    ["multiagent","Multi-agent architecture","Expert",true,"When and why to split one agent into a supervisor plus specialists."],
+    ["ctx","Context engineering","Advanced",true,"Why a bigger context window can make answers worse, not better."],
+    ["eval","Evaluation","Advanced",true,"How you actually know a chatbot is good — retrieval, generation, product and business metrics."],
+    ["safe","Traps & security","Advanced",true,"The five traps everyone falls into and the OWASP top 10 for LLM apps."],
+    ["flow","The complete pipeline","Advanced",true,"One question, start to finish — all nine runtime steps in order."],
+    ["stack","Choosing your stack","Expert",true,"Framework vs. raw SDK, and how to actually compare model providers."],
+    ["build","Build day","Intermediate",false,"A real build, hour by hour — from zero to a working bot in one day."],
+    ["front","The frontend","Intermediate",false,"What the user actually sees: streaming, loading states, accessibility."],
+    ["ship","Shipping it","Advanced",false,"Staging, canaries, rollback — how a change reaches real users safely."],
+    ["ops","Running it","Advanced",false,"Cost, observability, abuse prevention and incident response once it's live."],
+    ["roadmap","Product roadmap","Expert",true,"The six-phase capability roadmap from FAQ bot to multi-agent platform."],
+    ["int","Interview","Expert",true,"Rehearsed answers to the questions you will actually get asked."],
+    ["recall","Recall","Basic",false,"A spaced-recall drill so this actually sticks instead of fading in a week."],
+    ["lab","Try it yourself","Intermediate",false,"A real, working retrieval demo, entirely in your browser."]
   ];
 
   /* ---- nav ---- */
@@ -3320,10 +4183,28 @@ THE 5 TRAPS
     b.className = "tab";
     b.type = "button";
     b.dataset.go = p[0];
-    b.innerHTML = '<span class="num">'+String(i+1).padStart(2,"0")+'</span><span>'+p[1]+
-      '</span><span class="dot" data-dot="'+p[0]+'"></span>';
+    var star = p[3] ? '<span class="tab-star" title="Interview-essential">★</span>' : '';
+    b.innerHTML =
+      '<span class="num">'+String(i+1).padStart(2,"0")+'</span>'+
+      '<span class="tab-body">'+
+        '<span class="tab-row"><span class="tab-label">'+p[1]+'</span>'+star+'</span>'+
+        '<span class="tab-level lv-'+p[2].toLowerCase()+'">'+p[2]+'</span>'+
+      '</span>'+
+      '<span class="dot" data-dot="'+p[0]+'"></span>';
     li.appendChild(b);
     nav.appendChild(li);
+
+    // one-line "what this page teaches", injected once under each page's eyebrow --
+    // driven from the same PAGES data so the nav and the page never say two things.
+    var page = document.getElementById("p-"+p[0]);
+    var eyebrow = page && page.querySelector(".eyebrow");
+    if(eyebrow && p[4]){
+      var line = document.createElement("p");
+      line.className = "page-oneliner";
+      var essentialTag = p[3] ? '<span class="tab-star" title="Interview-essential">★</span> ' : '';
+      line.innerHTML = essentialTag + p[4];
+      eyebrow.insertAdjacentElement("afterend", line);
+    }
   });
 
   /* ---- next / prev footers ---- */
@@ -3709,7 +4590,7 @@ THE 5 TRAPS
   document.getElementById("navShowBtn").addEventListener("click", function(){ setNavCollapsed(false); });
   try{ if(localStorage.getItem("navCollapsed")==="1") setNavCollapsed(true); }catch(e){}
 
-  /* ---- build your stack configurator (Drawer 16) ---- */
+  /* ---- build your stack configurator (Drawer 20) ---- */
   (function(){
     var CFG = {};
     var CLAUSES = {
@@ -3765,22 +4646,20 @@ THE 5 TRAPS
     if(e.key === "ArrowLeft" && idx > 0){ show(PAGES[idx-1][0]); e.preventDefault(); }
   });
 
-  /* ---- pipeline stepper (Drawer 13): click a step, it docks up top ---- */
-  (function(){
-    var pipe = document.getElementById("pipe13");
-    if(!pipe) return;
+  /* ---- pipeline stepper: click a step, it docks up top. One delegated
+     listener serves every .pipe instance on the page, not just one. ---- */
+  document.addEventListener("click", function(e){
+    var btn = e.target.closest(".pipe-step");
+    if(!btn) return;
+    var pipe = btn.closest(".pipe");
     var steps = pipe.querySelectorAll(".pipe-step");
     var panels = pipe.querySelectorAll(".pipe-panel");
-    pipe.addEventListener("click", function(e){
-      var btn = e.target.closest(".pipe-step");
-      if(!btn) return;
-      var already = btn.getAttribute("aria-pressed") === "true";
-      var n = already ? null : btn.dataset.step;
-      steps.forEach(function(s){ s.setAttribute("aria-pressed", s===btn && !already ? "true" : "false"); });
-      panels.forEach(function(p){ p.classList.toggle("active", p.dataset.step===n); });
-      pipe.classList.toggle("docked", !!n);
-    });
-  })();
+    var already = btn.getAttribute("aria-pressed") === "true";
+    var n = already ? null : btn.dataset.step;
+    steps.forEach(function(s){ s.setAttribute("aria-pressed", s===btn && !already ? "true" : "false"); });
+    panels.forEach(function(p){ p.classList.toggle("active", p.dataset.step===n); });
+    pipe.classList.toggle("docked", !!n);
+  });
 
   /* ---- mobile nav dropdown ---- */
   var mnavToggle = document.getElementById("mnavToggle");
