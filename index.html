@@ -73,6 +73,8 @@
   /* Sections 1 (brand) and 3 (theme/nav toggles) stay put; only this middle
      section scrolls — so a 20-item list never pushes the header or controls
      out of reach. */
+  .mnav-wrap{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+  .mnav-toggle{display:none}
   nav{flex:1 1 auto;overflow-y:auto;min-height:0}
   nav ol{list-style:none;margin:0;padding:0 12px}
   nav li{margin:0}
@@ -138,8 +140,13 @@
   .hint-row{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;
     text-transform:uppercase;color:var(--ink-3);text-align:center;margin:0 0 14px}
 
-  .lane{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:center}
+  .lane{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;justify-content:center}
   .lane.col{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
+  /* Stretch keeps a row's closed cards level (a 2-line subtitle no longer sticks out
+     below its 1-line neighbours). Once anything in the row is open, revert to natural
+     sizing -- otherwise every closed sibling would inflate to match the open one. */
+  .lane.lane-has-open{align-items:flex-start}
+  .nd:not(.open) > .nd-h{flex:1 1 auto}
 
   .nd{flex:1 1 195px;min-width:165px;max-width:330px;display:flex;flex-direction:column}
   /* Direct-child only: a .lane (row) nested inside a .lane.col for a mid-diagram split
@@ -338,12 +345,26 @@
       border-bottom:1px solid var(--rule);padding:14px 0 10px}
     .brand{padding:0 18px 12px}
     .brand h1{font-size:18px}
-    nav ol{display:flex;gap:6px;overflow-x:auto;padding:0 14px 2px;
-      scrollbar-width:thin;-webkit-overflow-scrolling:touch}
-    .tab{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;
-      grid-template-columns:1fr;padding:8px 12px;border-radius:3px 3px 0 0}
-    .tab .num{display:none}
-    .tab[aria-current="true"]{border-left:0;border-bottom-color:var(--teal)}
+
+    /* Collapsed by default: a tap target showing where you are, not a
+       20-item strip you have to scroll sideways through to find a drawer. */
+    .mnav-wrap{position:relative;flex:0 0 auto;display:block}
+    .mnav-toggle{display:flex;align-items:center;justify-content:space-between;
+      width:calc(100% - 28px);margin:0 14px 2px;background:var(--card);
+      border:1px solid var(--rule);border-radius:4px;padding:11px 14px;
+      font:inherit;font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer}
+    .mnav-chevron{color:var(--ink-3);font-size:12px;display:inline-block;
+      transition:transform .15s}
+    .mnav-toggle[aria-expanded="true"] .mnav-chevron{transform:rotate(180deg)}
+    nav{display:none;position:absolute;left:14px;right:14px;top:100%;z-index:21;
+      background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
+      max-height:70vh;overflow-y:auto;box-shadow:var(--shadow)}
+    .drawer.mnav-open nav{display:block}
+    nav ol{padding:6px}
+    .tab{white-space:normal;border-left:0;border-bottom:0;
+      grid-template-columns:26px 1fr;padding:10px 10px;border-radius:3px}
+    .tab .num{display:inline}
+    .tab[aria-current="true"]{border-left:0;background:var(--teal-wash)}
     .drawer-foot{padding:12px 18px 0;margin-top:12px}
     .page{padding:28px 18px 72px}
   }
@@ -402,7 +423,13 @@
       <h1>The Chatbot Catalog</h1>
       <p>Build one · Explain one · Interview</p>
     </div>
-    <nav aria-label="Sections"><ol id="nav"></ol></nav>
+    <div class="mnav-wrap">
+      <button type="button" class="mnav-toggle" id="mnavToggle" aria-expanded="false" aria-controls="nav">
+        <span id="mnavCurrent">Start here</span>
+        <span class="mnav-chevron" aria-hidden="true">⌄</span>
+      </button>
+      <nav aria-label="Sections"><ol id="nav"></ol></nav>
+    </div>
     <div class="drawer-foot">
       <button class="toggle" id="themeBtn" type="button">Theme</button>
       <button class="toggle" id="navHideBtn" type="button" style="margin-left:8px">Hide nav</button>
@@ -3349,6 +3376,7 @@ THE 5 TRAPS
     document.getElementById("main").scrollIntoView({block:"start",
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
     markSeen(target);
+    updateMnav(target);
   }
 
   /* ---- progress dots: which drawers you've already opened ---- */
@@ -3377,6 +3405,8 @@ THE 5 TRAPS
     var nd = h.parentNode;
     var open = nd.classList.toggle("open");
     h.setAttribute("aria-expanded", open ? "true" : "false");
+    var lane = nd.closest(".lane");
+    if(lane) lane.classList.toggle("lane-has-open", !!lane.querySelector(".nd.open"));
   });
 
   /* ---- flashcards ---- */
@@ -3761,6 +3791,25 @@ THE 5 TRAPS
       pipe.classList.toggle("docked", !!n);
     });
   })();
+
+  /* ---- mobile nav dropdown ---- */
+  var mnavToggle = document.getElementById("mnavToggle");
+  var mnavCurrent = document.getElementById("mnavCurrent");
+  function setMnavOpen(open){
+    document.querySelector(".drawer").classList.toggle("mnav-open", open);
+    mnavToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+  function updateMnav(target){
+    var entry = PAGES.filter(function(p){ return p[0]===target; })[0];
+    if(entry) mnavCurrent.textContent = entry[1];
+    setMnavOpen(false);
+  }
+  mnavToggle.addEventListener("click", function(){
+    setMnavOpen(!document.querySelector(".drawer").classList.contains("mnav-open"));
+  });
+  document.addEventListener("click", function(e){
+    if(!e.target.closest(".mnav-wrap")) setMnavOpen(false);
+  });
 
   /* ---- go ---- */
   show(PAGES[0][0]);
