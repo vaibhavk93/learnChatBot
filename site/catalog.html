@@ -153,8 +153,10 @@
   .lane.col{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
   /* Stretch keeps a row's closed cards level (a 2-line subtitle no longer sticks out
      below its 1-line neighbours). Once anything in the row is open, revert to natural
-     sizing -- otherwise every closed sibling would inflate to match the open one. */
-  .lane.lane-has-open{align-items:flex-start}
+     sizing -- otherwise every closed sibling would inflate to match the open one.
+     Scoped to :not(.col): a .lane.col carries the plain .lane class too, and reverting
+     ITS align-items breaks its real job -- stretching stacked boxes to a shared width. */
+  .lane:not(.col).lane-has-open{align-items:flex-start}
   .nd:not(.open) > .nd-h{flex:1 1 auto}
 
   .nd{flex:1 1 195px;min-width:165px;max-width:330px;display:flex;flex-direction:column}
@@ -288,6 +290,10 @@
   .dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
     gap:10px;margin:20px 0}
   .dg .nd{max-width:none}
+  /* Grid rows stretch every cell to the tallest by default -- fine for the open cards,
+     but a still-closed neighbour then stretches its OWN bordered box to match, showing
+     blank space inside the border instead of just sitting shorter at the top. */
+  .dg .nd:not(.open){align-self:start}
   .dg .nd.dg-def .nd-h{background:var(--teal-wash);border-color:var(--teal)}
   .dg .nd.dg-def .nd-h::before{content:"Default pick";position:absolute;top:-9px;left:11px;
     background:var(--teal);color:var(--paper);font-family:var(--f-mono);font-size:9px;
