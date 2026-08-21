@@ -1476,6 +1476,35 @@
    failed or looks wrong. Requires txn_id — ask the user for it if they
    haven't given one."</code></pre>
 
+  <h3>Designing the schema, not just the description</h3>
+  <p>The description tells the model <em>when</em> to call a tool. The schema — a JSON
+  Schema object listing each parameter's type, whether it's required, and any allowed
+  values — tells it <em>how</em> to call it correctly. Get the schema loose and you get
+  malformed calls; get it tight and the model mostly can't call it wrong.</p>
+  <div class="card">
+    <p class="card-label">What actually belongs in a tight schema</p>
+    <ul>
+      <li><strong>Types, not strings for everything.</strong> An amount is a number, a
+      date is a date — don't accept a free-text string and parse it yourself downstream.
+      The model is far more reliable at filling a typed field than you are at parsing an
+      arbitrary string it might send.</li>
+      <li><strong>Enums wherever the value is one of a fixed set.</strong> A status
+      field with <code>enum: ["pending","cleared","failed"]</code> makes an invalid
+      value structurally impossible, instead of a runtime check you might forget to
+      write.</li>
+      <li><strong>Mark what's actually required.</strong> If <code>txn_id</code> is
+      required and the model doesn't have it, a good schema makes that a validation
+      error the model sees and can recover from — asking the user — rather than a
+      silent call with a missing field.</li>
+    </ul>
+  </div>
+  <div class="warn"><span class="tag">When the call still comes back malformed</span>
+  It will, occasionally — a string where a number was expected, a required field
+  missing despite the schema. <strong>Validate before you execute, not after.</strong>
+  Return the validation error <em>to the model</em> as the tool's result ("txn_id must
+  be provided") rather than crashing or silently coercing a bad value — the model can
+  usually self-correct and retry with a fixed call on the next turn.</div>
+
   <h3>MCP — the standard plug</h3>
   <p>Every tool you write by hand is bespoke wiring. <strong>MCP (Model Context
   Protocol)</strong> is an open standard for that wiring — <em>"a USB-C port for AI
@@ -1759,6 +1788,35 @@
       examples.</li>
     </ul>
   </div>
+
+  <h4 style="margin:22px 0 10px;font-size:15px">"Fine-tuning" is actually three different things</h4>
+  <div class="tw"><table>
+    <thead><tr><th>Name</th><th>What it does</th><th>What it needs</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SFT</strong> (supervised fine-tuning)</td><td>Trains directly on
+      example input/output pairs — "given this input, produce exactly this output."
+      The base case described above.</td><td>Labelled examples of the exact behavior you
+      want, nothing more exotic.</td></tr>
+      <tr><td><strong>RLHF</strong> (reinforcement learning from human feedback)</td>
+      <td>Trains a separate reward model on human preference rankings ("answer A is
+      better than answer B"), then optimizes the model against that reward signal — how
+      the major providers align a base model into an assistant in the first place.</td>
+      <td>Human-ranked preference pairs, a reward model, and a genuinely more involved
+      training pipeline than SFT.</td></tr>
+      <tr><td><strong>DPO</strong> (direct preference optimization)</td><td>Achieves a
+      similar result to RLHF — learning from "A is better than B" preference pairs —
+      but optimizes directly against them without training a separate reward model.
+      Simpler pipeline, increasingly the default choice over RLHF for this reason.</td>
+      <td>The same preference pairs as RLHF, without the extra reward-model training
+      stage.</td></tr>
+    </tbody>
+  </table></div>
+  <p>For the "teach it our specific tone" or "always output this exact JSON shape"
+  case most teams actually reach for, <strong>SFT is almost always what's meant</strong>
+  — RLHF and DPO are how foundation-model providers align a base model, not typically
+  something a product team does themselves. Knowing the difference is what separates
+  "I'd fine-tune it" from an answer that survives a follow-up question.</p>
+
   <div class="warn"><span class="tag">The trap</span>
   Reaching for fine-tuning to fix a knowledge problem — "the bot doesn't know about our
   new product" — is the single most common misuse. That's a RAG problem: add the document.
@@ -3037,6 +3095,26 @@
       label or icon too — not just a lighter shade of gray.</li>
     </ul>
   </div>
+  <div class="tw"><table>
+    <thead><tr><th>What to actually check</th><th>The concrete target</th></tr></thead>
+    <tbody>
+      <tr><td>Conformance level</td><td><strong>WCAG 2.2 Level AA</strong> is the level
+      most accessibility audits and legal requirements actually expect — treat AA as the
+      bar, not the aspirational AAA tier.</td></tr>
+      <tr><td>Contrast ratio</td><td>4.5:1 for normal text, 3:1 for large text (18pt+ or
+      bold 14pt+) — check this on both your light and dark themes, not just the one you
+      designed in.</td></tr>
+      <tr><td>Automated testing</td><td><strong>axe</strong> (browser extension or CI
+      plugin) and <strong>Lighthouse</strong>'s accessibility audit catch the mechanical
+      issues — missing labels, contrast failures, heading order. Neither replaces
+      actually testing with a screen reader.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">What automated tools can't catch</span>
+  Axe and Lighthouse verify the DOM is technically correct; they can't tell you the
+  streaming live-region reads naturally, or that focus lands somewhere sensible. Run
+  VoiceOver (Mac) or NVDA (Windows) against the actual chat flow at least once before
+  calling accessibility "done."</div>
 
   <h3>More than one language <span class="bf">🔀 Both</span></h3>
   <p>If Riva's customers write in more than one language, decide this before it's a bug
@@ -3049,6 +3127,18 @@
   Let the model match the user's language for the reply; keep your knowledge base in
   whichever language your source documents actually are, and say so explicitly in the
   system prompt so the model doesn't silently mistranslate a policy detail.</div>
+
+  <div class="warn"><span class="tag">Code-mixed input isn't an edge case, it's the default</span>
+  "Mera transaction fail ho gaya, kyu?" is completely ordinary input for an Indian
+  fintech bot, not a malformed query — modern models handle Hindi-English code-mixing
+  (Hinglish) and romanized Hindi natively, without a separate translation step. What
+  actually breaks it: <strong>keyword search treats code-mixed queries as two
+  vocabularies</strong> that don't overlap with your English-only knowledge base, which
+  is exactly why the hybrid search from Drawer 07 (meaning search first, keyword as a
+  precision layer) matters more here, not less. Test your eval set (Drawer 13) with
+  real code-mixed questions specifically — a golden set written entirely in clean
+  English will pass while production quietly fails on the traffic that actually
+  arrives.</div>
 
   <div class="keynote"><p>Streaming and honest error states aren't polish on top of a
   finished product — they're the part of the product a user experiences first and judges
@@ -3169,6 +3259,31 @@
     </div>
     <figcaption>Feature flags do the same job for a risky new capability, not just a prompt edit</figcaption>
   </figure>
+
+  <h3>Treat the prompt file like source code, because it is one <span class="bf">⚙ Backend</span></h3>
+  <p>The staging→canary→rollout ladder above is what happens once you've decided a
+  prompt edit is ready to ship. This is what happens <em>before</em> that — the same
+  discipline you'd never skip for application code, applied to a file most teams still
+  edit by hand in a text box.</p>
+  <div class="card">
+    <p class="card-label">The minimum viable prompt-as-code setup</p>
+    <ul>
+      <li><strong>The prompt lives in version control</strong>, not a config UI with no
+      history — a diff, a commit message, and a name attached to every change, the same
+      as any other code review.</li>
+      <li><strong>A regression suite runs on every edit</strong>, not just before a full
+      deploy — Drawer 13's golden set, re-run automatically the moment the prompt file
+      changes, so "I tweaked the tone" and "I broke citation formatting" are caught in
+      the same minute, not three weeks later per Drawer 14's Trap 4.</li>
+      <li><strong>Every prompt version is tagged to the eval scores it produced</strong>
+      — so "this is the version that scored 91% groundedness" is a fact you can look up,
+      not a memory someone on the team might have.</li>
+    </ul>
+  </div>
+  <div class="note"><span class="tag">Why this is worth the ceremony</span>
+  A prompt edit looks like a copy-paste change and is treated that way by most teams —
+  right up until a one-word wording change quietly regresses a case the golden set would
+  have caught in seconds. The regression suite is cheap; the incident it prevents is not.</div>
 
   <h3>Who's allowed to ask: identity and permission <span class="bf">🔀 Both</span></h3>
   <p>Drawer 08's rule — "the model never touches your systems, your code decides" — has to
@@ -3364,7 +3479,7 @@ total: 2687ms</code></pre>
         launch — can trip it too. It needs a human-reviewable override, not a hard kill that
         pages no one.</p>
         <p><strong>Pick this when:</strong> always, as the last line of defense — this is
-        Drawer 15's "your code decides" rule applied to your budget, not just your tools.</p>
+        Drawer 08's "your code decides" rule applied to your budget, not just your tools.</p>
       </div>
     </div>
   </div>
@@ -3682,6 +3797,54 @@ total: 2687ms</code></pre>
   data residency, cost at your actual volume) matters most for what I'm building,
   right now."</div>
 
+  <h3>Guardrails: build your own, or take a framework</h3>
+  <p>Drawer 14 covers the DIY approach in full — a policy layer in your own code, a
+  moderation API call, output checks before delivery. That's not the only option; named
+  guardrails frameworks exist specifically to package this.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Framework</th><th>What it actually does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>NeMo Guardrails</strong> (NVIDIA)</td><td>A configurable rules
+      engine for conversation flow — define allowed/disallowed topics and required
+      response shapes declaratively, rather than as ad-hoc if-checks in your own
+      code.</td></tr>
+      <tr><td><strong>Guardrails AI</strong></td><td>Validates model output against a
+      schema (similar spirit to Drawer 08's tool-call schemas, applied to the final
+      answer) and can trigger a re-ask when validation fails.</td></tr>
+      <tr><td><strong>Llama Guard</strong> (Meta)</td><td>A purpose-built classifier
+      model for content moderation — an alternative to a general-purpose moderation API
+      when you're self-hosting and want that check to be a local model call.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">The same trade-off as frameworks vs. raw SDK</span>
+  A named guardrails framework gets you further faster with less code to own; the DIY
+  policy layer gives you complete control over exactly what's checked and how it fails.
+  Neither is the "more serious" choice — pick based on the same constraint (speed vs.
+  control) as the framework decision above, and say so plainly if asked.</div>
+
+  <h3>Evaluating a vendor, not just a library</h3>
+  <p>Everything above is a build decision. Sometimes the real choice is buying a
+  finished conversational-AI platform instead of building on any of it — and that's a
+  procurement decision with its own discipline, not a smaller version of the technical
+  one.</p>
+  <div class="card">
+    <p class="card-label">What an RFP for this actually needs to ask</p>
+    <ul>
+      <li><strong>Data handling, in writing:</strong> where does data live, is it used
+      for the vendor's own training, what's the deletion/retention story (Drawer 14) —
+      get this in the contract, not a sales call.</li>
+      <li><strong>A POC on your own data, not their demo.</strong> A vendor demo is
+      tuned on their best-case examples; a bake-off on your actual documents and your
+      actual hard questions is the only test that means anything.</li>
+      <li><strong>Exit cost.</strong> How much of what you build on their platform
+      (prompts, flows, integrations) is portable if you leave — a real switching-cost
+      question, not a hypothetical one.</li>
+      <li><strong>Who owns the eval.</strong> Insist on running Drawer 13's golden set
+      yourself against their system, rather than accepting their own benchmark numbers
+      as the evidence.</li>
+    </ul>
+  </div>
+
   <div class="keynote"><p>Every framework and every model provider will tell you their
   default is the right one. The honest position in an interview is naming the specific
   trade-off you're making and why — not defending a single tool as universally correct.</p></div>
@@ -3789,6 +3952,34 @@ total: 2687ms</code></pre>
   20–21). A V1 FAQ bot shipped without evaluation is exactly as exposed as a V6 platform
   shipped without it — the roadmap is about capability, the operational discipline is
   constant throughout.</div>
+
+  <h3>Who you actually need, and when</h3>
+  <p>A roadmap phase is also a staffing decision. Naming who's on the team at each phase
+  — not just what's built — is what separates a roadmap from a wish list.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Phase</th><th>Who's newly needed</th><th>What they actually do here</th></tr></thead>
+    <tbody>
+      <tr><td>V1–V2</td><td>A generalist engineer, one PM</td><td>The whole system fits
+      in one or two heads — Drawers 07–09's mechanics don't yet need a specialist.</td></tr>
+      <tr><td>V2–V3</td><td>A <strong>prompt engineer</strong> (often the same person,
+      formalized)</td><td>Owns the prompt as a versioned artifact (Drawer 18) once it's
+      complex enough that "whoever edited it last" stops being a viable owner.</td></tr>
+      <tr><td>V3–V4</td><td>A <strong>data/eval annotator</strong></td><td>Builds and
+      maintains the golden set (Drawer 13) — a real, ongoing job once the eval set needs
+      to grow with every new failure mode, not a one-time setup task.</td></tr>
+      <tr><td>V4–V5</td><td>An <strong>ML/applied-AI engineer</strong></td><td>Owns the
+      agent lifecycle and memory systems (Drawers 10–11) — genuinely different skills
+      from the web-engineering work in V1–V3.</td></tr>
+      <tr><td>V6</td><td>Per-specialist owners (Drawer 20's multi-agent pattern)</td>
+      <td>Different teams own different specialist agents independently — this is the
+      point where "the AI team" stops being one team.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warn"><span class="tag">The hiring trap this table is meant to prevent</span>
+  Hiring an ML engineer for a V1 FAQ bot is over-hiring for the problem; running V4's
+  multi-step workflows on a team that's still one generalist is under-resourcing it.
+  Staff for the phase you're actually building, not the phase that sounds impressive in
+  a job posting.</div>
 
   <div class="keynote"><p>The honest interview answer is rarely "build V6." It's naming
   which phase the actual problem justifies, and what specific, measurable signal (Drawer
