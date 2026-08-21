@@ -3329,7 +3329,10 @@ THE 5 TRAPS
       if(sec) sec.classList.toggle("on", p[0]===target);
     });
     document.querySelectorAll(".tab").forEach(function(t){
-      t.setAttribute("aria-current", t.dataset.go===target ? "true" : "false");
+      var isCurrent = t.dataset.go===target;
+      t.setAttribute("aria-current", isCurrent ? "true" : "false");
+      if(isCurrent) t.scrollIntoView({block:"nearest", inline:"nearest",
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
     });
     document.getElementById("main").scrollIntoView({block:"start",
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
