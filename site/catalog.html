@@ -465,6 +465,10 @@
   about one convincingly. You need one story, ten words, six questions, and five warnings.
   This catalog holds all of them, one drawer at a time.</p>
 
+  <p class="lede">Zoomed out, the 37 drawers move through one arc: learn the
+  vocabulary → build the system → measure whether it works → operate it in
+  production → govern the risk. Later drawers assume earlier ones, in that order.</p>
+
   <div class="stat">
     <div><b>1</b><span>Story</span></div>
     <div><b>10</b><span>Words</span></div>
@@ -497,6 +501,11 @@
       <tr><td class="num">Ongoing</td><td>Drawer 29</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
+
+  <div class="note"><span class="tag">The AI PM path, in order</span>
+  If you're working through this catalog for a product-management role, read in this
+  order: Foundations (01–07) → LLM systems (13–16) → RAG (08–10) → Agents (14, 20) → Evaluation (17, 30) → AI UX (21–25) → AI economics (27–28) → Governance (31). Every drawer named already exists — this is just
+  the sequence, not new material.</div>
 
   <div class="note"><span class="tag">Start here</span>
   If you read only one drawer, make it <strong>Drawer 07 — the six questions</strong>.
@@ -598,6 +607,12 @@
     </div>
     <figcaption>The five branches — Assistant, Knowledge, Action, Safety, Proof</figcaption>
   </figure>
+
+  <div class="note"><span class="tag">Not a sixth branch</span>
+  Product, UX, Data, and Platform aren't missing branches — they're cross-cutting
+  concerns that sit alongside and underneath all five. Every branch above needs a
+  product decision, a UX surface, a data source, and a platform to run on; none of
+  them gets its own branch because none of them is optional for any of the five.</div>
 
   <h3>How the five branches connect</h3>
   <p>The map above shows what exists. This one shows what <em>causes</em> what — which is
@@ -951,6 +966,15 @@
   assistant.</strong> This single instinct will put you ahead of most people working in
   this field.</div>
 
+  <h3>The same story, in engineering terms</h3>
+  <p>Same characters, more technical names — this is the pipeline you'll see in
+  architecture diagrams:</p>
+  <div class="card"><p class="card-label">One request, start to finish</p>
+  <p style="margin-bottom:0"><strong>User</strong> → <strong>Orchestrator</strong> (the
+  traffic cop deciding what happens next) → <strong>Retrieval</strong> (the librarian) →
+  <strong>Model</strong> (the assistant) → <strong>Tools</strong> (the hands, if any) →
+  <strong>Guardrails</strong> (the locks) → <strong>Evaluation</strong> (checking it later).</p></div>
+
   <div class="keynote"><p>Suspect the librarian before the assistant. Most "the AI is dumb"
   complaints are actually "the wrong document got fetched" — a retrieval problem wearing a
   model problem's clothes.</p></div>
@@ -974,9 +998,9 @@
     <div class="word"><b>System prompt<i>Standing orders</i></b><span>Instructions that apply on every single turn.<em>The job description pinned to the wall</em></span></div>
     <div class="word"><b>Context window<i>Working memory</i></b><span>How much text it can consider at once.<em>How much fits in their head</em></span></div>
     <div class="word"><b>Hallucination<i>The core problem</i></b><span>A confident, fluent, wrong answer.<em>Their worst habit</em></span></div>
-    <div class="word"><b>RAG<i>Retrieval-augmented generation</i></b><span>Fetching the right documents and handing them over before answering.<em>Hiring the librarian</em></span></div>
-    <div class="word"><b>Chunk<i>Unit of retrieval</i></b><span>One small piece of a document.<em>One index card</em></span></div>
-    <div class="word"><b>Embedding<i>Meaning as numbers</i></b><span>Numbers representing meaning, so similar ideas sit close together.<em>The code on the back of the card</em></span></div>
+    <div class="word"><b>RAG<i>Retrieval-augmented generation</i></b><span>Fetching the right documents and handing them over before answering.<em>Hiring the librarian</em><br><small>Learn Chunk and Embedding first.</small></span></div>
+    <div class="word"><b>Chunk<i>Unit of retrieval</i></b><span>One small piece of a document.<em>One index card</em><br><small>Prerequisite for RAG.</small></span></div>
+    <div class="word"><b>Embedding<i>Meaning as numbers</i></b><span>Numbers representing meaning, so similar ideas sit close together.<em>The code on the back of the card</em><br><small>Prerequisite for RAG.</small></span></div>
     <div class="word"><b>Tool<i>A permitted action</i></b><span>A specific thing the AI is allowed to do.<em>Giving them the keys</em></span></div>
   </div>
 
@@ -1075,6 +1099,7 @@
   name lets you make that connection out loud in an interview.</div>
 
   <h3>The math words, in one line each — not to compute, just to name</h3>
+  <p>Read top to bottom: this is roughly the order these ideas would appear in an ML course.</p>
   <div class="tw"><table>
     <thead><tr><th>Term</th><th>What it means, in one line</th></tr></thead>
     <tbody>
@@ -1144,6 +1169,12 @@
   DON'T, GROW and SHOW.</strong> Those only come from having actually run one of these
   things. Cover all six and you'll sound more experienced than most of the people
   interviewing you.</div>
+
+  <div class="note"><span class="tag">Same ground, different vocabulary</span>
+  If someone hands you a spec template with "Problem / User / Workflow / Architecture /
+  Metrics / Risks / Rollout" instead, don't panic — you already have this covered: Problem
+  and User map to KNOW, Workflow to THINK, Architecture to DO, Risks to DON'T, Rollout to
+  GROW, Metrics to SHOW.</div>
 
   <h3>Which part of the system each question covers</h3>
   <figure class="plate">
@@ -1965,6 +1996,12 @@ never clean enough to support any of them.</p></div>
 })();
 </script>
 
+  <div class="note"><span class="tag">V1 RAG vs. production RAG</span>
+  <strong>V1:</strong> fixed chunk size, one vector search, no reranking — ships in a
+  day, works on easy questions. <strong>Production:</strong> the nine-step pipeline
+  above — tuned chunking, metadata, and a reranking step before generation. Start with
+  V1; move to production RAG once eval scores (Drawer 15) show V1 isn't good enough.</div>
+
   <div class="next" id="next-rag"></div>
 </section>
 <!-- ============ 9 TOOLS & AGENTS ============ -->
@@ -2379,6 +2416,12 @@ never clean enough to support any of them.</p></div>
   number</strong>. "I tried Graph RAG and it didn't help on our corpus, here's the data" is
   far more impressive than having used it — naming the limitation you're solving is the
   actual signal in an interview, not the variant's name.</div>
+
+  <div class="note"><span class="tag">The one-line decision rule</span>
+  Small corpus → skip retrieval, just prompt with the whole thing. Standard corpus →
+  hybrid search. Corpus that's hard to retrieve from cleanly (dense jargon, ambiguous
+  wording) → contextual retrieval. Questions about how things relate to each other →
+  Graph RAG.</div>
 
   <h3>⚠ For anything with numbers in it</h3>
   <div class="warn"><span class="tag">Structured data beats retrieval</span>
@@ -3467,6 +3510,12 @@ how confident the agent sounds.</div>
   other drawer in this catalog assumes you can already do the first one — so before context
   engineering, here's the thing it built on top of.</p>
 
+  <div class="note"><span class="tag">A third leg: retrieval engineering</span>
+  Prompt engineering shapes the instruction. Context engineering shapes what's in the
+  window overall. <strong>Retrieval engineering</strong> — the chunking, hybrid search
+  and reranking choices from Drawers 08 and 10 — shapes which documents even become
+  candidates for that window in the first place. All three are separate jobs, in that order.</div>
+
   <h3>Prompt engineering, in four moves <span class="bf">🔀 Both</span></h3>
   <div class="card">
     <p class="card-label">The four things a well-written prompt actually does</p>
@@ -3829,6 +3878,13 @@ how confident the agent sounds.</div>
   who knows the domain has confirmed the answer. Then keep feeding in real questions your
   users actually asked — especially the ones it got wrong.</div>
 
+  <div class="note"><span class="tag">A golden-set score isn't a controlled experiment</span>
+  Running a hundred questions once and comparing two numbers isn't enough to say "prompt
+  B is better than prompt A" — small sample sizes swing on noise alone. If a change
+  matters, run an actual A/B test: split real traffic, decide your sample size before you
+  start, and hold prompt/model version fixed on both sides while it runs. A single
+  golden-set pass is a smoke test, not proof.</div>
+
   <h3>What to measure</h3>
   <div class="tw"><table>
     <thead><tr><th>Layer</th><th>Metric</th><th>Plain meaning</th></tr></thead>
@@ -4065,6 +4121,14 @@ how confident the agent sounds.</div>
   <p style="font-size:13.5px;color:var(--ink-3)">Source: OWASP Top 10 for LLM Applications,
   2025 edition. Note that #7 and #8 are new — and #8 exists because so many teams now use
   RAG rather than fine-tuning.</p>
+
+  <div class="note"><span class="tag">The same list, by where it hits the pipeline</span>
+  <strong>Input:</strong> prompt injection. <strong>Retrieval:</strong> vector/embedding
+  weaknesses, data poisoning. <strong>Model:</strong> misinformation, supply chain.
+  <strong>Tool:</strong> excessive agency. <strong>Output:</strong> improper output
+  handling. <strong>Data:</strong> sensitive information disclosure, system prompt
+  leakage. <strong>Infrastructure:</strong> unbounded consumption. Same ten risks,
+  organized by which stage of the pipeline (Drawer 04) you'd actually go fix.</div>
 
   <h3>Two controls that get named but rarely explained</h3>
   <div class="card">
@@ -4548,8 +4612,22 @@ how confident the agent sounds.</div>
     <figcaption>Teal = knowledge-heavy specialist · Red = needs its own confirmation gates · Gold = the merge point</figcaption>
   </figure>
 
-  <h3>Single agent vs. multi-agent — this is a real trade-off, not an upgrade</h3>
+  <h3>Single agent vs. workflow vs. supervisor vs. swarm — this is a real trade-off, not an upgrade</h3>
   <div class="dg">
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-t">Workflow — no agent at all</span>
+        <span class="nd-s">Fixed, deterministic code</span>
+      </button>
+      <div class="nd-d">
+        <p><strong>✓ Merit:</strong> fully predictable, no model call deciding what
+        happens next — cheapest and easiest to test of all four options.</p>
+        <p><strong>✗ Demerit:</strong> can't handle a request the code didn't anticipate;
+        every new case needs a new branch written by hand.</p>
+        <p><strong>Pick this when:</strong> the steps are always the same, in the same
+        order — reasoning isn't actually needed, just execution.</p>
+      </div>
+    </div>
     <div class="nd dg-def">
       <button type="button" class="nd-h" aria-expanded="false">
         <span class="nd-t">One agent, many tools</span>
@@ -5282,6 +5360,11 @@ how confident the agent sounds.</div>
   A generated widget is still output the model produced — apply the same grounding and
   injection caution (Drawer 16) to what it renders as you would to what it says.</div>
 
+  <p>None of this UI polish matters if there's no visible way out. Drawer 20's escalation
+  step (human handoff) is a backend decision — a low-confidence answer triggers it — but
+  the frontend is what makes it usable: a clearly labelled "talk to a person" option, not
+  a dead end the user has to discover by giving up.</p>
+
   <div class="keynote"><p>Streaming and honest error states aren't polish on top of a
   finished product — they're the part of the product a user experiences first and judges
   fastest. A backend that's right but feels slow or evasive loses trust before anyone reads
@@ -5367,6 +5450,24 @@ how confident the agent sounds.</div>
   If a user would be surprised to learn the bot knew that about them, you've crossed from
   personalization into surveillance — regardless of whether the data collection itself
   was technically consented to somewhere in a terms-of-service page nobody read.</div>
+
+  <div class="note"><span class="tag">Explain to the user why</span>
+  The single biggest thing that turns "invasive" into "helpful": a visible reason next to
+  the personalized result — "Suggested because you asked about savings accounts last week"
+  — so the user sees the input, not just the output. If you can't show the reason in one
+  short sentence, that's a sign the signal you're using is too opaque to personalize on.</div>
+
+  <h3>Personalization maturity, in order</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Stage</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Static</strong></td><td>Same experience for everyone — no personalization at all.</td></tr>
+      <tr><td><strong>Contextual</strong></td><td>Reacts to the moment — time of day, device, channel.</td></tr>
+      <tr><td><strong>Behavioral</strong></td><td>Reacts to what this user has done before.</td></tr>
+      <tr><td><strong>Predictive</strong></td><td>Anticipates what this user will need next, before they ask.</td></tr>
+      <tr><td><strong>Autonomous</strong></td><td>Acts on that prediction directly — the agent-behavior row above, at its most advanced.</td></tr>
+    </tbody>
+  </table></div>
 
   <div class="keynote"><p>Personalization is not a new capability bolted onto memory —
   it's a product decision about how much that memory is allowed to steer behavior, made
@@ -5649,6 +5750,19 @@ how confident the agent sounds.</div>
   non-speech audio classification to know when to actually start listening — a detail
   that never comes up if you've only ever tested with a clean live microphone.</div>
 
+  <div class="note"><span class="tag">Multilingual voice is its own checklist, not the text one</span>
+  Drawer 08's multilingual note is about embeddings; voice has a separate set of gaps
+  to check before launch:
+  <ul>
+    <li>The STT vendor's language list and the TTS vendor's language list are rarely
+    identical — a caller can be transcribed but come back in the wrong voice.</li>
+    <li>Code-switching mid-sentence ("mera balance kitna hai, can you check") needs an
+    STT model that handles it natively — most single-language models just drop the
+    switched half.</li>
+    <li>Accent coverage within one language varies by vendor — test with the actual
+    accents your callers have, not the vendor's demo clip.</li>
+  </ul></div>
+
   <div class="keynote"><p>In text you have as long as you need and a screen to prove
   yourself on. In voice you have half a second and nothing but your own sentence.
   Everything else in this drawer follows from those two losses.</p></div>
@@ -5871,6 +5985,13 @@ natural, past 1s it stops feeling like a conversation.</p>
     </div>
     <figcaption>Feature flags do the same job for a risky new capability, not just a prompt edit</figcaption>
   </figure>
+
+  <div class="note"><span class="tag">Beyond the deploy step itself</span>
+  Shipping is not the finish line. Before calling a launch done, also have: <strong>monitoring</strong>
+  (dashboards on the eval and cost metrics from Drawers 15 and 25, not just uptime),
+  <strong>cost alerts</strong> (a threshold that pages someone before a runaway bill, not
+  after), and <strong>an incident-response runbook</strong> (who gets paged, what the
+  rollback command actually is, and a place to write down what happened afterward).</div>
 
   <h3>Treat the prompt file like source code, because it is one <span class="bf">⚙ Backend</span></h3>
   <p>The staging→canary→rollout ladder above is what happens once you've decided a
@@ -6554,6 +6675,12 @@ total: 2687ms</code></pre>
       finance/health data, not a hypothetical one.</td></tr>
       <tr><td>Tool-use reliability</td><td>Not every model is equally reliable at Drawer 09's "ask, don't act" tool-call pattern — this is worth an actual eval (Drawer 15),
       not a leaderboard score, before you commit.</td></tr>
+      <tr><td>Team size / skill</td><td>A one-person team gains more from a framework's
+      defaults than a five-engineer team that would rather own every layer — this is a
+      staffing decision as much as a technical one.</td></tr>
+      <tr><td>Capability needed</td><td>Match the model tier to the task's actual demands
+      (simple lookup vs. multi-step reasoning) rather than defaulting to the largest model
+      available — the "capability needed" axis, not the "capability available" one.</td></tr>
     </tbody>
   </table></div>
 
@@ -7267,6 +7394,12 @@ total: 2687ms</code></pre>
     <figcaption>Teal = read-only, doesn't widen exposure alone · Red = every one needs a gate</figcaption>
   </figure>
 
+  <div class="note"><span class="tag">Regulatory landscape as of Aug 2026 — verify before quoting</span>
+  Every date and status below is accurate as of when this drawer was written. Regulatory
+  deadlines get deferred, laws get amended, and enforcement guidance changes — treat this
+  as the shape of the landscape, and check the primary source (the Act's official text, not
+  a summary) before quoting a specific date or obligation to a client or in a decision.</div>
+
   <h3>The EU AI Act, with real dates</h3>
   <div class="tw"><table>
     <thead><tr><th>Tier / obligation</th><th>Date</th><th>Status as of Aug 2026</th></tr></thead>
@@ -7379,7 +7512,7 @@ total: 2687ms</code></pre>
       <tr><td><strong>Shutdown / kill-switch</strong></td><td>An explicit mechanism to stop the system, that the system itself can't route around.</td><td>Drawer 28's blast-radius controls, restated as infrastructure — the switch has to work even if the agent's normal control flow is the thing misbehaving</td></tr>
     </tbody>
   </table></div>
-  <div class="note"><span class="tag">Why this belongs in a chatbot catalog at all</span>
+  <div class="note"><span class="tag">Why this belongs in The AI Catalog at all</span>
   You don't need frontier-scale capability for the underlying question — "is it doing
   what we actually meant" and "can we definitely stop it" — to matter. A support bot
   optimizing the wrong metric, or one nobody can cleanly turn off during an incident, is
@@ -7461,6 +7594,9 @@ total: 2687ms</code></pre>
   off, and the six-question framework (Drawer 07) structures almost any answer on demand.</p>
   <p class="lede">Answers written the way you should say them: the short answer first, then
   the detail. Interviewers cut you off — lead with the point.</p>
+
+  <div class="note"><span class="tag">Which drawers to combine, by the role you're framing for</span>
+  <strong>AI Engineer framing:</strong> Drawers 08 and 10, 14, 20, and 17 — the build and eval mechanics. Same drawers underneath either way; which subset you lead with is the only thing that changes.</div>
 
   <h3>The questions you will definitely get</h3>
 
@@ -7649,6 +7785,12 @@ total: 2687ms</code></pre>
   <div class="note"><span class="tag">Retelling beats re-reading</span>
   Recall strengthens memory; re-reading mostly builds a comfortable illusion that you know
   it. If you only do one session, do session 4 — explain it to somebody.</div>
+
+  <div class="note"><span class="tag">Deliberately out of scope</span>
+  This is a fixed schedule, not an adaptive quiz that tracks what you personally
+  missed — that's a deliberate boundary, not a gap. A static site can't run spaced-repetition
+  scoring across sessions; if you want that, feed these flashcards into a dedicated
+  spaced-repetition tool.</div>
 
   <h3>The dinner-party test</h3>
   <p>You know this properly when you can explain, to someone with no technical background,
