@@ -465,6 +465,8 @@
 
   <main id="main">
 
+
+
 <!-- ============ 1 START ============ -->
 <section class="page" id="p-start" aria-labelledby="h-start">
   <p class="eyebrow">Drawer 01 · Orientation</p>
@@ -531,6 +533,7 @@
 
   <div class="next" id="next-start"></div>
 </section>
+
 <!-- ============ 2 MENTAL MAP ============ -->
 <section class="page" id="p-map" aria-labelledby="h-map">
   <p class="eyebrow">Drawer 02 · The mental map</p>
@@ -803,6 +806,49 @@
 
   <div class="next" id="next-map"></div>
 </section>
+<style>
+  /* ladder */
+  .rung{display:grid;grid-template-columns:60px 1fr;gap:18px;padding:20px 0;
+    border-bottom:1px solid var(--rule)}
+  .rung:last-child{border-bottom:0}
+  .rung .lv{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--teal);padding-top:3px}
+  .rung h4{margin:0 0 6px;font-size:16.5px;font-family:var(--f-display);font-weight:600}
+  .rung p{margin:0 0 9px;color:var(--ink-2);font-size:14.5px}
+  .rung .sig{font-size:13.5px;color:var(--ink-3);border-left:2px solid var(--rule);
+    padding-left:12px;margin:0}
+  .rung.here{background:var(--teal-wash);margin:0 -16px;padding:20px 16px;border-radius:4px}
+  .rung.here .sig{border-left-color:var(--teal)}
+  /* word cards */
+  .words{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+    border-radius:4px;overflow:hidden;margin:24px 0}
+  .word{background:var(--card);padding:16px 18px;display:grid;
+    grid-template-columns:150px 1fr;gap:18px;align-items:baseline}
+  .word b{font-size:15px;font-weight:650}
+  .word b i{display:block;font-style:normal;font-family:var(--f-mono);font-size:10px;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+  .word span{font-size:14.5px;color:var(--ink-2)}
+  .word span em{font-style:italic;color:var(--teal);display:block;margin-top:4px;font-size:13.5px}
+  .word span small{display:block;margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+  @media (max-width:640px){.word{grid-template-columns:1fr;gap:6px}}
+  /* flashcards */
+  .fc{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;
+    margin:24px 0}
+  .flip{background:var(--card);border:1px solid var(--rule);border-radius:4px;
+    padding:16px 17px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);
+    min-height:104px;display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:var(--shadow)}
+  .flip:hover{border-color:var(--teal)}
+  .flip:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  .flip .q{font-size:14.5px;font-weight:600;line-height:1.45}
+  .flip .a{font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-top:10px;display:none}
+  .flip .hint{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3);margin-top:10px}
+  .flip.open .a{display:block}
+  .flip.open .hint{display:none}
+  .flip.open{background:var(--teal-wash);border-color:var(--teal)}
+</style>
+
 <!-- ============ 3 LADDER ============ -->
 <section class="page" id="p-ladder" aria-labelledby="h-ladder">
   <p class="eyebrow">Drawer 03 · Where you are</p>
@@ -900,6 +946,7 @@
 
   <div class="next" id="next-ladder"></div>
 </section>
+
 <!-- ============ 4 STORY ============ -->
 <section class="page" id="p-story" aria-labelledby="h-story">
   <p class="eyebrow">Drawer 04 · The one story</p>
@@ -991,6 +1038,7 @@
 
   <div class="next" id="next-story"></div>
 </section>
+
 <!-- ============ 5 WORDS ============ -->
 <section class="page" id="p-words" aria-labelledby="h-words">
   <p class="eyebrow">Drawer 05 · Vocabulary</p>
@@ -1131,6 +1179,8 @@
 
   <div class="next" id="next-underhood"></div>
 </section>
+
+
 <!-- ============ 7 SIX QUESTIONS ============ -->
 <section class="page" id="p-six" aria-labelledby="h-six">
   <p class="eyebrow">Drawer 07 · The framework</p>
@@ -1350,6 +1400,7 @@
 
   <div class="next" id="next-six"></div>
 </section>
+
 <!-- ============ 8 RAG BASICS ============ -->
 <section class="page" id="p-rag" aria-labelledby="h-rag">
   <p class="eyebrow">Drawer 08 · Knowledge</p>
@@ -2014,6 +2065,7 @@ never clean enough to support any of them.</p></div>
 
   <div class="next" id="next-rag"></div>
 </section>
+
 <!-- ============ 9 TOOLS & AGENTS ============ -->
 <section class="page" id="p-agents" aria-labelledby="h-agents">
   <p class="eyebrow">Drawer 09 · Action</p>
@@ -2250,6 +2302,7 @@ never clean enough to support any of them.</p></div>
 
   <div class="next" id="next-agents"></div>
 </section>
+
 <!-- ============ 10 RAG ADVANCED ============ -->
 <section class="page" id="p-rag2" aria-labelledby="h-rag2">
   <p class="eyebrow">Drawer 10 · Knowledge, advanced</p>
@@ -2932,6 +2985,7 @@ filter comes off.</p>
 
   <div class="next" id="next-rag2"></div>
 </section>
+
 <!-- ============ 11 AI REASONING ============ -->
 <section class="page" id="p-reasoning" aria-labelledby="h-reasoning">
   <p class="eyebrow">Drawer 11 · How the model thinks</p>
@@ -3082,6 +3136,8 @@ filter comes off.</p>
 
   <div class="next" id="next-reasoning"></div>
 </section>
+
+
 <!-- ============ 12 AGENT LIFECYCLE ============ -->
 <section class="page" id="p-lifecycle" aria-labelledby="h-lifecycle">
   <p class="eyebrow">Drawer 12 · Inside one agentic turn</p>
@@ -3415,6 +3471,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-lifecycle"></div>
 </section>
+
 <!-- ============ 13 MEMORY SYSTEMS ============ -->
 <section class="page" id="p-memory" aria-labelledby="h-memory">
   <p class="eyebrow">Drawer 13 · What it remembers, and for how long</p>
@@ -3508,6 +3565,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-memory"></div>
 </section>
+
 <!-- ============ 14 CONTEXT ENGINEERING ============ -->
 <section class="page" id="p-ctx" aria-labelledby="h-ctx">
   <p class="eyebrow">Drawer 14 · Attention</p>
@@ -3787,6 +3845,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-ctx"></div>
 </section>
+
 <!-- ============ 15 EVALUATION ============ -->
 <section class="page" id="p-eval" aria-labelledby="h-eval">
   <p class="eyebrow">Drawer 15 · Proof</p>
@@ -4291,6 +4350,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-safe"></div>
 </section>
+
 <!-- ============ 17 THE COMPLETE PIPELINE ============ -->
 <section class="page" id="p-flow" aria-labelledby="h-flow">
   <p class="eyebrow">Drawer 17 · Putting it together</p>
@@ -4537,6 +4597,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-flow"></div>
 </section>
+
 <!-- ============ 18 MULTI-AGENT ARCHITECTURE ============ -->
 <section class="page" id="p-multiagent" aria-labelledby="h-multiagent">
   <p class="eyebrow">Drawer 18 · When one agent stops being enough</p>
@@ -5065,6 +5126,8 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-automation"></div>
 </section>
+
+
 <!-- ============ 20 BUILD DAY ============ -->
 <section class="page" id="p-build" aria-labelledby="h-build">
   <p class="eyebrow">Drawer 20 · Doing it</p>
@@ -5158,6 +5221,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-build"></div>
 </section>
+
 <!-- ============ 21 FRONTEND ============ -->
 <section class="page" id="p-front" aria-labelledby="h-front">
   <p class="eyebrow">Drawer 21 · What the user actually touches</p>
@@ -5382,6 +5446,7 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-front"></div>
 </section>
+
 <!-- ============ 22 AI PERSONALIZATION ============ -->
 <section class="page" id="p-personalization" aria-labelledby="h-personalization">
   <p class="eyebrow">Drawer 22 · Making it feel like it knows you</p>
@@ -5485,6 +5550,8 @@ how confident the agent sounds.</div>
 
   <div class="next" id="next-personalization"></div>
 </section>
+
+
 <!-- ============ 23 WHEN THE INTERFACE IS A PHONE CALL ============ -->
 <section class="page" id="p-voice" aria-labelledby="h-voice">
   <p class="eyebrow">Drawer 23 · Voice</p>
@@ -5884,6 +5951,7 @@ natural, past 1s it stops feeling like a conversation.</p>
 
   <div class="next" id="next-voice"></div>
 </section>
+
 <!-- ============ 24 SHIPPING IT ============ -->
 <section class="page" id="p-ship" aria-labelledby="h-ship">
   <p class="eyebrow">Drawer 24 · Infra, deployment &amp; who's allowed to ask</p>
@@ -6088,6 +6156,7 @@ natural, past 1s it stops feeling like a conversation.</p>
 
   <div class="next" id="next-ship"></div>
 </section>
+
 <!-- ============ 25 RUNNING IT ============ -->
 <section class="page" id="p-ops" aria-labelledby="h-ops">
   <p class="eyebrow">Drawer 25 · Cost, observability &amp; abuse prevention</p>
@@ -6598,6 +6667,8 @@ total: 2687ms</code></pre>
 
   <div class="next" id="next-ops"></div>
 </section>
+
+
 <!-- ============ 26 CHOOSING YOUR STACK ============ -->
 <section class="page" id="p-stack" aria-labelledby="h-stack">
   <p class="eyebrow">Drawer 26 · Build vs. buy, model vs. model</p>
@@ -6934,6 +7005,8 @@ total: 2687ms</code></pre>
 
   <div class="next" id="next-stack"></div>
 </section>
+
+
 <!-- ============ 27 PROVING IT STAYS GOOD ============ -->
 <section class="page" id="p-evalgov" aria-labelledby="h-evalgov">
   <p class="eyebrow">Drawer 27 · Eval as an engineering artifact</p>
@@ -7596,6 +7669,7 @@ total: 2687ms</code></pre>
 
   <div class="next" id="next-lawgov"></div>
 </section>
+
 <!-- ============ 29 INTERVIEW ============ -->
 <section class="page" id="p-int" aria-labelledby="h-int">
   <p class="eyebrow">Drawer 29 · Saying it well</p>
@@ -7769,6 +7843,7 @@ total: 2687ms</code></pre>
 
   <div class="next" id="next-int"></div>
 </section>
+
 <!-- ============ 30 RECALL ============ -->
 <section class="page" id="p-recall" aria-labelledby="h-recall">
   <p class="eyebrow">Drawer 30 · Making it stick</p>
@@ -7841,6 +7916,52 @@ THE 5 TRAPS
 
   <div class="next" id="next-recall"></div>
 </section>
+<!--SLOT-A-->
+<style>
+  .lab{display:grid;gap:14px;margin:24px 0}
+  .lab-box{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:18px 20px}
+  .lab-box h4{margin:0 0 4px;font-size:14px}
+  .lab-box .sub{font-size:13px;color:var(--ink-3);margin:0 0 14px}
+  .lab-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .lab-row input[type=file]{max-width:100%;min-width:0;flex:1 1 auto}
+  .btn{background:var(--teal);color:#fff;border:1px solid var(--teal);border-radius:4px;
+    padding:9px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .btn:hover{background:var(--teal-2);border-color:var(--teal-2)}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--rule);font-weight:400}
+  .btn.ghost:hover{border-color:var(--teal);color:var(--teal)}
+  .lab textarea,.lab input[type=text]{width:100%;font:inherit;font-size:14px;
+    background:var(--paper);color:var(--ink);border:1px solid var(--rule);
+    border-radius:4px;padding:10px 12px}
+  .lab textarea{min-height:130px;font-family:var(--f-mono);font-size:12.5px;line-height:1.55;
+    resize:vertical}
+  .lab input[type=text]:focus,.lab textarea:focus{outline:2px solid var(--teal);
+    outline-offset:-1px;border-color:var(--teal)}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .chip{background:var(--teal-wash);color:var(--teal);border:1px solid var(--teal);
+    border-radius:999px;padding:4px 11px;font-family:var(--f-mono);font-size:10.5px;
+    letter-spacing:.05em;cursor:pointer}
+  .chip.plain{background:var(--paper-2);color:var(--ink-2);border-color:var(--rule);cursor:default}
+  .hit{border:1px solid var(--rule);border-radius:4px;background:var(--card);
+    padding:13px 15px;margin-bottom:9px}
+  .hit-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+    margin-bottom:8px;flex-wrap:wrap}
+  .hit-id{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-3)}
+  .hit-sc{font-family:var(--f-mono);font-size:11px;color:var(--teal);font-variant-numeric:tabular-nums}
+  .hit-tx{font-size:13.5px;line-height:1.55;color:var(--ink-2);white-space:pre-wrap}
+  .bar{height:3px;background:var(--rule-2);border-radius:2px;overflow:hidden;margin-top:9px}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .empty{border:1px dashed var(--stamp);background:var(--stamp-wash);border-radius:4px;
+    padding:15px 17px;font-size:14px}
+  .empty b{color:var(--stamp)}
+  .lab pre{margin:0;max-height:290px;overflow:auto;font-size:11.5px;background:var(--paper);
+    white-space:pre-wrap;word-break:break-word}
+  .stepnum{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;
+    color:var(--teal);border:1px solid var(--teal);border-radius:3px;padding:1px 6px;
+    margin-right:8px;vertical-align:2px}
+</style>
+
 <!-- ============ 31 TRY IT ============ -->
 <section class="page" id="p-lab" aria-labelledby="h-lab">
   <p class="eyebrow">Drawer 31 · Activity</p>
