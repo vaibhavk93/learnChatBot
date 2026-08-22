@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Chatbot Catalog</title>
+<title>The AI Catalog</title>
 <meta name="description" content="Learn to build chatbots from level 0 to expert: one story, ten words, six questions, five traps.">
 <meta name="color-scheme" content="light dark">
 <style>*{box-sizing:border-box}body{margin:0}img{max-width:100%}</style>
@@ -447,7 +447,7 @@
 <div class="shell">
   <aside class="drawer">
     <div class="brand">
-      <h1>The Chatbot Catalog</h1>
+      <h1>The AI Catalog</h1>
       <p>Build one · Explain one · Interview</p>
     </div>
     <div class="mnav-wrap">
@@ -4108,6 +4108,75 @@ how confident the agent sounds.</div>
   anymore. Working state needs an explicit "clear" the same way a form does, not just an
   ever-growing pile of everything mentioned so far.</div>
 
+  <h3>The order a production prompt actually assembles in</h3>
+  <p>Every piece discussed above has to land in a specific order before the model sees it
+  — get the order wrong and the model weighs the wrong thing as "most important," since
+  position in the prompt is itself a signal.</p>
+  <div class="lane col">
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">1 · System prompt</span>
+        <span class="nd-t">Who it is, what it's for — set once, rarely changes</span>
+      </button>
+      <div class="nd-d"><p>The stable identity and task framing. This is the part
+      prompt-caching (Drawer 23) is built around, because it's identical across
+      thousands of requests.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">2 · Safety rules</span>
+        <span class="nd-t">What it must refuse, and how to refuse</span>
+      </button>
+      <div class="nd-d"><p>Stated early and explicitly, not buried — a rule the model
+      has to search for among other instructions is a rule it will eventually
+      miss.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">3 · Conversation history</span>
+        <span class="nd-t">What's already been said — trimmed, not raw</span>
+      </button>
+      <div class="nd-d"><p>Summarized or windowed per the memory-management options
+      above, not pasted in full past a few turns.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">4 · Retrieved context</span>
+        <span class="nd-t">The cards Drawer 07 fetched — marked clearly as data</span>
+      </button>
+      <div class="nd-d"><p>Labelled as untrusted, retrieved data, never as
+      instructions — this labelling is the actual defense against the
+      retrieved-content injection covered in Drawer 16.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">5 · The user's question</span>
+        <span class="nd-t">Last, closest to where generation starts</span>
+      </button>
+      <div class="nd-d"><p>Putting the actual question near the end, right before
+      generation, keeps it freshest in the model's attention — burying it earlier
+      in a long prompt measurably hurts answer quality.</p></div>
+    </div>
+    <div class="arw"><i>↓</i></div>
+    <div class="nd">
+      <button type="button" class="nd-h" aria-expanded="false">
+        <span class="nd-k">6 · Output format</span>
+        <span class="nd-t">How to answer — schema, length, citation style</span>
+      </button>
+      <div class="nd-d"><p>Stated last so it's the most recent instruction the model
+      reads before it starts writing — the same "recency" logic as putting the
+      question last.</p></div>
+    </div>
+  </div>
+  <div class="note"><span class="tag">Where each piece is covered in depth</span>
+  This is the assembly order, not new material — steps 1–2 are Drawer 16 (safety), step 3
+  is the memory-management options above, step 4 is Drawer 07/09 (retrieval), and step 6
+  is Drawer 08's structured-output guidance.</div>
+
   <div class="keynote"><p>More context is not automatically better context. A scratchpad,
   a summary, or a sub-agent's one-paragraph answer often beats stuffing everything into the
   window directly.</p></div>
@@ -4454,6 +4523,32 @@ how confident the agent sounds.</div>
   2025 edition. Note that #7 and #8 are new — and #8 exists because so many teams now use
   RAG rather than fine-tuning.</p>
 
+  <h3>Two controls that get named but rarely explained</h3>
+  <div class="card">
+    <p class="card-label">Encryption — where, not just whether</p>
+    <p>"We encrypt data" isn't one control, it's two, and interviewers listen for both.
+    <strong>In transit</strong> — TLS on every hop: user to your app, your app to the
+    model API, your app to the vector store. <strong>At rest</strong> — the vector
+    database, chat logs, and any cached prompts sit encrypted on disk, so a stolen
+    backup or a misconfigured storage bucket doesn't hand over raw customer data. The
+    gap most teams miss isn't transit — it's assuming "the cloud provider handles
+    encryption at rest" without checking it's actually turned on for the specific
+    service they provisioned.</p>
+  </div>
+  <div class="card">
+    <p class="card-label">Jailbreak detection — pattern-matching, not mind-reading</p>
+    <p>A jailbreak is an attempt to talk the model out of its own safety rules
+    ("ignore your instructions and...", role-play framings that ask it to "pretend"
+    the rules don't apply, or a long buildup designed to erode a refusal turn by turn).
+    Detection in production is usually a classifier or a second, cheaper model call
+    that scores the incoming message for jailbreak-shaped patterns <em>before</em> the
+    main model ever sees it — the same "check before it reaches the model" logic as
+    the prompt-injection defenses above, aimed at a different goal (breaking rules,
+    not hijacking output). It's a filter, not a guarantee: budget for it catching most
+    known patterns, not all novel ones, and pair it with the refusal-by-design system
+    prompt rather than relying on either alone.</p>
+  </div>
+
   <h3>Handling personal data</h3>
   <ul>
     <li>Mask it before it reaches logs or any third-party model.</li>
@@ -4777,6 +4872,38 @@ how confident the agent sounds.</div>
       <tr><td>9 · Evaluate</td><td>Drawer 15 — proof, and the level 2→3 jump</td></tr>
     </tbody>
   </table></div>
+
+  <h3>If someone draws it as Router → Planner → Memory → Retriever → Tools → LLM →
+  Validator → Output</h3>
+  <p>You'll see this architecture named differently in blog posts, vendor decks, and some
+  interviews — a flat box-and-arrow diagram with generic component names instead of this
+  drawer's nine numbered steps. It's the same system. Here's the direct translation, so
+  you're never caught not recognizing your own architecture under someone else's labels:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Generic name</th><th>Same thing, in this drawer</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Router</strong></td><td>Step 2 · Route — deciding retrieval vs. tool
+      vs. both, before anything runs</td></tr>
+      <tr><td><strong>Planner</strong></td><td>Step 1 · Understand, plus Drawer 12's own
+      plan/decompose steps for anything multi-step — this pipeline shows one question's
+      path; Drawer 12 zooms into what "Understand" does when the question needs several
+      moves</td></tr>
+      <tr><td><strong>Memory</strong></td><td>Not a numbered step here — it's a service
+      the pipeline reads from and writes to, mainly at step 1 (recall) and step 8 (update
+      after responding). Drawer 13 is the dedicated treatment</td></tr>
+      <tr><td><strong>Retriever</strong></td><td>Step 3 · Retrieve</td></tr>
+      <tr><td><strong>Tools</strong></td><td>Step 4 · Act</td></tr>
+      <tr><td><strong>LLM</strong></td><td>Step 6 · Generate (and quietly, steps 1 and 2
+      as well — routing and understanding are usually LLM calls too)</td></tr>
+      <tr><td><strong>Validator</strong></td><td>Step 7 · Check</td></tr>
+      <tr><td><strong>Output</strong></td><td>Step 8 · Deliver</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">Why this catalog doesn't draw it that way</span>
+  Generic diagrams flatten "memory" and "planning" into same-sized boxes as "retrieval" or
+  "generation," which overstates how much new machinery they actually are — memory is a
+  read/write pattern around the same nine steps, not an extra stage every request passes
+  through. Naming both versions is the point: recognize the architecture either way.</div>
 
   <div class="keynote"><p>Every step here is either shaping what the model is allowed to
   know, or checking what it's about to say. When a chatbot misbehaves, it's almost always
