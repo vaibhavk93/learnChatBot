@@ -503,8 +503,8 @@
       <tr><td class="num">1 hour</td><td>Drawers 02 and 08</td><td>Hold your own in a technical conversation</td></tr>
       <tr><td class="num">1 day</td><td>Drawer 20</td><td>Have a working investor-relations bot</td></tr>
       <tr><td class="num">1 week</td><td>Drawers 09 and 10, 12–16</td><td>Go past "it works" to "I can prove how well"</td></tr>
-      <tr><td class="num">1 month</td><td>Drawers 21, 22–23</td><td>Take a prototype to something real users can hit</td></tr>
-      <tr><td class="num">Ongoing</td><td>Drawers 30 and 30</td><td>Interview for a chatbot role</td></tr>
+      <tr><td class="num">1 month</td><td>Drawers 21 and 22</td><td>Take a prototype to something real users can hit</td></tr>
+      <tr><td class="num">Ongoing</td><td>Drawer 29</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
 
@@ -513,6 +513,8 @@
   It is the single most useful thing in this catalog, and it takes ninety seconds to learn.
   If you want to know how far you have to go, <strong>Drawer 03</strong> is an honest ladder
   from level 0 to expert.</div>
+
+  
 
   <div class="keynote"><p>Debug retrieval before you debug the AI, and talk about testing
   and failure modes before anyone asks. Those two habits separate people who've actually
@@ -1081,6 +1083,22 @@
   specialists best suited for it. Same idea, one level: MoE routes at the level of a
   single model's internals; multi-agent routes at the level of whole agents. Knowing the
   name lets you make that connection out loud in an interview.</div>
+
+  <h3>The math words, in one line each — not to compute, just to name</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Term</th><th>What it means, in one line</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Vector</strong></td><td>A list of numbers representing meaning — an embedding (above) <em>is</em> a vector; "similar meaning" literally means "nearby vectors."</td></tr>
+      <tr><td><strong>Cosine similarity</strong></td><td>The standard way to measure "nearby" between two vectors — Drawer 08's whole retrieval step is this one calculation, run against every chunk.</td></tr>
+      <tr><td><strong>Probability distribution</strong></td><td>What the model actually outputs at each step isn't one word — it's a likelihood over every possible next word. Temperature (Drawer 11) reshapes this distribution before a word gets picked from it.</td></tr>
+      <tr><td><strong>Loss function / gradient descent</strong></td><td>Training in one sentence: measure how wrong a prediction was (the loss), then nudge every number in the network slightly to make it less wrong next time — backpropagation, repeated billions of times.</td></tr>
+      <tr><td><strong>Overfitting</strong></td><td>The model memorized its training examples instead of learning the general pattern — good on the exact test set, bad on anything slightly different. The reason a golden set (Drawer 15) needs real production questions, not just the easy ones.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">Why this table exists</span>
+  Not to make you build a model — nothing else in this catalog requires it — but so that
+  when a consultant or interviewer says "the loss landscape" or "cosine distance" you can
+  place it instantly instead of nodding past it.</div>
 
   <div class="keynote"><p>This drawer exists so a term never stops you cold, not so you
   can build any of it. Recognize it, place it in the right layer, keep moving — that's
@@ -2563,6 +2581,14 @@ never clean enough to support any of them.</p></div>
     </tbody>
   </table></div>
 
+  <div class="note"><span class="tag">Picking an embedding model when queries are code-mixed</span>
+  Not every embedding model was trained on Hinglish or romanized Hindi — an English-only
+  model under-performs on code-mixed queries with no error message, just quietly worse
+  recall. Check the model's stated language coverage before adopting it, not after the
+  symptom row above shows up in production; switching to a multilingual embedding model
+  (the vendor page will say so explicitly) is the fix, not a bigger chunk size or a
+  smarter prompt — the row above is a decision, not a mystery.</div>
+
   <div class="note"><span class="tag">What retrieval costs when it works — four lines for finance</span>
   <strong>One-time corpus embedding</strong> — scales with corpus size, paid again on every
   ingestion-decision change · <strong>Per-query embedding + retrieval</strong> — scales with
@@ -2935,6 +2961,22 @@ filter comes off.</p>
   Route to a reasoning model deliberately, the same way you'd route a cheap model to easy
   queries and a bigger one only when needed. "Always use the smartest model" and "never
   use it" are both wrong; the job is classifying which turns actually need it.</div>
+
+  <h3>The trade-off in one table — what "smarter" actually costs</h3>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Standard model</th><th>Reasoning model (test-time compute)</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Latency</strong></td><td>Sub-second to a couple seconds</td><td>Several seconds to tens of seconds — the "thinking" happens before any token streams back</td></tr>
+      <tr><td><strong>Cost per call</strong></td><td>Baseline</td><td>Often 3–10x+ the tokens, since the hidden reasoning trace is billed too, not just the visible answer</td></tr>
+      <tr><td><strong>Quality gain</strong></td><td>Fine for lookups, summaries, routine questions</td><td>Meaningfully better only on genuinely multi-step problems — the gain is close to zero on easy questions</td></tr>
+      <tr><td><strong>Right call</strong></td><td>Default for nearly all traffic</td><td>Only after a cheap routing step flags the question as hard — never as the universal default</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><span class="tag">The number that actually matters for a budget</span>
+  If 5% of turns are genuinely hard, routing only those to a reasoning model costs a
+  fraction of routing everything — the same "cheap model for most, expensive one for the
+  hard cases" logic that applies to model choice generally, applied here to a single
+  reasoning decision instead of a whole conversation.</div>
 
   <h3>The kinds of reasoning a system might need</h3>
   <p>"Can it reason?" is underspecified. These are different capabilities, and a system
