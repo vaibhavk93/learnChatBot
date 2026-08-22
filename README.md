@@ -1,11 +1,17 @@
-# The AI Catalog
+# The Chatbot Catalog
 
-An interactive, single-page guide to building and understanding chatbots and AI agents —
-one story, ten words, six questions, five traps, and 37 drawers covering RAG, agents,
-context engineering, evaluation, safety, the frontend, infra/deployment, running one in
-production, and the AI Product Manager / consultant track.
+An interactive, single-page guide to building and understanding chatbots specifically —
+one story, ten words, six questions, five traps, and 31 drawers covering RAG, agents,
+context engineering, evaluation, safety, the frontend, infra/deployment, and running one
+in production.
 
 **Live:** https://vaibhavk93.github.io/learnChatBot/
+
+This is a scoped-down sibling of [The AI Catalog](https://github.com/vaibhavk93/TheAICatalog):
+same source, same build, minus the drawers about generative media, document/image
+understanding, and AI-leadership topics (platform strategy, product roadmap, pricing,
+outside-consulting) that go beyond building one chatbot. If you want the full version,
+that's the other repo.
 
 ## Files
 
@@ -21,3 +27,11 @@ production, and the AI Product Manager / consultant track.
 ```bash
 python3 build_docs.py
 ```
+
+## Where this comes from
+
+Extracted from `site/catalog.html` in the main working repo via `build_chatbot_site.py`
+(kept there, not duplicated here) — a script, not a hand copy, so this site can be
+regenerated whenever the source catalog changes instead of drifting out of sync. See
+that repo's `handoff.md` for the exact drawer include/exclude list and the reasoning
+behind it.
