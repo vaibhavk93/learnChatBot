@@ -1,8 +1,9 @@
-# The Chatbot Catalog
+# The AI Catalog
 
-An interactive, single-page guide to building and understanding chatbots — one story, ten
-words, six questions, five traps, and 20 drawers covering RAG, agents, context engineering,
-evaluation, safety, the frontend, infra/deployment, and running one in production.
+An interactive, single-page guide to building and understanding chatbots and AI agents —
+one story, ten words, six questions, five traps, and 37 drawers covering RAG, agents,
+context engineering, evaluation, safety, the frontend, infra/deployment, running one in
+production, and the AI Product Manager / consultant track.
 
 **Live:** https://vaibhavk93.github.io/learnChatBot/
 
