@@ -515,8 +515,8 @@
   <p class="eyebrow">Drawer 02 · The mental map</p>
   <h2 id="h-map">One picture to hang everything on</h2>
   <p class="tldr"><b>TL;DR</b> Five branches (Assistant, Knowledge, Action, Safety, Proof),
-  three failure modes, three fixes — and trust is a loop you keep running, not a box you
-  tick once.</p>
+  three failure modes, three fixes, five hard boundaries — and trust is a loop you keep
+  running, not a box you tick once.</p>
   <p class="lede">This is the map. Every other drawer is a zoom-in on one branch of it.
   Come back here whenever a new term shows up and you're not sure where it belongs.</p>
 
@@ -694,41 +694,81 @@
   line — testing tells you what to fix, you fix it, you test again. <strong>A chatbot is a
   thing you keep, not a thing you ship.</strong></div>
 
+  <h3>What's genuinely outside this map</h3>
+  <p>Every other section here is about what the system does. This is the one section
+  about what it structurally does not — the boundaries worth having memorized before a
+  stakeholder conversation, not scattered as caveats across thirty other drawers. Every
+  claim below is already made elsewhere in this catalog; this just puts the five in one
+  place.</p>
+  <div class="six" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+    <div><b>Precision tasks</b><em>Not reliably</em><small>Arithmetic and exact
+    calculation done "in its head" fail often enough to matter — hand them to a tool
+    instead of trusting the model's own math.</small></div>
+    <div><b>Unaudited trust</b><em>Not without structure</em><small>An answer with no
+    citation, no grounding check, and no trace of which source it came from cannot be
+    verified after the fact — only trust what was built to be checked.</small></div>
+    <div><b>Unbounded autonomy</b><em>Not safely</em><small>The model asks; your code
+    decides. Anything that changes real state needs a gate — autonomy without one is a
+    blast radius nobody sized on purpose.</small></div>
+    <div><b>Neutral judgment</b><em>Not by default</em><small>A general-purpose model
+    reflects the biases in what it was trained on. Fairness takes active measurement and
+    mitigation — it is not a property you get for free.</small></div>
+    <div><b>Current knowledge</b><em>Not without retrieval</em><small>Training has a
+    cutoff date. Ask about anything since, or anything internal to your company, and a
+    model with no retrieval simply doesn't know — and may not say so.</small></div>
+  </div>
+  <div class="warn"><span class="tag">Two different kinds of "can't," worth telling apart</span>
+  Some of these are <strong>structural</strong> — true of how these systems work, not
+  fixable by a better model next quarter (unbounded autonomy without a gate is unsafe by
+  construction). Others are <strong>engineering gaps</strong> that narrow every year
+  (context windows keep growing, reasoning keeps improving). Telling a stakeholder "we
+  can't do X" without knowing which kind is the difference between a boundary you can
+  plan around and one you'll be wrong about in six months.</div>
+
   <h3>Where each drawer sits on the map</h3>
   <div class="tw"><table>
     <thead><tr><th>Branch</th><th>Drawer</th><th>The one thing it teaches</th></tr></thead>
     <tbody>
       <tr><td>Assistant</td><td>04 · The one story</td><td>Why it behaves the way it does</td></tr>
       <tr><td>All five</td><td>05 · The ten words</td><td>The vocabulary</td></tr>
-      <tr><td>All five</td><td>06 · Six questions</td><td>How to structure any answer</td></tr>
-      <tr><td>Knowledge</td><td>07 · How RAG works</td><td>The librarian's method</td></tr>
-      <tr><td>Action</td><td>08 · Tools, agents &amp; MCP</td><td>Letting it do things safely</td></tr>
-      <tr><td>Knowledge</td><td>09 · RAG, advanced</td><td>Making retrieval genuinely good</td></tr>
-      <tr><td>Knowledge</td><td>10 · Reading pictures and documents</td><td>Vision and document AI — when a page isn't just text</td></tr>
-      <tr><td>Action</td><td>11 · Making pictures and video</td><td>Generative image/video — not just reading media, making it</td></tr>
-      <tr><td>Assistant</td><td>12 · The agent lifecycle</td><td>How it actually "thinks," step by step</td></tr>
-      <tr><td>Assistant</td><td>13 · Memory systems</td><td>Four kinds of memory, not one</td></tr>
-      <tr><td>Assistant</td><td>14 · Context engineering</td><td>Why more context can mean worse answers</td></tr>
-      <tr><td>Proof</td><td>15 · Evaluation</td><td>Knowing how good it actually is</td></tr>
-      <tr><td>Safety</td><td>16 · Traps &amp; security</td><td>What goes wrong, and who exploits it</td></tr>
-      <tr><td>All five</td><td>17 · The complete pipeline</td><td>The same system, read as one question's journey</td></tr>
-      <tr><td>Action</td><td>18 · Multi-agent architecture</td><td>Splitting one agent into a supervisor plus specialists</td></tr>
-      <tr><td>All five</td><td>19 · Build day</td><td>Doing it for real, in one day</td></tr>
-      <tr><td>Assistant</td><td>20 · The frontend</td><td>What the user actually touches</td></tr>
-      <tr><td>Action</td><td>21 · When the interface is a phone call</td><td>Voice — latency, turn-taking and interruption</td></tr>
-      <tr><td>Action</td><td>22 · Shipping it</td><td>Infra, deployment, and who's allowed to ask</td></tr>
-      <tr><td>Proof</td><td>23 · Running it</td><td>Cost, observability and abuse prevention</td></tr>
-      <tr><td>All five</td><td>24 · Choosing your stack</td><td>Framework vs. raw SDK, model vs. model</td></tr>
-      <tr><td>Proof</td><td>25 · Proving it stays good</td><td>Evals in CI — not just that it worked once</td></tr>
-      <tr><td>Safety</td><td>26 · Who's allowed to stop it</td><td>Governance, incident response, and what the law already says</td></tr>
-      <tr><td>All five</td><td>27 · Product roadmap</td><td>FAQ bot to multi-agent platform, six phases</td></tr>
-      <tr><td>All five</td><td>28 · Betting on AI</td><td>Pricing, margin, and knowing when to fold — the AI PM lens</td></tr>
-      <tr><td>All five</td><td>29 · Being the outside expert</td><td>The AI consulting lens — diagnosing someone else's system</td></tr>
-      <tr><td>Proof</td><td>30 · Interview</td><td>Saying it well</td></tr>
-      <tr><td>All five</td><td>31 · Recall</td><td>Making it stick</td></tr>
-      <tr><td>Knowledge</td><td>32 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
+      <tr><td>All five</td><td>06 · Under the hood, briefly <span class="chip plain">new</span></td><td>Data, ML, deep learning, transformers — recognize the word, not build it</td></tr>
+      <tr><td>All five</td><td>07 · Six questions</td><td>How to structure any answer</td></tr>
+      <tr><td>Knowledge</td><td>08 · How RAG works</td><td>The librarian's method</td></tr>
+      <tr><td>Action</td><td>09 · Tools, agents &amp; MCP</td><td>Letting it do things safely</td></tr>
+      <tr><td>Knowledge</td><td>10 · RAG, advanced</td><td>Making retrieval genuinely good</td></tr>
+      <tr><td>Knowledge</td><td>11 · Reading pictures and documents</td><td>Vision and document AI — when a page isn't just text</td></tr>
+      <tr><td>Action</td><td>12 · Making pictures and video</td><td>Generative image/video — not just reading media, making it</td></tr>
+      <tr><td>Assistant</td><td>13 · AI Reasoning <span class="chip plain">new</span></td><td>Inference settings vs. reasoning models — two different levers</td></tr>
+      <tr><td>Assistant</td><td>14 · The agent lifecycle</td><td>How it actually "thinks," step by step</td></tr>
+      <tr><td>Assistant</td><td>15 · Memory systems</td><td>Four kinds of memory, not one</td></tr>
+      <tr><td>Assistant</td><td>16 · Context engineering</td><td>Why more context can mean worse answers</td></tr>
+      <tr><td>Proof</td><td>17 · Evaluation</td><td>Knowing how good it actually is</td></tr>
+      <tr><td>Safety</td><td>18 · Traps &amp; security</td><td>What goes wrong, and who exploits it</td></tr>
+      <tr><td>All five</td><td>19 · The complete pipeline</td><td>The same system, read as one question's journey</td></tr>
+      <tr><td>Action</td><td>20 · Multi-agent architecture</td><td>Splitting one agent into a supervisor plus specialists</td></tr>
+      <tr><td>Action</td><td>21 · AI Automation <span class="chip plain">new</span></td><td>Rule-based → workflow → agentic → autonomous, one spectrum</td></tr>
+      <tr><td>All five</td><td>22 · Build day</td><td>Doing it for real, in one day</td></tr>
+      <tr><td>Assistant</td><td>23 · The frontend</td><td>What the user actually touches</td></tr>
+      <tr><td>Assistant</td><td>24 · AI Personalization <span class="chip plain">new</span></td><td>Memory with a product opinion about how far it steers behavior</td></tr>
+      <tr><td>Action</td><td>25 · When the interface is a phone call</td><td>Voice — latency, turn-taking and interruption</td></tr>
+      <tr><td>Action</td><td>26 · Shipping it</td><td>Infra, deployment, and who's allowed to ask</td></tr>
+      <tr><td>Proof</td><td>27 · Running it</td><td>Cost, observability and abuse prevention</td></tr>
+      <tr><td>All five</td><td>28 · Choosing your stack</td><td>Framework vs. raw SDK, model vs. model</td></tr>
+      <tr><td>All five</td><td>29 · AI Platform Strategy <span class="chip plain">new</span></td><td>Build the shared infrastructure once, or let every team rebuild it</td></tr>
+      <tr><td>Proof</td><td>30 · Proving it stays good</td><td>Evals in CI — not just that it worked once</td></tr>
+      <tr><td>Safety</td><td>31 · Who's allowed to stop it</td><td>Governance, incident response, and what the law already says</td></tr>
+      <tr><td>All five</td><td>32 · Product roadmap</td><td>FAQ bot to multi-agent platform, six phases</td></tr>
+      <tr><td>All five</td><td>33 · Betting on AI</td><td>Pricing, margin, and knowing when to fold — the AI PM lens</td></tr>
+      <tr><td>All five</td><td>34 · Being the outside expert</td><td>The AI consulting lens — diagnosing someone else's system</td></tr>
+      <tr><td>Proof</td><td>35 · Interview</td><td>Saying it well</td></tr>
+      <tr><td>All five</td><td>36 · Recall</td><td>Making it stick</td></tr>
+      <tr><td>Knowledge</td><td>37 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
     </tbody>
   </table></div>
+  <p style="font-size:13px;color:var(--ink-3)">Table is hand-maintained, not auto-generated
+  from <code>PAGES</code> — if a drawer count in the eyebrow above ever disagrees with the
+  row count here, this table is the one that's gone stale. Re-derive it from the live
+  <code>PAGES</code> array, don't hand-patch individual rows.</p>
 
   <div class="keynote"><p>Trust is a loop, not a finish line. The dotted arrow feeding
   evaluation back into the fixes is the most important part of this diagram, not a
