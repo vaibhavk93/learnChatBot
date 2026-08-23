@@ -477,7 +477,7 @@
   about one convincingly. You need one story, ten words, six questions, and five warnings.
   This catalog holds all of them, one drawer at a time.</p>
 
-  <p class="lede">Zoomed out, the 40 drawers move through one arc: learn the
+  <p class="lede">Zoomed out, the 41 drawers move through one arc: learn the
   vocabulary → build the system → measure whether it works → operate it in
   production → govern the risk. Later drawers assume earlier ones, in that order.</p>
 
@@ -510,7 +510,7 @@
       <tr><td class="num">1 day</td><td>Drawer 22</td><td>Have a working investor-relations bot</td></tr>
       <tr><td class="num">1 week</td><td>Drawers 10 and 12, and Drawers 13 and 16</td><td>Go past "it works" to "I can prove how well"</td></tr>
       <tr><td class="num">1 month</td><td>Drawers 23 and 24</td><td>Take a prototype to something real users can hit</td></tr>
-      <tr><td class="num">Ongoing</td><td>Drawer 32</td><td>Interview for a chatbot role</td></tr>
+      <tr><td class="num">Ongoing</td><td>Drawer 33</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
 
@@ -787,9 +787,11 @@
       <tr><td>All five</td><td>29 · The plumbing underneath every model</td><td>Feature stores, pipelines, experiment tracking, model registries, and drift monitoring for classical models.</td></tr>
       <tr><td>Proof</td><td>30 · Proving it stays good</td><td>Evals in CI — not just that it worked once</td></tr>
       <tr><td>Safety</td><td>31 · Who's allowed to stop it</td><td>Governance, incident response, and what the law already says</td></tr>
-      <tr><td>Proof</td><td>32 · Interview</td><td>Saying it well</td></tr>
-      <tr><td>All five</td><td>33 · Recall</td><td>Making it stick</td></tr>
-      <tr><td>Knowledge</td><td>34 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
+      <tr><td>All five</td><td>32 · The engagement, start to finish</td><td>Diagnose, business case, target architecture, roadmap, pilot, scale, govern — a worked case.</td></tr>
+      <tr><td>Proof</td><td>33 · Interview</td><td>Saying it well</td></tr>
+      <tr><td>All five</td><td>34 · Recall</td><td>Making it stick</td></tr>
+      <tr><td>Knowledge</td><td>35 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
+    
     
     
     
@@ -6503,7 +6505,7 @@ natural, past 1s it stops feeling like a conversation.</p>
 
   <h3>Build your stack</h3>
   <p>Four questions. No wrong answers — just trade-offs sized to what you're actually
-  building. This mirrors Drawer 34's retrieval lab: nothing here calls a real server, it's
+  building. This mirrors Drawer 35's retrieval lab: nothing here calls a real server, it's
   the reasoning made clickable.</p>
   <div class="lab" id="stackCfg">
     <div class="lab-box">
@@ -8182,9 +8184,91 @@ total: 2687ms</code></pre>
   <div class="next" id="next-lawgov"></div>
 </section>
 
-<!-- ============ 32 INTERVIEW ============ -->
+<!-- ============ 32 CONSULTING PLAYBOOK ============ -->
+<section class="page" id="p-playbook" aria-labelledby="h-playbook">
+  <p class="eyebrow">Drawer 32 · The engagement, start to finish</p>
+  <h2 id="h-playbook">Diagnose before you prescribe, every single time</h2>
+  <p class="tldr"><b>TL;DR</b> A repeatable 13-step engagement shape — diagnose, business
+  case, target architecture, build-or-buy, roadmap, pilot, measure, scale, govern — with
+  a real worked case, so "being the outside expert" (this drawer's earlier companion) has
+  an actual process underneath the posture.</p>
+  <p class="lede">A client says "we want AI in our contact center." That sentence is a
+  budget line, not a scope. The engagement lifecycle below is what turns it into a
+  diagnosis, a business case a CFO will sign, and a roadmap an internal team can execute
+  after you leave — the thing that actually gets you referred for the next engagement.</p>
+
+  <h3>The thirteen steps</h3>
+  <div class="six">
+    <div><b>1 · Diagnose</b><em>What's the real problem</em><small>Not "add AI" — the
+    workflow, the number, the pain (Drawer 09's problem-statement questions, applied to
+    someone else's org).</small></div>
+    <div><b>2 · Understand the business</b><em>Margins, not just workflows</em><small>A
+    cost-center fix and a revenue-driver fix get evaluated by different criteria entirely.</small></div>
+    <div><b>3 · Map workflows</b><em>Every handoff, named</em><small>The same decomposition
+    from Drawer 09, run across every candidate team, not just the one that asked.</small></div>
+    <div><b>4 · Identify opportunities</b><em>Where AI capability meets a real gap</em><small>Cross-reference the workflow map against the capability-family test.</small></div>
+    <div><b>5 · Prioritize</b><em>Value × feasibility × risk, client's numbers</em><small>Same
+    scoring, now defended in a room with people whose budgets are affected.</small></div>
+    <div><b>6 · Business case</b><em>The number a CFO signs off on</em><small>Cost to build,
+    cost to run, expected value, payback period — not "AI is strategic."</small></div>
+    <div><b>7 · Target architecture</b><em>What "done" looks like</em><small>Drawer 19's
+    complete-pipeline view, sized to this client's actual scale and constraints.</small></div>
+    <div><b>8 · Build / buy / partner</b><em>The stack decision, made explicit</em><small>Drawer 28's
+    trade-offs, with the client's team skill and timeline as real inputs, not afterthoughts.</small></div>
+    <div><b>9 · Roadmap</b><em>Phased, named, defensible</em><small>Which phase first and
+    why — the "start at V2, not V6" discipline stated out loud to the client.</small></div>
+    <div><b>10 · Pilot</b><em>Small, measured, time-boxed</em><small>A pilot without a
+    predefined success metric is a demo, not an experiment.</small></div>
+    <div><b>11 · Measure</b><em>Against the business case's numbers</em><small>Not "it
+    works" — did the specific number from step 6 move, and by how much.</small></div>
+    <div><b>12 · Scale</b><em>Only after the pilot's numbers hold</em><small>Scaling a
+    pilot that hasn't hit its target metric just multiplies the same problem.</small></div>
+    <div><b>13 · Govern</b><em>Handover, not disappearance</em><small>Who owns this after
+    you leave, and what breaks first if nobody does.</small></div>
+  </div>
+
+  <h3>Worked case: a contact-center client, steps 1–6</h3>
+  <div class="card">
+    <p class="card-label">Diagnose (steps 1–3)</p>
+    <p>The client's ask: "add an AI chatbot to reduce contact-center costs." Diagnosis
+    reveals: average handle time is 9 minutes, driven mostly by agents searching three
+    disconnected systems for account history (this alone is 60% of handle time), not by
+    conversation length itself. The workflow map makes the actual candidate obvious: an
+    agent-assist tool that surfaces account history automatically, not a customer-facing
+    chatbot at all — the requested solution and the diagnosed problem don't match.</p>
+  </div>
+  <div class="card">
+    <p class="card-label">Business case (steps 4–6)</p>
+    <p>300 agents, 9-minute average handle time, target: cut the search-time portion in
+    half. Expected impact: roughly 2.5 minutes saved per call × call volume = a specific
+    headcount-equivalent or throughput number, compared against build cost (engineering
+    time, a knowledge-base RAG system per Drawer 10, integration with the three source
+    systems) and run cost (hosting, model API calls, maintenance). The business case is
+    this comparison, not a slide that says "AI improves efficiency."</p>
+  </div>
+  <div class="warn"><span class="tag">The moment most engagements go wrong</span>
+  Delivering what was asked for (a customer chatbot) instead of what diagnosis found
+  (an agent-assist tool) is the single most common way a technically successful project
+  fails to move the number the client actually cared about. The diagnosis step exists
+  specifically to catch this gap before a proposal gets written, not after a system ships.</div>
+
+  <h3>Handover — what "done" actually means</h3>
+  <p>A capability-building engagement ends when a named client employee can explain the
+  system to a new hire without you in the room. That means: documented runbooks (Drawer 27's on-call setup, written for the client's team), a recorded and repeatable training
+  session, and an explicit ownership handoff of the eval suite — a client who inherits a
+  system but not its evals will not know when it silently degrades.</p>
+
+  <div class="keynote"><p>The steps aren't a checklist you perform once — they're the
+  answer to "why should this client trust the recommendation," repeated for every
+  candidate. A client who watches you diagnose before prescribing trusts the number you
+  eventually give them in a way a confident pitch never earns on its own.</p></div>
+
+  <div class="next" id="next-playbook"></div>
+</section>
+
+<!-- ============ 33 INTERVIEW ============ -->
 <section class="page" id="p-int" aria-labelledby="h-int">
-  <p class="eyebrow">Drawer 32 · Saying it well</p>
+  <p class="eyebrow">Drawer 33 · Saying it well</p>
   <h2 id="h-int">Interview</h2>
   <p class="tldr"><b>TL;DR</b> Lead with the point, then the detail — interviewers cut you
   off, and the six-question framework (Drawer 08) structures almost any answer on demand.</p>
@@ -8356,9 +8440,9 @@ total: 2687ms</code></pre>
   <div class="next" id="next-int"></div>
 </section>
 
-<!-- ============ 33 RECALL ============ -->
+<!-- ============ 34 RECALL ============ -->
 <section class="page" id="p-recall" aria-labelledby="h-recall">
-  <p class="eyebrow">Drawer 33 · Making it stick</p>
+  <p class="eyebrow">Drawer 34 · Making it stick</p>
   <h2 id="h-recall">Recall</h2>
   <p class="tldr"><b>TL;DR</b> Recalling strengthens memory; re-reading mostly builds a
   comfortable illusion that you already know it. Use the flashcards, don't just skim.</p>
@@ -8474,9 +8558,9 @@ THE 5 TRAPS
     margin-right:8px;vertical-align:2px}
 </style>
 
-<!-- ============ 34 TRY IT ============ -->
+<!-- ============ 35 TRY IT ============ -->
 <section class="page" id="p-lab" aria-labelledby="h-lab">
-  <p class="eyebrow">Drawer 34 · Activity</p>
+  <p class="eyebrow">Drawer 35 · Activity</p>
   <h2 id="h-lab">Try it — be the librarian</h2>
   <p class="tldr"><b>TL;DR</b> A real, working retrieval demo, entirely in your browser —
   watch an off-topic question return nothing instead of a guess, and you've felt Drawer 17's debugging tree instead of just reading it.</p>
@@ -8609,6 +8693,7 @@ THE 5 TRAPS
     ["mlops","MLOps & data engineering","Advanced",true,"Feature stores, training pipelines, experiment tracking, and drift monitoring for classical models — the plumbing underneath any model, LLM or not.","Meta"],
     ["evalgov","Proving it stays good","Expert",true,"Continuous eval gates in CI and agent-trajectory grading — not just a golden set run once.","All"],
     ["lawgov","Who's allowed to stop it","Expert",true,"Agentic blast radius, the OWASP Agentic Top 10, and what the EU AI Act / NIST / ISO already require.","All"],
+    ["playbook","The consulting playbook","Advanced",true,"A 13-step engagement lifecycle — diagnose through govern — with a worked contact-center case, extending the consulting-engagement drawer into a repeatable process.","Meta"],
     ["int","Interview","Expert",true,"Rehearsed answers to the questions you will actually get asked.","All"],
     ["recall","Recall","Basic",false,"A spaced-recall drill so this actually sticks instead of fading in a week.","Meta"],
     ["lab","Try it yourself","Intermediate",false,"A real, working retrieval demo, entirely in your browser.","Assistant"]
@@ -8803,7 +8888,7 @@ THE 5 TRAPS
     });
   }
 
-  /* ================= drawer 34: retrieval playground =================
+  /* ================= drawer 35: retrieval playground =================
      A direct port of examples/minimal_rag.py — same chunking, same BM25, same
      TF-IDF cosine, same reciprocal rank fusion. Runs on the viewer's machine;
      nothing leaves the page. */
