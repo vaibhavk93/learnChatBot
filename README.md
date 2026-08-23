@@ -1,7 +1,7 @@
 # The Chatbot Catalog
 
 An interactive, single-page guide to building and understanding chatbots specifically —
-one story, ten words, six questions, five traps, and 31 drawers covering RAG, agents,
+one story, ten words, six questions, five traps, and 39 drawers covering RAG, agents,
 context engineering, evaluation, safety, the frontend, infra/deployment, and running one
 in production.
 
@@ -9,9 +9,10 @@ in production.
 
 This is a scoped-down sibling of [The AI Catalog](https://github.com/vaibhavk93/TheAICatalog):
 same source, same build, minus the drawers about generative media, document/image
-understanding, and AI-leadership topics (platform strategy, product roadmap, pricing,
-outside-consulting) that go beyond building one chatbot. If you want the full version,
-that's the other repo.
+understanding, and org-level AI-leadership topics (platform strategy, pricing, outside-
+consulting) that go beyond building one chatbot. The product roadmap (V1-V6) stays, since
+it's the shape of one chatbot's own growth, not an org-level concern. If you want the full
+version, that's the other repo.
 
 ## Files
 
