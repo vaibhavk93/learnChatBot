@@ -467,7 +467,7 @@
   about one convincingly. You need one story, ten words, six questions, and five warnings.
   This catalog holds all of them, one drawer at a time.</p>
 
-  <p class="lede">Zoomed out, the 39 drawers move through one arc: learn the
+  <p class="lede">Zoomed out, the 40 drawers move through one arc: learn the
   vocabulary → build the system → measure whether it works → operate it in
   production → govern the risk. Later drawers assume earlier ones, in that order.</p>
 
@@ -500,13 +500,13 @@
       <tr><td class="num">1 day</td><td>Drawer 22</td><td>Have a working investor-relations bot</td></tr>
       <tr><td class="num">1 week</td><td>Drawers 10 and 12, and Drawers 13 and 16</td><td>Go past "it works" to "I can prove how well"</td></tr>
       <tr><td class="num">1 month</td><td>Drawers 23 and 24</td><td>Take a prototype to something real users can hit</td></tr>
-      <tr><td class="num">Ongoing</td><td>Drawer 31</td><td>Interview for a chatbot role</td></tr>
+      <tr><td class="num">Ongoing</td><td>Drawer 32</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
 
   <div class="note"><span class="tag">The AI PM path, in order</span>
   If you're working through this catalog for a product-management role, read in this
-  order: Foundations (01–07) → LLM systems (16–18) → RAG (10–12) → Agents (16, 22) → Evaluation (19, 32) → AI UX (23–27) → AI economics (29–30) → Governance (33). Every drawer named already exists — this is just
+  order: Foundations (01–07) → LLM systems (13–18) → RAG (10–12) → Agents (16, 22) → Evaluation (19, 33) → AI UX (23–27) → AI economics (29–30) → Governance (34). Every drawer named already exists — this is just
   the sequence, not new material.</div>
 
   <div class="note"><span class="tag">Start here</span>
@@ -774,11 +774,13 @@
       <tr><td>Action</td><td>26 · Shipping it</td><td>Infra, deployment, and who's allowed to ask</td></tr>
       <tr><td>Proof</td><td>27 · Running it</td><td>Cost, observability and abuse prevention</td></tr>
       <tr><td>All five</td><td>28 · Choosing your stack</td><td>Framework vs. raw SDK, model vs. model</td></tr>
-      <tr><td>Proof</td><td>29 · Proving it stays good</td><td>Evals in CI — not just that it worked once</td></tr>
-      <tr><td>Safety</td><td>30 · Who's allowed to stop it</td><td>Governance, incident response, and what the law already says</td></tr>
-      <tr><td>Proof</td><td>31 · Interview</td><td>Saying it well</td></tr>
-      <tr><td>All five</td><td>32 · Recall</td><td>Making it stick</td></tr>
-      <tr><td>Knowledge</td><td>33 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
+      <tr><td>All five</td><td>29 · The plumbing underneath every model</td><td>Feature stores, pipelines, experiment tracking, model registries, and drift monitoring for classical models.</td></tr>
+      <tr><td>Proof</td><td>30 · Proving it stays good</td><td>Evals in CI — not just that it worked once</td></tr>
+      <tr><td>Safety</td><td>31 · Who's allowed to stop it</td><td>Governance, incident response, and what the law already says</td></tr>
+      <tr><td>Proof</td><td>32 · Interview</td><td>Saying it well</td></tr>
+      <tr><td>All five</td><td>33 · Recall</td><td>Making it stick</td></tr>
+      <tr><td>Knowledge</td><td>34 · Try it yourself</td><td>The retrieval half of RAG, live in your browser</td></tr>
+    
     
     
     
@@ -2140,7 +2142,7 @@ on synthetic examples looks fine on your eval set and fails exactly where the
 real world differs from your seed data.</div>
 
 <div class="note"><span class="tag">PII discovery and masking as a process, not a policy line</span>
-Drawer 30 covers the legal obligation — plan deletion before you index.
+Drawer 31 covers the legal obligation — plan deletion before you index.
 This is the operational side: automated PII discovery scans (rule-based for
 structured fields like phone numbers and PAN numbers, ML-based for PII buried
 in free text) run <strong>before</strong> any dataset is used for training,
@@ -5403,7 +5405,7 @@ how confident the agent sounds.</div>
         <p><strong>✓ Merit:</strong> the system decides its own next step — this is
         Drawer 14's ten-step lifecycle. Handles genuinely open-ended goals a fixed
         workflow can't enumerate in advance.</p>
-        <p><strong>✗ Demerit:</strong> Drawer 18's guardrails and Drawer 30's blast-radius
+        <p><strong>✗ Demerit:</strong> Drawer 18's guardrails and Drawer 31's blast-radius
         thinking both apply in full. Harder to debug than a workflow, because the path
         taken isn't fixed ahead of time.</p>
         <p><strong>Pick this when:</strong> the number of possible paths is too large to
@@ -5419,7 +5421,7 @@ how confident the agent sounds.</div>
       <div class="nd-d">
         <p><strong>✓ Merit:</strong> genuinely necessary when a human checkpoint would
         defeat the purpose — real-time fraud blocking at transaction speed.</p>
-        <p><strong>✗ Demerit:</strong> Drawer 30's "who's allowed to stop it" question
+        <p><strong>✗ Demerit:</strong> Drawer 31's "who's allowed to stop it" question
         applies at full force — there is no human in the loop to catch a mistake before
         it lands.</p>
         <p><strong>Pick this when:</strong> the blast radius is genuinely small and
@@ -6491,7 +6493,7 @@ natural, past 1s it stops feeling like a conversation.</p>
 
   <h3>Build your stack</h3>
   <p>Four questions. No wrong answers — just trade-offs sized to what you're actually
-  building. This mirrors Drawer 33's retrieval lab: nothing here calls a real server, it's
+  building. This mirrors Drawer 34's retrieval lab: nothing here calls a real server, it's
   the reasoning made clickable.</p>
   <div class="lab" id="stackCfg">
     <div class="lab-box">
@@ -6943,7 +6945,7 @@ total: 2687ms</code></pre>
       <tr><td><strong>Tool monitoring</strong></td><td>Per-tool success rate and latency — which specific tool is failing, not just an aggregate error rate.</td></tr>
       <tr><td><strong>State monitoring</strong></td><td>Whether an agent is stuck — the same step repeating, or a loop that never reaches "respond."</td></tr>
       <tr><td><strong>Failure detection</strong></td><td>Catching a plausible-looking wrong action, not just a crash — a tool call that succeeded technically but did the wrong thing.</td></tr>
-      <tr><td><strong>Intervention</strong></td><td>The operational side of Drawer 30's "who's allowed to stop it" — an actual button someone on call can press.</td></tr>
+      <tr><td><strong>Intervention</strong></td><td>The operational side of Drawer 31's "who's allowed to stop it" — an actual button someone on call can press.</td></tr>
     </tbody>
   </table></div>
 
@@ -7407,10 +7409,96 @@ total: 2687ms</code></pre>
   <div class="next" id="next-stack"></div>
 </section>
 
+<!-- ============ 29 MLOPS AND DATA ENGINEERING ============ -->
+<section class="page" id="p-mlops" aria-labelledby="h-mlops">
+  <p class="eyebrow">Drawer 29 · The plumbing underneath every model</p>
+  <h2 id="h-mlops">Why the same model, retrained, can still ship broken</h2>
+  <p class="tldr"><b>TL;DR</b> A model is a small, static artifact. Getting the right data
+  to it reliably, tracking what changed between versions, and knowing when a "quiet" data
+  change silently degraded it — that's MLOps, and it's a separate discipline from the
+  model itself, with its own failure modes.</p>
+  <p class="lede">A fraud-detection model that scored 94% precision in testing ships to
+  production and starts approving obvious fraud within a week. Nobody touched the model.
+  What changed was upstream: a source system renamed a field, the pipeline silently filled
+  it with nulls instead of failing, and the model has been scoring on missing data ever
+  since. This is the class of failure MLOps exists to prevent — not a modeling problem, a
+  plumbing problem.</p>
 
-<!-- ============ 29 PROVING IT STAYS GOOD ============ -->
+  <h3>The pipeline, end to end</h3>
+  <div class="six">
+    <div><b>1 · Ingest</b><em>Raw data arrives</em><small>From source systems, on a
+    schedule or a stream — the first place a silent format change can enter.</small></div>
+    <div><b>2 · Feature engineering</b><em>Raw → model input</em><small>Turning "timestamp
+    of last purchase" into "days since last purchase" — the actual modeling work, more
+    often than the model architecture itself.</small></div>
+    <div><b>3 · Feature store</b><em>Computed once, reused everywhere</em><small>The same
+    "days since last purchase" feature, computed the same way, for training AND for a live
+    prediction — the single most common source of training/serving mismatch when skipped.</small></div>
+    <div><b>4 · Training pipeline</b><em>Reproducible, not a notebook</em><small>Same code
+    path every time, versioned, so "retrain the model" doesn't mean "re-run whatever was in
+    someone's notebook last Tuesday."</small></div>
+    <div><b>5 · Experiment tracking</b><em>Which run produced this model</em><small>Data
+    version, code version, hyperparameters, and resulting metrics, logged together — not
+    reconstructed from memory when someone asks "why did we pick this one."</small></div>
+    <div><b>6 · Model registry</b><em>The version actually serving traffic</em><small>A
+    named, versioned artifact with a clear promotion path — staging, then production — not
+    a file someone copied onto a server once.</small></div>
+  </div>
+
+  <h3>The failure this catalog's LLM drawers don't cover</h3>
+  <p>Drawer 18 (Traps &amp; security) and Drawer 30 (Proving it stays good) cover drift for
+  RAG indexes and prompts. Classical ML models decay differently, and the mechanism matters
+  because the fix is different:</p>
+  <div class="tw"><table>
+    <thead><tr><th>Drift type</th><th>What actually happens</th><th>How you'd catch it</th></tr></thead>
+    <tbody>
+      <tr><td>Data drift</td><td>The input distribution shifts — customers today don't look like customers when the model was trained</td><td>Compare feature distributions, live vs. training, on a schedule</td></tr>
+      <tr><td>Concept drift</td><td>The relationship between inputs and the real outcome changes — the same customer profile that meant "low risk" in 2023 doesn't mean that in 2026</td><td>Monitor the model's actual prediction accuracy against ground truth as it arrives, not just input stats</td></tr>
+      <tr><td>Upstream schema change</td><td>A source system changes a field's meaning, format, or name — the exact fraud-model failure above</td><td>Schema validation at ingest, failing loudly instead of nulling silently</td></tr>
+      <tr><td>Training/serving skew</td><td>The feature computed at training time doesn't exactly match the feature computed at prediction time</td><td>A shared feature store, computing it exactly once for both paths</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warn"><span class="tag">The trap: treating a classical model like a fire-and-forget artifact</span>
+  An LLM behind an API gets provider-side updates and is easy to swap. A classical model
+  you trained yourself has no such safety net — it only knows what the world looked like
+  on the day you trained it, and nothing tells you it's gone stale except a monitoring
+  system you have to build. "We deployed the model" is the start of the operational
+  burden, not the end of the project.</div>
+
+  <h3>Data versioning — reproducing "what did we actually train on"</h3>
+  <p>Code versioning is a solved problem (git). Data versioning is not solved the same
+  way, and the gap causes a specific, recurring failure: nobody can reproduce a model six
+  months later because the training data has since changed underneath it.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Approach</th><th>What it gives you</th><th>What it costs</th></tr></thead>
+    <tbody>
+      <tr><td>Snapshot the dataset per training run</td><td>Exact reproducibility</td><td>Storage cost, scales with dataset size × number of runs</td></tr>
+      <tr><td>Content-addressed hashing (like Drawer 12's document re-indexing)</td><td>Detects exactly what changed since the last run</td><td>Only tells you something changed, not whether it matters</td></tr>
+      <tr><td>Log the query, not the data</td><td>Cheap — store "SELECT ... WHERE date < X" instead of the rows</td><td>Reproducible only if the underlying source table itself never changes retroactively</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>How this connects to the rest of the catalog</h3>
+  <div class="six">
+    <div><b>Data science fundamentals</b><em>Drawer 07</em><small>EDA and statistical testing are what you run on data pulled through this pipeline — this drawer is the plumbing, that one is the analysis.</small></div>
+    <div><b>Evaluation</b><em>Drawer 17</em><small>A golden set is itself a dataset that needs the same versioning discipline — an un-versioned eval set is exactly as risky as un-versioned training data.</small></div>
+    <div><b>Choosing your stack</b><em>Drawer 28</em><small>Feature stores, registries, and pipeline orchestrators are real infrastructure decisions with the same build-vs-buy trade-offs as any other platform layer.</small></div>
+    <div><b>Shared infrastructure</b><em>once more than one team trains models</em><small>A shared feature store is the single highest-leverage investment at that point — the same "build it once" logic that applies to any shared platform layer.</small></div>
+  </div>
+
+  <div class="keynote"><p>The model is the smallest part of the system. Everything in this
+  drawer — the pipeline that feeds it, the versioning that makes it reproducible, and the
+  drift monitoring that tells you when the world moved out from under it — is the actual
+  majority of the operational work, and it fails silently far more often than the model
+  itself does.</p></div>
+
+  <div class="next" id="next-mlops"></div>
+</section>
+
+
+<!-- ============ 30 PROVING IT STAYS GOOD ============ -->
 <section class="page" id="p-evalgov" aria-labelledby="h-evalgov">
-  <p class="eyebrow">Drawer 29 · Eval as an engineering artifact</p>
+  <p class="eyebrow">Drawer 30 · Eval as an engineering artifact</p>
   <h2 id="h-evalgov">Proving it stays good, not just that it was good once</h2>
   <p class="tldr"><b>TL;DR</b> A golden set graded once is a photograph. Real proof is a
   gate that runs every time something changes — and grades the whole agent run, not just
@@ -7775,9 +7863,9 @@ total: 2687ms</code></pre>
 
   <div class="next" id="next-evalgov"></div>
 </section>
-<!-- ============ 30 WHO'S ALLOWED TO STOP IT ============ -->
+<!-- ============ 31 WHO'S ALLOWED TO STOP IT ============ -->
 <section class="page" id="p-lawgov" aria-labelledby="h-lawgov">
-  <p class="eyebrow">Drawer 30 · Red-teaming, agentic risk, and the rulebook</p>
+  <p class="eyebrow">Drawer 31 · Red-teaming, agentic risk, and the rulebook</p>
   <h2 id="h-lawgov">Who's allowed to stop it, and what the law already says</h2>
   <p class="tldr"><b>TL;DR</b> Red-team your bot on a schedule, not just after something
   breaks. An agent's real risk isn't just what someone can make it say — it's every
@@ -8006,7 +8094,7 @@ total: 2687ms</code></pre>
     <tbody>
       <tr><td><strong>Alignment</strong></td><td>Whether the system is actually optimizing for what you meant, not just what you literally instructed.</td><td>A bot instructed to "maximize satisfaction scores" that learns to over-promise, because that's what the metric rewards</td></tr>
       <tr><td><strong>Deception</strong></td><td>The system stating something it has reason to know is false, as distinct from an honest hallucination.</td><td>Rare in a well-grounded chatbot, but the reframe matters: "confidently wrong" and "aware it doesn't know and hiding that" are different failure modes needing different fixes</td></tr>
-      <tr><td><strong>Shutdown / kill-switch</strong></td><td>An explicit mechanism to stop the system, that the system itself can't route around.</td><td>Drawer 30's blast-radius controls, restated as infrastructure — the switch has to work even if the agent's normal control flow is the thing misbehaving</td></tr>
+      <tr><td><strong>Shutdown / kill-switch</strong></td><td>An explicit mechanism to stop the system, that the system itself can't route around.</td><td>Drawer 31's blast-radius controls, restated as infrastructure — the switch has to work even if the agent's normal control flow is the thing misbehaving</td></tr>
     </tbody>
   </table></div>
   <div class="note"><span class="tag">Why this belongs in The Chatbot Catalog at all</span>
@@ -8084,9 +8172,9 @@ total: 2687ms</code></pre>
   <div class="next" id="next-lawgov"></div>
 </section>
 
-<!-- ============ 31 INTERVIEW ============ -->
+<!-- ============ 32 INTERVIEW ============ -->
 <section class="page" id="p-int" aria-labelledby="h-int">
-  <p class="eyebrow">Drawer 31 · Saying it well</p>
+  <p class="eyebrow">Drawer 32 · Saying it well</p>
   <h2 id="h-int">Interview</h2>
   <p class="tldr"><b>TL;DR</b> Lead with the point, then the detail — interviewers cut you
   off, and the six-question framework (Drawer 08) structures almost any answer on demand.</p>
@@ -8250,17 +8338,17 @@ total: 2687ms</code></pre>
 
   <div class="note"><span class="tag">Newer drawers to cite by number, not re-derive</span>
   If the question turns to eval or governance, name the drawer instead of rebuilding the
-  answer from scratch: <strong>Drawer 29</strong> for how you'd prove quality holds up over
-  time, <strong>Drawer 30</strong> for who has the authority to pull the plug. Naming the
+  answer from scratch: <strong>Drawer 30</strong> for how you'd prove quality holds up over
+  time, <strong>Drawer 31</strong> for who has the authority to pull the plug. Naming the
   drawer is the senior move — it shows you already have a structured answer, not that
   you're improvising one live.</div>
 
   <div class="next" id="next-int"></div>
 </section>
 
-<!-- ============ 32 RECALL ============ -->
+<!-- ============ 33 RECALL ============ -->
 <section class="page" id="p-recall" aria-labelledby="h-recall">
-  <p class="eyebrow">Drawer 32 · Making it stick</p>
+  <p class="eyebrow">Drawer 33 · Making it stick</p>
   <h2 id="h-recall">Recall</h2>
   <p class="tldr"><b>TL;DR</b> Recalling strengthens memory; re-reading mostly builds a
   comfortable illusion that you already know it. Use the flashcards, don't just skim.</p>
@@ -8376,9 +8464,9 @@ THE 5 TRAPS
     margin-right:8px;vertical-align:2px}
 </style>
 
-<!-- ============ 33 TRY IT ============ -->
+<!-- ============ 34 TRY IT ============ -->
 <section class="page" id="p-lab" aria-labelledby="h-lab">
-  <p class="eyebrow">Drawer 33 · Activity</p>
+  <p class="eyebrow">Drawer 34 · Activity</p>
   <h2 id="h-lab">Try it — be the librarian</h2>
   <p class="tldr"><b>TL;DR</b> A real, working retrieval demo, entirely in your browser —
   watch an off-topic question return nothing instead of a guess, and you've felt Drawer 17's debugging tree instead of just reading it.</p>
@@ -8508,6 +8596,7 @@ THE 5 TRAPS
     ["ship","Shipping it","Advanced",false,"Staging, canaries, rollback — how a change reaches real users safely.","All"],
     ["ops","Running it","Advanced",false,"Cost, observability, abuse prevention and incident response once it's live.","All"],
     ["stack","Choosing your stack","Expert",true,"Framework vs. raw SDK, and how to actually compare model providers.","All"],
+    ["mlops","MLOps & data engineering","Advanced",true,"Feature stores, training pipelines, experiment tracking, and drift monitoring for classical models — the plumbing underneath any model, LLM or not.","Meta"],
     ["evalgov","Proving it stays good","Expert",true,"Continuous eval gates in CI and agent-trajectory grading — not just a golden set run once.","All"],
     ["lawgov","Who's allowed to stop it","Expert",true,"Agentic blast radius, the OWASP Agentic Top 10, and what the EU AI Act / NIST / ISO already require.","All"],
     ["int","Interview","Expert",true,"Rehearsed answers to the questions you will actually get asked.","All"],
@@ -8704,7 +8793,7 @@ THE 5 TRAPS
     });
   }
 
-  /* ================= drawer 33: retrieval playground =================
+  /* ================= drawer 34: retrieval playground =================
      A direct port of examples/minimal_rag.py — same chunking, same BM25, same
      TF-IDF cosine, same reciprocal rank fusion. Runs on the viewer's machine;
      nothing leaves the page. */
