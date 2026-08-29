@@ -130,9 +130,45 @@
   main{padding:0}
   .page{display:none;padding:52px 44px 100px;max-width:calc(var(--measure) + 260px);
     margin:0 auto}
-  .page.on{display:block;animation:in .28s ease both}
+  .page.on{display:block}
+  .page.on.dir-none{animation:in .28s ease both}
+  .page.on.dir-fwd{animation:inFwd .32s ease both}
+  .page.on.dir-back{animation:inBack .32s ease both}
   @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.page.on,.pipe-panel.active{animation:none}}
+  @keyframes inFwd{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+  @keyframes inBack{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+
+  /* ---------- motion: scroll-triggered reveal ----------
+     opacity:0 lives ONLY inside the no-preference query, never applied unconditionally --
+     content can't get stuck invisible if JS fails or motion is reduced, because the hidden
+     state simply doesn't exist for those users. Reveals once per element (JS unobserves
+     after the first intersection) -- this is a reference tool people jump back into
+     constantly, not a scrollytelling page, so replaying a fade on every revisit would get
+     old fast. */
+  @media (prefers-reduced-motion:no-preference){
+    .card,.six,.stat,.tw,.note,.warn,.trap,.pipe,.fc,.lane{
+      opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+    .card.in-view,.six.in-view,.stat.in-view,.tw.in-view,.note.in-view,.warn.in-view,
+    .trap.in-view,.pipe.in-view,.fc.in-view,.lane.in-view{opacity:1;transform:none}
+    /* staggered children, layered on top of the container reveal above */
+    .six>*,.stat>*,.fc>*{opacity:0;transform:translateY(8px);
+      transition:opacity .4s ease,transform .4s ease}
+    .six.in-view>*,.stat.in-view>*,.fc.in-view>*{opacity:1;transform:none}
+    .six>*:nth-child(2),.stat>*:nth-child(2),.fc>*:nth-child(2){transition-delay:.06s}
+    .six>*:nth-child(3),.stat>*:nth-child(3),.fc>*:nth-child(3){transition-delay:.12s}
+    .six>*:nth-child(4),.stat>*:nth-child(4),.fc>*:nth-child(4){transition-delay:.18s}
+    .six>*:nth-child(5),.stat>*:nth-child(5),.fc>*:nth-child(5){transition-delay:.24s}
+    .six>*:nth-child(6),.stat>*:nth-child(6),.fc>*:nth-child(6){transition-delay:.3s}
+    /* drawer-01 hero: small ordered stagger, replays each visit (it's the front door,
+       not a content card covered by the reveal-once rule above) */
+    #h-start{animation:in .5s ease both}
+    #p-start .tldr{animation:in .5s ease .12s both}
+    #p-start .stat{transition-delay:.18s}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .page.on.dir-none,.page.on.dir-fwd,.page.on.dir-back,.pipe-panel.active,
+    .nd.open .nd-d{animation:none}
+  }
 
   .eyebrow{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--teal);margin:0 0 10px}
@@ -152,7 +188,9 @@
 
   /* ---------- index card ---------- */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:4px;
-    padding:22px 24px;margin:22px 0;box-shadow:var(--shadow)}
+    padding:22px 24px;margin:22px 0;box-shadow:var(--shadow);
+    transition:transform .15s ease,box-shadow .15s ease}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
   .card > :last-child{margin-bottom:0}
   .card-label{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;
     text-transform:uppercase;color:var(--ink-3);margin:0 0 12px;
@@ -185,9 +223,11 @@
   .nd-h{width:100%;text-align:left;font:inherit;cursor:pointer;position:relative;
     background:var(--card);border:1px solid var(--rule);border-radius:4px;
     padding:11px 30px 11px 13px;color:var(--ink);display:block;
-    transition:border-color .12s,background .12s}
+    transition:border-color .12s,background .12s,transform .12s,box-shadow .12s}
   .nd-h:hover{border-color:var(--teal)}
   .nd-h:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+  .nd:not(.open) .nd-h:hover,.nd:not(.open) .nd-h:focus-visible{
+    transform:translateY(-2px);box-shadow:var(--shadow)}
   .nd-h::after{content:"+";position:absolute;top:10px;right:12px;line-height:1;
     font-family:var(--f-mono);font-size:13px;color:var(--ink-3)}
   .nd.open .nd-h::after{content:"–"}
@@ -199,7 +239,7 @@
   .nd-d{display:none;font-size:12.5px;line-height:1.55;color:var(--ink-2);
     background:var(--card);border:1px solid var(--teal);border-top:0;
     border-radius:0 0 4px 4px;padding:11px 13px}
-  .nd.open .nd-d{display:block}
+  .nd.open .nd-d{display:block;animation:in .22s ease both}
   .nd-d p{margin:0 0 8px;max-width:none;font-size:inherit}
   .nd-d p:last-child{margin:0}
   .nd-d ul{margin:0;padding-left:1.05em}
@@ -360,8 +400,9 @@
   .pipe-step{flex:0 0 auto;display:flex;align-items:center;gap:7px;
     background:var(--card);border:1px solid var(--rule);border-radius:999px;
     padding:8px 14px 8px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink-2);
-    white-space:nowrap;transition:border-color .12s,background .12s,color .12s}
-  .pipe-step:hover{border-color:var(--teal)}
+    white-space:nowrap;transition:border-color .12s,background .12s,color .12s,transform .12s}
+  .pipe-step:hover{border-color:var(--teal);transform:translateY(-1px)}
+  .pipe-step:focus-visible{outline:2px solid var(--teal);outline-offset:1px;transform:translateY(-1px)}
   .pipe-step[aria-pressed="true"]{background:var(--teal-wash);border-color:var(--teal);
     color:var(--teal);font-weight:600}
   .pipe-step.pipe-red[aria-pressed="true"]{background:var(--stamp-wash);border-color:var(--stamp);color:var(--stamp)}
@@ -470,7 +511,7 @@
   <aside class="drawer">
     <div class="brand">
       <h1>The Chatbot Catalog</h1>
-      <p>Build one · Explain one · Interview</p>
+      <p>Learn AI · Build one · Ace the interview</p>
     </div>
     <div class="mnav-wrap">
       <button type="button" class="mnav-toggle" id="mnavToggle" aria-expanded="false" aria-controls="nav">
@@ -494,14 +535,16 @@
   <p class="eyebrow">Drawer 01 · Orientation</p>
   <h2 id="h-start">Everything fits in four numbers</h2>
   <p class="tldr"><b>TL;DR</b> One story, ten words, six questions, five traps — that's the
-  whole field. Everything else in this catalog is one of those four things zoomed in.</p>
-  <p class="lede">You don't need a computer science degree to build a chatbot or to talk
-  about one convincingly. You need one story, ten words, six questions, and five warnings.
-  This catalog holds all of them, one drawer at a time.</p>
+  chatbot and agent core every other AI drawer builds on. This catalog also covers the data
+  science, economics, and consulting practice around it.</p>
+  <p class="lede">You don't need a computer science degree to work in AI, build a chatbot, or
+  talk about either convincingly. Learn the story below and you can hold your own in almost
+  any conversation about how these systems actually work.</p>
 
   <p class="lede">Zoomed out, the 44 drawers move through one arc: learn the
   vocabulary → build the system → measure whether it works → operate it in
-  production → govern the risk. Later drawers assume earlier ones, in that order.</p>
+  production → govern the risk → lead the practice. Later drawers assume earlier ones, in
+  that order.</p>
 
   <div class="stat">
     <div><b>1</b><span>Story</span></div>
@@ -530,22 +573,30 @@
       <tr><td class="num">15 min</td><td>Drawers 04 and 08</td><td>Explain what a chatbot is and why it lies</td></tr>
       <tr><td class="num">1 hour</td><td>Drawers 02 and 10</td><td>Hold your own in a technical conversation</td></tr>
       <tr><td class="num">1 day</td><td>Drawer 23</td><td>Have a working investor-relations bot</td></tr>
-      <tr><td class="num">1 week</td><td>Drawers 10 and 12, and Drawers 13 and 16</td><td>Go past "it works" to "I can prove how well"</td></tr>
-      <tr><td class="num">1 month</td><td>Drawers 25 and 26</td><td>Take a prototype to something real users can hit</td></tr>
+      <tr><td class="num">1 week</td><td>Drawers 10 and 12, and Drawers 17 and 32</td><td>Go past "it works" to "I can prove how well"</td></tr>
+      <tr><td class="num">1 month</td><td>Drawers 25 and 28</td><td>Take a prototype to something real users can hit</td></tr>
       <tr><td class="num">Ongoing</td><td>Drawer 37</td><td>Interview for a chatbot role</td></tr>
     </tbody>
   </table></div>
 
   <div class="note"><span class="tag">The AI PM path, in order</span>
-  If you're working through this catalog for a product-management role, read in this
-  order: Foundations (01–07) → LLM systems (13–16) → RAG (10–12) → Agents (14, 21) → Evaluation (17, 32) → AI UX (22–27) → AI economics (29–30) → Deployment (28) → Governance (33) → Strategy (34–37). Every drawer named already exists — this is just
-  the sequence, not new material.</div>
+  If you're working through this catalog for a product-management role, read in this order:
+  <strong>Foundations</strong> (Start here through Data science fundamentals) →
+  <strong>Scope before you build</strong> (Before you build anything, AI product discovery) →
+  <strong>Core systems</strong> (How RAG works through The complete pipeline) →
+  <strong>Evaluation &amp; experimentation</strong> (Evaluation, AI experimentation, Proving
+  it stays good) → <strong>Shipping &amp; operating</strong> (Build day, The frontend,
+  Shipping it, Running it, Choosing your stack, MLOps &amp; data engineering) →
+  <strong>Economics</strong> (Product roadmap, AI economics) → <strong>Governance</strong> (Who's allowed to stop it) →
+  <strong>Consulting &amp; interview</strong> (The consulting playbook, Interview). Every drawer named already exists — this is just the sequence, not
+  new material. Named by title rather than number, since insertions keep moving the numbers
+  and this note has gone stale that way more than once.</div>
 
   <div class="note"><span class="tag">Start here</span>
-  If you read only one drawer, make it <strong>Drawer 08 — the six questions</strong>.
+  If you read only one drawer, make it <strong>Six questions</strong> (Drawer 08).
   It is the single most useful thing in this catalog, and it takes ninety seconds to learn.
-  If you want to know how far you have to go, <strong>Drawer 03</strong> is an honest ladder
-  from level 0 to expert.</div>
+  If you want to know how far you have to go, <strong>Level 0 → expert</strong> (Drawer 03)
+  is an honest ladder from level 0 to expert.</div>
 
   
 
@@ -560,11 +611,15 @@
 <section class="page" id="p-map" aria-labelledby="h-map">
   <p class="eyebrow">Drawer 02 · The mental map</p>
   <h2 id="h-map">One picture to hang everything on</h2>
-  <p class="tldr"><b>TL;DR</b> Five branches (Assistant, Knowledge, Action, Safety, Proof),
-  three failure modes, three fixes, five hard boundaries — and trust is a loop you keep
-  running, not a box you tick once.</p>
-  <p class="lede">This is the map. Every other drawer is a zoom-in on one branch of it.
-  Come back here whenever a new term shows up and you're not sure where it belongs.</p>
+  <p class="tldr"><b>TL;DR</b> Five branches (Assistant, Knowledge, Action, Safety, Proof)
+  map the chatbot and agent core — three failure modes, three fixes, five hard boundaries,
+  and trust as a loop you keep running, not a box you tick once. The practitioner drawers
+  (data, economics, product, consulting) sit alongside this map, not inside it — see the
+  note below the diagram.</p>
+  <p class="lede">This is the map of the chatbot/agent core. Most other drawers are a
+  zoom-in on one branch of it — come back here whenever a new term shows up and you're not
+  sure where it belongs. A smaller set of drawers sit next to this map instead, covering the
+  wider practice of working in AI.</p>
 
   <figure class="plate">
     <p class="hint-row">Click any branch to open it</p>
@@ -648,6 +703,14 @@
   concerns that sit alongside and underneath all five. Every branch above needs a
   product decision, a UX surface, a data source, and a platform to run on; none of
   them gets its own branch because none of them is optional for any of the five.</div>
+
+  <div class="note"><span class="tag">Not on this map at all</span>
+  This diagram is the anatomy of the chatbot/agent core — most other drawers build, run, or
+  secure the one system pictured above. A separate cluster doesn't zoom into any branch here
+  because it isn't part of that system's anatomy — it's the wider practice of working in AI:
+  data science and MLOps fundamentals, AI use-case and product discovery, running
+  experiments, AI economics, and the outside-consultant's playbook. Read those as their own
+  track alongside this map, not as an extension of the five branches.</div>
 
   <h3>How the five branches connect</h3>
   <p>The map above shows what exists. This one shows what <em>causes</em> what — which is
@@ -8951,7 +9014,9 @@ THE 5 TRAPS
   .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
   .chip{background:var(--teal-wash);color:var(--teal);border:1px solid var(--teal);
     border-radius:999px;padding:4px 11px;font-family:var(--f-mono);font-size:10.5px;
-    letter-spacing:.05em;cursor:pointer}
+    letter-spacing:.05em;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}
+  .chip:not(.plain):hover,.chip:not(.plain):focus-visible{
+    transform:translateY(-1px);box-shadow:var(--shadow)}
   .chip.plain{background:var(--paper-2);color:var(--ink-2);border-color:var(--rule);cursor:default}
   .hit{border:1px solid var(--rule);border-radius:4px;background:var(--card);
     padding:13px 15px;margin-bottom:9px}
@@ -9077,8 +9142,8 @@ THE 5 TRAPS
      scope answers "is this chatbot-level, or does it need agent-level capability?" --
      Meta = about the catalog itself, not a system layer; All = applies regardless of level. */
   var PAGES = [
-    ["start","Start here","Basic",false,"The whole field in four numbers: one story, ten words, six questions, five traps.","Meta"],
-    ["map","The mental map","Basic",false,"One picture — five branches and three failure modes — everything else zooms into.","Meta"],
+    ["start","Start here","Basic",false,"The chatbot and agent core in four numbers: one story, ten words, six questions, five traps.","Meta"],
+    ["map","The mental map","Basic",false,"One picture — five branches and three failure modes — the chatbot and agent core zooms into.","Meta"],
     ["ladder","Level 0 → expert","Basic",false,"An honest self-assessment: which level you're at, and exactly what's next.","Meta"],
     ["story","The one story","Basic",false,"Why a chatbot behaves the way it does, in one hiring metaphor.","Chatbot"],
     ["words","The ten words","Basic",false,"The vocabulary — say these ten words correctly and you sound fluent.","Chatbot"],
@@ -9179,11 +9244,65 @@ THE 5 TRAPS
      In-memory only. The page is served inside an about:srcdoc iframe, where the
      document's URL is not ours: history.pushState throws a SecurityError and the
      hash belongs to the parent frame. So no URL routing, and no deep links. */
+  /* ---- scroll-triggered reveal: one observer instance, re-queried per page shown ----
+     Falls back to marking everything revealed immediately if IntersectionObserver is
+     unavailable, so content can never get stuck invisible.
+     Also carries a scroll-driven safety net: a large instant jump (End key, clicking a
+     scrollbar track) can move an element from below the fold to above it between two
+     rendered frames, with no frame in between where it ever intersected -- confirmed by
+     direct testing, not hypothetical -- which means the observer's crossing-detection
+     never fires for it and it stays invisible forever. The rAF-throttled scroll check
+     below catches anything still pending that the jump already scrolled past. */
+  var pendingReveal = new Set();
+  var revealObserver = ("IntersectionObserver" in window) ? new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){ if(entry.isIntersecting) revealNow(entry.target); });
+  }, {rootMargin:"0px 0px -8% 0px", threshold:0.01}) : null;
+
+  function revealNow(el){
+    el.classList.add("in-view");
+    pendingReveal.delete(el);
+    if(revealObserver) revealObserver.unobserve(el);
+  }
+
+  function observeReveal(pageEl){
+    var els = pageEl.querySelectorAll(".card,.six,.stat,.tw,.note,.warn,.trap,.pipe,.fc,.lane");
+    els.forEach(function(el){
+      if(!revealObserver){ revealNow(el); return; }
+      pendingReveal.add(el);
+      revealObserver.observe(el);
+    });
+  }
+
+  var revealScrollQueued = false;
+  window.addEventListener("scroll", function(){
+    if(revealScrollQueued || !pendingReveal.size) return;
+    revealScrollQueued = true;
+    requestAnimationFrame(function(){
+      revealScrollQueued = false;
+      var limit = window.innerHeight * 0.92;
+      pendingReveal.forEach(function(el){
+        if(el.getBoundingClientRect().top < limit) revealNow(el);
+      });
+    });
+  }, {passive:true});
+
   function show(id){
     var target = PAGES.some(function(p){return p[0]===id;}) ? id : PAGES[0][0];
+    var curEl = document.querySelector(".page.on");
+    var curId = curEl ? curEl.id.slice(2) : null;
+    var curIdx = PAGES.findIndex(function(p){return p[0]===curId;});
+    var newIdx = PAGES.findIndex(function(p){return p[0]===target;});
+    var dirClass = (curIdx===-1 || newIdx===curIdx) ? "dir-none" : (newIdx>curIdx ? "dir-fwd" : "dir-back");
     PAGES.forEach(function(p){
       var sec = document.getElementById("p-"+p[0]);
-      if(sec) sec.classList.toggle("on", p[0]===target);
+      if(!sec) return;
+      var isTarget = p[0]===target;
+      sec.classList.toggle("on", isTarget);
+      if(isTarget){
+        sec.classList.remove("dir-none","dir-fwd","dir-back");
+        sec.classList.add(dirClass);
+        observeReveal(sec);
+      }
     });
     document.querySelectorAll(".tab").forEach(function(t){
       var isCurrent = t.dataset.go===target;
