@@ -18,6 +18,8 @@
     --stamp:#A83A2B; --stamp-wash:#F6E7E3;
     --ochre:#8A6A1F; --ochre-wash:#F4EEDC;
     --shadow:0 1px 2px rgba(19,26,28,.06),0 8px 24px -12px rgba(19,26,28,.18);
+    --shadow-md:0 2px 6px rgba(19,26,28,.08),0 16px 36px -16px rgba(19,26,28,.22);
+    --shadow-lg:0 4px 10px rgba(19,26,28,.1),0 28px 56px -20px rgba(19,26,28,.26);
     --measure:66ch;
     --f-display:ui-serif,"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
     --f-body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
@@ -32,6 +34,8 @@
       --stamp:#E58873; --stamp-wash:#33201C;
       --ochre:#D6B25E; --ochre-wash:#2E2718;
       --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+      --shadow-md:0 2px 6px rgba(0,0,0,.45),0 18px 40px -18px rgba(0,0,0,.75);
+      --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 32px 64px -22px rgba(0,0,0,.82);
     }
   }
   :root[data-theme="dark"]{
@@ -42,6 +46,8 @@
     --stamp:#E58873; --stamp-wash:#33201C;
     --ochre:#D6B25E; --ochre-wash:#2E2718;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -14px rgba(0,0,0,.7);
+    --shadow-md:0 2px 6px rgba(0,0,0,.45),0 18px 40px -18px rgba(0,0,0,.75);
+    --shadow-lg:0 4px 12px rgba(0,0,0,.5),0 32px 64px -22px rgba(0,0,0,.82);
   }
   :root[data-theme="light"]{
     --paper:#F4F6F2; --paper-2:#EAEEE7; --card:#FFFFFF;
@@ -51,6 +57,8 @@
     --stamp:#A83A2B; --stamp-wash:#F6E7E3;
     --ochre:#8A6A1F; --ochre-wash:#F4EEDC;
     --shadow:0 1px 2px rgba(19,26,28,.06),0 8px 24px -12px rgba(19,26,28,.18);
+    --shadow-md:0 2px 6px rgba(19,26,28,.08),0 16px 36px -16px rgba(19,26,28,.22);
+    --shadow-lg:0 4px 10px rgba(19,26,28,.1),0 28px 56px -20px rgba(19,26,28,.26);
   }
 
   *{box-sizing:border-box}
@@ -124,7 +132,7 @@
     margin:0 auto}
   .page.on{display:block;animation:in .28s ease both}
   @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.page.on{animation:none}}
+  @media (prefers-reduced-motion:reduce){.page.on,.pipe-panel.active{animation:none}}
 
   .eyebrow{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;
     text-transform:uppercase;color:var(--teal);margin:0 0 10px}
@@ -274,6 +282,10 @@
   .stat span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;
     text-transform:uppercase;color:var(--ink-3)}
 
+  /* ---------- drawer-01 hero: a bit more presence on the first page only ---------- */
+  #p-start{background:radial-gradient(900px 420px at 50% 0,var(--teal-wash),transparent 70%) no-repeat}
+  #h-start{font-size:clamp(36px,6vw,58px)}
+
   .next{display:flex;gap:12px;flex-wrap:wrap;margin-top:52px;padding-top:24px;
     border-top:1px solid var(--rule)}
   .next button{background:var(--card);border:1px solid var(--rule);border-radius:4px;
@@ -340,7 +352,11 @@
     scrollbar-width:thin;-webkit-overflow-scrolling:touch}
   .pipe.docked .pipe-steps{position:sticky;top:0;z-index:15;background:var(--paper);
     padding:14px 4px;margin:0 -4px 10px;border-bottom:1px solid var(--rule);
-    box-shadow:var(--shadow)}
+    box-shadow:var(--shadow-md)}
+  @supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+    .pipe.docked .pipe-steps{background:color-mix(in srgb,var(--paper) 82%,transparent);
+      -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px)}
+  }
   .pipe-step{flex:0 0 auto;display:flex;align-items:center;gap:7px;
     background:var(--card);border:1px solid var(--rule);border-radius:999px;
     padding:8px 14px 8px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink-2);
@@ -385,7 +401,7 @@
     .mnav-toggle[aria-expanded="true"] .mnav-chevron{transform:rotate(180deg)}
     nav{display:none;position:absolute;left:14px;right:14px;top:100%;z-index:21;
       background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
-      max-height:70vh;overflow-y:auto;box-shadow:var(--shadow)}
+      max-height:70vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
     .drawer.mnav-open nav{display:block}
     nav ol{padding:6px}
     .tab{white-space:normal;border-left:0;border-bottom:0;
@@ -394,6 +410,12 @@
     .tab[aria-current="true"]{border-left:0;background:var(--teal-wash)}
     .drawer-foot{padding:12px 18px 0;margin-top:12px}
     .page{padding:28px 18px 72px}
+  }
+  @supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+    @media (max-width:860px){
+      .drawer.mnav-open nav{background:color-mix(in srgb,var(--paper-2) 85%,transparent);
+        -webkit-backdrop-filter:saturate(180%) blur(14px);backdrop-filter:saturate(180%) blur(14px)}
+    }
   }
 
   /* Phones. Multi-column diagram lanes stop being diagrams and become stacks —
